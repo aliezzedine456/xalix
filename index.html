@@ -21,10 +21,12 @@
 html,body{margin:0;padding:0}
 body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
 .serif{font-family:"Amiri","Tajawal",serif}
-.app{min-height:100vh;background:radial-gradient(1200px 600px at 80% -200px,rgba(201,164,71,.18),transparent 60%),radial-gradient(900px 500px at 0% 10%,rgba(107,15,26,.08),transparent 60%),var(--bg)}
+/* CLEAN, EVEN BACKGROUND — no dark patches on either side */
+.app{min-height:100vh;background:
+  radial-gradient(900px 500px at 50% -260px, rgba(201,164,71,.10), transparent 70%),
+  var(--bg)}
 .container{max-width:1280px;margin:0 auto;padding:0 24px}
 
-/* Header */
 .header{position:sticky;top:0;z-index:30;background:rgba(250,246,236,.85);backdrop-filter:saturate(140%) blur(14px);border-bottom:1px solid var(--line)}
 .header-inner{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
 .brand{display:flex;align-items:center;gap:12px}
@@ -34,7 +36,6 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .icon-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:all .18s ease}
 .icon-btn:hover{border-color:var(--gold);color:var(--maroon);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
 
-/* Hero */
 .hero{padding:56px 0 28px;text-align:center}
 .hero h1{font-family:"Amiri",serif;font-size:clamp(34px,5vw,56px);margin:0 0 14px;font-weight:700;background:linear-gradient(180deg,var(--maroon-deep),var(--maroon));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.01em;line-height:1.2}
 .hero p{color:var(--ink-soft);font-size:17px;max-width:640px;margin:0 auto 28px}
@@ -42,32 +43,28 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .hero-divider::before,.hero-divider::after{content:"";width:60px;height:1px;background:linear-gradient(to left,transparent,var(--gold))}
 .hero-divider::after{background:linear-gradient(to right,transparent,var(--gold))}
 
-/* Search */
 .search-wrap{position:relative;max-width:620px;margin:0 auto}
 .search-wrap input{width:100%;padding:16px 56px 16px 22px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-family:inherit;font-size:15px;color:var(--ink);outline:none;transition:all .18s ease;box-shadow:var(--shadow-sm)}
 .search-wrap input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,164,71,.18)}
 .search-icon{position:absolute;right:22px;top:50%;transform:translateY(-50%);color:var(--muted)}
 
-/* Stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:36px 0 8px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center;box-shadow:var(--shadow-sm)}
 .stat-value{font-size:26px;font-weight:800;color:var(--maroon);font-family:"Amiri",serif}
 .stat-label{font-size:13px;color:var(--muted);margin-top:4px}
 @media (max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
 
-/* Section */
 .section-title{display:flex;align-items:center;justify-content:space-between;margin:40px 0 18px}
 .section-title h2{font-size:22px;font-weight:800;margin:0;color:var(--ink)}
 .section-title .count{font-size:13px;color:var(--muted)}
 
-/* Grid + Cards */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px;padding-bottom:60px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;cursor:pointer;transition:all .25s cubic-bezier(.2,.9,.4,1.1);box-shadow:var(--shadow-sm);position:relative}
 .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(201,164,71,.45)}
 .card-img-wrap{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--bg-soft)}
 .card-img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.9,.4,1.1)}
 .card:hover .card-img{transform:scale(1.05)}
-.card-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.55))}
+.card-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.45))}
 .card-tag{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.95);color:var(--maroon);font-size:11px;font-weight:800;padding:6px 12px;border-radius:999px;border:1px solid var(--line);display:inline-flex;align-items:center;gap:6px}
 .card-body{padding:18px 18px 20px}
 .card-title{font-family:"Amiri",serif;font-size:22px;font-weight:700;color:var(--maroon-deep);margin:0 0 6px;line-height:1.3}
@@ -75,7 +72,6 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .card-stats{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:12px;flex-wrap:wrap}
 .card-stats .pill{background:var(--bg-soft);border-radius:999px;padding:4px 10px;font-weight:700;color:var(--gold-deep)}
 
-/* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;border:1px solid transparent;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:all .18s ease;text-decoration:none}
 .btn-primary{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;box-shadow:var(--shadow-sm)}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
@@ -86,7 +82,21 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .btn-block{width:100%}
 .btn:disabled{opacity:.6;cursor:not-allowed}
 
-/* Overlay + drawer */
+/* Gallery toggle row */
+.gallery-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 6px}
+.gallery-row .btn{padding:12px 14px;font-size:14px}
+
+/* Galleries */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin:14px 0 4px}
+.gallery .item{aspect-ratio:1;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative;cursor:pointer}
+.gallery .item img,.gallery .item video{width:100%;height:100%;object-fit:cover;display:block}
+.gallery .item .play{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:28px;background:rgba(0,0,0,.25)}
+.lightbox{position:fixed;inset:0;background:rgba(15,10,5,.85);z-index:80;display:none;align-items:center;justify-content:center;padding:20px}
+.lightbox.open{display:flex}
+.lightbox-content{max-width:96vw;max-height:92vh;border-radius:16px;overflow:hidden;background:#000}
+.lightbox-content img,.lightbox-content video{max-width:96vw;max-height:92vh;display:block}
+.lightbox-close{position:absolute;top:16px;left:16px;width:44px;height:44px;border-radius:50%;background:#fff;border:none;cursor:pointer;font-size:20px;font-weight:800}
+
 .overlay{position:fixed;inset:0;background:rgba(20,14,6,.5);backdrop-filter:blur(6px);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s ease}
 .overlay.open{opacity:1;pointer-events:auto}
 .drawer{position:fixed;top:0;right:0;height:100vh;width:100%;max-width:540px;background:var(--bg);z-index:50;transform:translateX(105%);transition:transform .35s cubic-bezier(.2,.9,.4,1.1);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.18)}
@@ -95,21 +105,18 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .drawer-title{font-size:18px;font-weight:800;color:var(--ink)}
 .drawer-body{padding:24px;overflow-y:auto;flex:1}
 
-/* Forms */
 .field{margin-bottom:18px}
 .field label{display:block;font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:8px}
 .field input,.field textarea{width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-family:inherit;font-size:15px;color:var(--ink);outline:none;transition:all .18s ease}
 .field input:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,164,71,.16)}
 .field small{display:block;margin-top:6px;color:var(--muted);font-size:12px}
 
-/* Upload */
 .upload{border:2px dashed var(--gold-soft);border-radius:18px;padding:32px 20px;text-align:center;cursor:pointer;background:linear-gradient(180deg,#fffaef,#fdf3da);color:var(--ink-soft);transition:all .2s ease}
 .upload:hover{border-color:var(--gold);background:#fff5dc}
 .upload .ico{font-size:28px;color:var(--gold-deep);margin-bottom:8px}
 .upload-preview{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 .upload-preview img{width:96px;height:96px;object-fit:cover;border-radius:14px;border:2px solid var(--gold);box-shadow:var(--shadow-sm)}
 
-/* Detail */
 .detail-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:22px;border:1px solid var(--line);box-shadow:var(--shadow-md)}
 .bio{background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);border-radius:18px;padding:18px 20px;margin:18px 0;color:var(--ink-soft);white-space:pre-wrap}
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
@@ -121,7 +128,6 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .chip:hover{border-color:var(--gold);color:var(--maroon)}
 .chip.selected{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;border-color:transparent;box-shadow:var(--shadow-sm)}
 
-/* Quran */
 .note{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 16px;text-align:center;font-size:13px;color:var(--ink-soft);margin-bottom:16px;display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
 .legend{display:inline-flex;align-items:center;gap:6px}
 .legend .dot{width:10px;height:10px;border-radius:50%}
@@ -135,20 +141,18 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .qpart .num{font-family:"Amiri",serif;font-size:16px}
 .qpart button.mini,.qpart span.mini{font-size:10px;background:rgba(255,255,255,.7);color:var(--ink);padding:3px 7px;border-radius:999px;font-weight:700;border:none;cursor:pointer;font-family:inherit}
 
-/* Sidebar links */
 .side-link{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:700;margin-bottom:10px;cursor:pointer;transition:all .18s ease}
 .side-link:hover{border-color:var(--gold);transform:translateX(-2px)}
 .side-link .ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--bg-soft);color:var(--maroon)}
 
-/* Toasts */
 .toasts{position:fixed;top:20px;left:20px;z-index:100;display:flex;flex-direction:column;gap:10px;max-width:360px}
 .toast{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);padding:14px 16px;border-radius:14px;box-shadow:var(--shadow-md);font-weight:600;font-size:14px;color:var(--ink);animation:slideIn .25s ease}
 .toast.success{border-right-color:var(--green)}
 .toast.error{border-right-color:var(--maroon)}
 @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
 
-.empty{text-align:center;padding:60px 20px;color:var(--muted)}
-.empty .big{font-family:"Amiri",serif;font-size:22px;color:var(--ink-soft);margin-bottom:6px}
+.empty{text-align:center;padding:30px 20px;color:var(--muted)}
+.empty .big{font-family:"Amiri",serif;font-size:18px;color:var(--ink-soft);margin-bottom:6px}
 
 .skeleton{background:linear-gradient(90deg,var(--bg-soft),#f8efd8,var(--bg-soft));background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:22px;aspect-ratio:4/3}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -201,44 +205,27 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 
   <div class="overlay" id="overlay" onclick="closeAllDrawers()"></div>
 
-  <!-- Sidebar -->
   <aside class="drawer" id="drawer-sidebar">
     <div class="drawer-head">
       <div class="drawer-title">القائمة الرئيسية</div>
       <button class="icon-btn" onclick="closeAllDrawers()">×</button>
     </div>
     <div class="drawer-body">
-      <div class="side-link" onclick="openDrawer('request')">
-        <span class="ico">＋</span>
-        طلب إضافة شهيد جديد
-      </div>
-      <div class="side-link" onclick="openDrawer('login')">
-        <span class="ico">🛡</span>
-        لوحة مشرف الشهيد
-      </div>
+      <div class="side-link" onclick="openDrawer('request')"><span class="ico">＋</span>طلب إضافة شهيد جديد</div>
+      <div class="side-link" onclick="openDrawer('login')"><span class="ico">🛡</span>لوحة مشرف الشهيد</div>
       <div style="margin-top:24px;margin-bottom:8px;font-weight:700;font-size:13px;color:var(--muted)">تابعنا</div>
-      <a class="side-link" href="https://www.instagram.com/xa.l.yx" target="_blank" rel="noreferrer">
-        <span class="ico" style="color:#E1306C">◉</span>
-        إنستغرام
-      </a>
-      <a class="side-link" href="https://www.tiktok.com/@xa.l.ix" target="_blank" rel="noreferrer">
-        <span class="ico">♪</span>
-        تيك توك
-      </a>
+      <a class="side-link" href="https://www.instagram.com/xa.l.yx" target="_blank" rel="noreferrer"><span class="ico" style="color:#E1306C">◉</span>إنستغرام</a>
+      <a class="side-link" href="https://www.tiktok.com/@xa.l.ix" target="_blank" rel="noreferrer"><span class="ico">♪</span>تيك توك</a>
     </div>
   </aside>
 
-  <!-- Request -->
   <aside class="drawer" id="drawer-request">
     <div class="drawer-head">
       <div class="drawer-title">طلب إضافة شهيد</div>
       <button class="icon-btn" onclick="closeAllDrawers()">×</button>
     </div>
     <div class="drawer-body">
-      <div class="field">
-        <label>اسم الشهيد</label>
-        <input id="reqName" placeholder="الاسم الكريم" />
-      </div>
+      <div class="field"><label>اسم الشهيد</label><input id="reqName" placeholder="الاسم الكريم" /></div>
       <div class="field">
         <label>صورة الشهيد (اختياري)</label>
         <div class="upload" onclick="document.getElementById('reqFile').click()">
@@ -258,26 +245,18 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
     </div>
   </aside>
 
-  <!-- Login -->
   <aside class="drawer" id="drawer-login">
     <div class="drawer-head">
       <div class="drawer-title">دخول مشرف الشهيد</div>
       <button class="icon-btn" onclick="closeAllDrawers()">×</button>
     </div>
     <div class="drawer-body">
-      <div class="field">
-        <label>رقم الهاتف المسجل</label>
-        <input id="loginPhone" type="tel" placeholder="05xxxxxxxx" />
-      </div>
-      <div class="field">
-        <label>كلمة المرور</label>
-        <input id="loginPass" type="password" placeholder="••••••" />
-      </div>
+      <div class="field"><label>رقم الهاتف المسجل</label><input id="loginPhone" type="tel" placeholder="05xxxxxxxx" /></div>
+      <div class="field"><label>كلمة المرور</label><input id="loginPass" type="password" placeholder="••••••" /></div>
       <button class="btn btn-primary btn-block" id="loginBtn" onclick="submitLogin()">دخول إلى لوحة التحكم</button>
     </div>
   </aside>
 
-  <!-- Detail -->
   <aside class="drawer" id="drawer-detail">
     <div class="drawer-head">
       <div class="drawer-title" id="detailTitle">...</div>
@@ -286,7 +265,6 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
     <div class="drawer-body" id="detailBody"></div>
   </aside>
 
-  <!-- Quran -->
   <aside class="drawer" id="drawer-quran">
     <div class="drawer-head">
       <div class="drawer-title">ختمة القرآن الكريم</div>
@@ -294,6 +272,27 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
     </div>
     <div class="drawer-body" id="quranBody"></div>
   </aside>
+
+  <aside class="drawer" id="drawer-photos">
+    <div class="drawer-head">
+      <div class="drawer-title">معرض الصور</div>
+      <button class="icon-btn" onclick="closeAllDrawers()">×</button>
+    </div>
+    <div class="drawer-body" id="photosBody"></div>
+  </aside>
+
+  <aside class="drawer" id="drawer-videos">
+    <div class="drawer-head">
+      <div class="drawer-title">معرض الفيديوهات</div>
+      <button class="icon-btn" onclick="closeAllDrawers()">×</button>
+    </div>
+    <div class="drawer-body" id="videosBody"></div>
+  </aside>
+
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <div class="lightbox-content" id="lightboxContent"></div>
+  </div>
 
   <div class="toasts" id="toasts"></div>
 </div>
@@ -317,10 +316,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* ========== Config ========== */
-// Where to send image uploads (your backend that proxies to R2).
-// If hosting separately, set this to the absolute URL e.g. "https://your-api.com/api/upload"
-const UPLOAD_URL = "/api/upload";
+/* ============================================================
+   IMPORTANT — Set this to your DEPLOYED Replit API URL.
+   When this HTML is hosted on GitHub Pages it CANNOT call /api/upload
+   on github.io (no backend). It must call your Replit backend.
+   After publishing your Replit app, replace this URL with the
+   ".replit.app" domain you receive, e.g.:
+     const UPLOAD_URL = "https://shuhada.your-name.replit.app/api/upload";
+   The backend already has CORS enabled to accept requests from any origin.
+   ============================================================ */
+const UPLOAD_URL = "https://467135b9-2f99-421d-bfe0-8599a496e147-00-2gs48ihtkjm0i.picard.replit.dev/api/upload";
 
 const ACTIONS = [
   { key:"fatiha", label:"سورة الفاتحة" },
@@ -333,10 +338,10 @@ const ACTIONS = [
 
 let allItems = [];
 let currentMartyrId = null;
+let currentMartyr = null;
 let currentSelected = "";
 let pendingFile = null;
 
-/* ========== Helpers ========== */
 const $ = (id) => document.getElementById(id);
 const arabicNum = (n) => Number(n||0).toLocaleString("ar-EG");
 const placeholderImg = (name) => {
@@ -344,6 +349,7 @@ const placeholderImg = (name) => {
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0%' stop-color='%236b0f1a'/><stop offset='100%' stop-color='%234a0a13'/></linearGradient></defs><rect width='400' height='300' fill='url(%23g)'/><text x='50%' y='54%' text-anchor='middle' font-size='120' font-family='Amiri, serif' fill='%23e6c878'>${initial}</text></svg>`;
   return `data:image/svg+xml;utf8,${svg}`;
 };
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 
 window.toast = function(msg, type="success"){
   const el = document.createElement("div");
@@ -353,18 +359,29 @@ window.toast = function(msg, type="success"){
   setTimeout(()=>el.remove(), 2800);
 };
 
-/* ========== Drawer controls ========== */
-window.openDrawer = function(name){
-  closeAllDrawers();
+window.openDrawer = function(name, keepOverlay=false){
+  if (!keepOverlay) document.querySelectorAll(".drawer").forEach(d=>d.classList.remove("open"));
   $("overlay").classList.add("open");
   $("drawer-"+name).classList.add("open");
 };
 window.closeAllDrawers = function(){
   $("overlay").classList.remove("open");
   document.querySelectorAll(".drawer").forEach(d=>d.classList.remove("open"));
+  if (location.search) history.replaceState(null,"",location.pathname);
 };
 
-/* ========== Data load ========== */
+/* ====== Lightbox ====== */
+window.openLightbox = function(html){
+  $("lightboxContent").innerHTML = html;
+  $("lightbox").classList.add("open");
+};
+window.closeLightbox = function(e){
+  if (e && e.target.id !== "lightbox" && e.target.className !== "lightbox-close") return;
+  $("lightbox").classList.remove("open");
+  $("lightboxContent").innerHTML = "";
+};
+
+/* ====== Data load ====== */
 async function loadFeed(){
   const grid = $("feedGrid");
   grid.innerHTML = Array.from({length:6}).map(()=>`<div class="skeleton"></div>`).join("");
@@ -374,17 +391,14 @@ async function loadFeed(){
       getDocs(query(collection(db,"martyrs"), orderBy("createdAt","desc"))),
     ]);
     const arr = [];
-    vSnap.forEach(d => {
-      const data = d.data();
-      arr.push({ ...data, id:d.id, type:"video", time: data.timestamp?.seconds||0 });
-    });
-    mSnap.forEach(d => {
-      const data = d.data();
-      arr.push({ ...data, id:d.id, type:"martyr", time: data.createdAt?.seconds||0 });
-    });
+    vSnap.forEach(d => { const data = d.data(); arr.push({ ...data, id:d.id, type:"video", time: data.timestamp?.seconds||0 }); });
+    mSnap.forEach(d => { const data = d.data(); arr.push({ ...data, id:d.id, type:"martyr", time: data.createdAt?.seconds||0 }); });
     arr.sort((a,b)=>b.time-a.time);
     allItems = arr;
     render();
+    // After feed loaded, check for ?martyr=ID and auto-open
+    const urlId = new URLSearchParams(location.search).get("martyr");
+    if (urlId) openDetail(urlId);
   }catch(e){
     console.error(e);
     toast("تعذر تحميل البيانات","error");
@@ -393,21 +407,18 @@ async function loadFeed(){
 
 function render(){
   const s = ($("searchInput").value || "").trim().toLowerCase();
-  const list = !s ? allItems : allItems.filter(i =>
-    ((i.name || i.title || "").toLowerCase().includes(s))
-  );
+  const list = !s ? allItems : allItems.filter(i => ((i.name || i.title || "").toLowerCase().includes(s)));
   $("countLabel").textContent = `${arabicNum(list.length)} عنصر`;
 
   const martyrs = allItems.filter(i=>i.type==="martyr");
   const videos = allItems.filter(i=>i.type==="video");
-  const totalDeeds = martyrs.reduce((acc,m)=>acc+(m.fatiha||0)+(m.salawat||0)+(m.quran||0)+(m.prayers||0)+(m.dua||0)+(m.ziyara||0),0);
+  const totalDeeds = martyrs.reduce((a,m)=>a+(m.fatiha||0)+(m.salawat||0)+(m.quran||0)+(m.prayers||0)+(m.dua||0)+(m.ziyara||0),0);
 
   $("statsRow").innerHTML = `
     <div class="stat"><div class="stat-value">${arabicNum(martyrs.length)}</div><div class="stat-label">شهيد مكرّم</div></div>
     <div class="stat"><div class="stat-value">${arabicNum(videos.length)}</div><div class="stat-label">مقطع مرئي</div></div>
     <div class="stat"><div class="stat-value">${arabicNum(totalDeeds)}</div><div class="stat-label">عمل مهدى</div></div>
-    <div class="stat"><div class="stat-value">${arabicNum(allItems.length)}</div><div class="stat-label">مساهمة</div></div>
-  `;
+    <div class="stat"><div class="stat-value">${arabicNum(allItems.length)}</div><div class="stat-label">مساهمة</div></div>`;
 
   if (list.length === 0){
     $("feedGrid").innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="big">لا توجد نتائج</div><div>جرب البحث بكلمة أخرى</div></div>`;
@@ -434,12 +445,12 @@ function render(){
     return `
       <div class="card" onclick="openDetail('${i.id}')">
         <div class="card-img-wrap">
-          <img class="card-img" src="${i.photo || placeholderImg(i.name)}" alt="${escapeHtml(i.name||"")}" loading="lazy" onerror="this.src='${placeholderImg(i.name)}'"/>
+          <img class="card-img" src="${i.photo || placeholderImg(i.name)}" alt="${escapeHtml(i.name)}" loading="lazy" onerror="this.src='${placeholderImg(i.name)}'"/>
           <div class="card-img-overlay"></div>
           <span class="card-tag">✦ شهيد</span>
         </div>
         <div class="card-body">
-          <h3 class="card-title">${escapeHtml(i.name||"")}</h3>
+          <h3 class="card-title">${escapeHtml(i.name)}</h3>
           <div class="card-meta">♥ ${arabicNum(total)} عمل مهدى</div>
           <div class="card-stats">
             <span class="pill">📖 ${arabicNum(i.fatiha||0)}</span>
@@ -451,11 +462,7 @@ function render(){
   }).join("");
 }
 
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-}
-
-/* ========== Upload ========== */
+/* ====== Upload ====== */
 window.onPickFile = function(e){
   const f = e.target.files?.[0] || null;
   pendingFile = f;
@@ -484,7 +491,6 @@ async function uploadImage(file, folder="general"){
   return json.url;
 }
 
-/* ========== Request submit ========== */
 window.submitRequest = async function(){
   const name = $("reqName").value.trim();
   const phone = $("reqPhone").value.trim();
@@ -493,9 +499,7 @@ window.submitRequest = async function(){
   try{
     let photoUrl = "";
     if (pendingFile) photoUrl = await uploadImage(pendingFile, "requests");
-    await addDoc(collection(db,"martyrRequests"), {
-      name, phone, photo: photoUrl, status:"pending", createdAt: serverTimestamp()
-    });
+    await addDoc(collection(db,"martyrRequests"), { name, phone, photo: photoUrl, status:"pending", createdAt: serverTimestamp() });
     toast("تم إرسال الطلب بنجاح، سنراجعه قريباً");
     $("reqName").value = ""; $("reqPhone").value = ""; $("reqFile").value=""; $("reqPreview").innerHTML=""; pendingFile=null;
     setTimeout(closeAllDrawers, 800);
@@ -506,7 +510,6 @@ window.submitRequest = async function(){
   }
 };
 
-/* ========== Login ========== */
 window.submitLogin = async function(){
   const phone = $("loginPhone").value.trim();
   const pass = $("loginPass").value.trim();
@@ -519,48 +522,91 @@ window.submitLogin = async function(){
     if (d.data().adminPass === pass){
       toast("تم تسجيل الدخول");
       setTimeout(()=>{ window.location.href = `admin?id=${d.id}`; }, 600);
-    } else {
-      toast("كلمة المرور غير صحيحة","error");
-    }
-  }catch(e){
-    toast(e.message || "خطأ","error");
-  }finally{
-    btn.disabled = false; btn.textContent = "دخول إلى لوحة التحكم";
-  }
+    } else { toast("كلمة المرور غير صحيحة","error"); }
+  }catch(e){ toast(e.message || "خطأ","error"); }
+  finally{ btn.disabled = false; btn.textContent = "دخول إلى لوحة التحكم"; }
 };
 
-/* ========== Detail ========== */
+/* ====== Detail panel ====== */
 window.openDetail = async function(id){
   currentMartyrId = id;
   currentSelected = "";
   openDrawer("detail");
   $("detailTitle").textContent = "...";
   $("detailBody").innerHTML = `<div class="empty">جاري التحميل...</div>`;
+
+  // Update URL so it can be shared/refreshed
+  const newUrl = `${location.pathname}?martyr=${id}`;
+  history.replaceState(null, "", newUrl);
+
   const snap = await getDoc(doc(db,"martyrs",id));
   if (!snap.exists()) { $("detailBody").innerHTML = `<div class="empty">غير موجود</div>`; return; }
   const m = { ...snap.data(), id: snap.id };
+  currentMartyr = m;
   $("detailTitle").textContent = m.name || "";
   const shareUrl = `${location.origin}${location.pathname}?martyr=${id}`;
+  const galleryCount = Array.isArray(m.gallery) ? m.gallery.length : 0;
+  const videoCount = Array.isArray(m.videos) ? m.videos.length : 0;
+
   $("detailBody").innerHTML = `
-    <img class="detail-photo" src="${m.photo || placeholderImg(m.name)}" alt="${escapeHtml(m.name||"")}" onerror="this.src='${placeholderImg(m.name)}'"/>
+    <img class="detail-photo" src="${m.photo || placeholderImg(m.name)}" alt="${escapeHtml(m.name)}" onerror="this.src='${placeholderImg(m.name)}'"/>
+
+    <div class="gallery-row">
+      <button class="btn btn-gold" onclick="openPhotos()">📷 معرض الصور${galleryCount?` (${arabicNum(galleryCount)})`:""}</button>
+      <button class="btn btn-primary" onclick="openVideos()">▶ معرض الفيديوهات${videoCount?` (${arabicNum(videoCount)})`:""}</button>
+    </div>
+
     ${m.description ? `<div class="bio">${escapeHtml(m.description)}</div>` : ""}
+
     <div class="stats-row">
       <div class="stat-mini"><div class="v">${arabicNum(m.fatiha||0)}</div><div class="l">📖 الفاتحة</div></div>
       <div class="stat-mini"><div class="v">${arabicNum(m.salawat||0)}</div><div class="l">🌿 الصلوات</div></div>
       <div class="stat-mini"><div class="v">${arabicNum(m.quran||0)}</div><div class="l">📚 القرآن</div></div>
     </div>
+
     <div style="font-weight:800;margin-top:6px;color:var(--ink)">اختر عملاً لتهديه إلى روحه:</div>
     <div class="chips" id="chipsRow">
       ${ACTIONS.map(a=>`<span class="chip" data-key="${a.key}" onclick="selectChip('${a.key}')">${a.label}</span>`).join("")}
       ${m.customWorks ? Object.keys(m.customWorks).map(k=>`<span class="chip" data-key="custom_${k}" onclick="selectChip('custom_${escapeHtml(k)}')">✨ ${escapeHtml(k)}</span>`).join("") : ""}
     </div>
     <button class="btn btn-gold btn-block" onclick="confirmAction()">♥ تأكيد وإهداء الثواب</button>
+
     <div class="share-row">
       <input value="${shareUrl}" readonly id="shareInput"/>
       <button class="btn btn-ghost" onclick="copyShare()">نسخ</button>
     </div>
   `;
 };
+
+window.openPhotos = function(){
+  const list = Array.isArray(currentMartyr?.gallery) ? currentMartyr.gallery : [];
+  const body = list.length === 0
+    ? `<div class="empty"><div class="big">لا توجد صور بعد</div><div>سيتم عرض الصور هنا عند إضافتها من لوحة المشرف</div></div>`
+    : `<div class="gallery">${list.map(url=>`
+        <div class="item" onclick="openLightbox('<img src=&quot;${escapeHtml(url)}&quot;/>')">
+          <img src="${escapeHtml(url)}" loading="lazy"/>
+        </div>`).join("")}</div>`;
+  $("photosBody").innerHTML = body;
+  openDrawer("photos");
+};
+
+window.openVideos = function(){
+  const list = Array.isArray(currentMartyr?.videos) ? currentMartyr.videos : [];
+  const body = list.length === 0
+    ? `<div class="empty"><div class="big">لا توجد فيديوهات بعد</div><div>سيتم عرض الفيديوهات هنا عند إضافتها من لوحة المشرف</div></div>`
+    : `<div class="gallery">${list.map(v=>{
+        const url = typeof v === "string" ? v : v.url;
+        const poster = typeof v === "object" ? (v.thumbnail||"") : "";
+        return `
+        <div class="item" onclick="openLightbox('<video src=&quot;${escapeHtml(url)}&quot; controls autoplay style=&quot;max-width:96vw;max-height:92vh&quot;></video>')">
+          <video src="${escapeHtml(url)}" ${poster?`poster="${escapeHtml(poster)}"`:""} preload="metadata"></video>
+          <div class="play">▶</div>
+        </div>`;
+      }).join("")}</div>`;
+  $("videosBody").innerHTML = body;
+  openDrawer("videos");
+};
+
 window.selectChip = function(key){
   currentSelected = key;
   document.querySelectorAll("#chipsRow .chip").forEach(c=>{
@@ -588,7 +634,7 @@ window.confirmAction = async function(){
   }catch(e){ toast(e.message || "خطأ","error"); }
 };
 
-/* ========== Quran ========== */
+/* ====== Quran ====== */
 window.openQuran = async function(id){
   currentMartyrId = id;
   openDrawer("quran");
@@ -611,23 +657,17 @@ async function renderQuran(){
       <span class="legend"><span class="dot" style="background:var(--gold)"></span> تم أخذه</span>
       <span class="legend"><span class="dot" style="background:var(--green)"></span> مكتمل</span>
     </div>
-    <div class="quran-grid">${cells}</div>
-  `;
+    <div class="quran-grid">${cells}</div>`;
 }
 window.takePart = async function(n){
-  try{
-    await updateDoc(doc(db,"martyrs",currentMartyrId), { [`quranParts.${n}`]: "taken" });
-    toast(`تم أخذ الجزء ${n}`); await renderQuran();
-  }catch(e){ toast(e.message,"error"); }
+  try{ await updateDoc(doc(db,"martyrs",currentMartyrId), { [`quranParts.${n}`]: "taken" }); toast(`تم أخذ الجزء ${n}`); await renderQuran(); }
+  catch(e){ toast(e.message,"error"); }
 };
 window.finishPart = async function(n){
-  try{
-    await updateDoc(doc(db,"martyrs",currentMartyrId), { [`quranParts.${n}`]: true, quran: increment(1) });
-    toast(`تم إكمال الجزء ${n}`); await renderQuran();
-  }catch(e){ toast(e.message,"error"); }
+  try{ await updateDoc(doc(db,"martyrs",currentMartyrId), { [`quranParts.${n}`]: true, quran: increment(1) }); toast(`تم إكمال الجزء ${n}`); await renderQuran(); }
+  catch(e){ toast(e.message,"error"); }
 };
 
-/* ========== Init ========== */
 $("searchInput").addEventListener("input", render);
 loadFeed();
 </script>
