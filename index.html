@@ -262,7 +262,20 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
     </div>
     <div class="grid" id="feedGrid"></div>
 
-    <section class="about">
+    <section class="how" style="margin-top:30px">
+        <div class="how-title">
+          <h2>صور مهداة لأرواح الشهداء</h2>
+          <p>صور أرسلها الزوار إكراماً لأرواحهم الطاهرة — رحمهم الله</p>
+        </div>
+        <div class="gallery" id="publicPhotosGrid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">
+          <div class="empty" style="grid-column:1/-1"><div class="big">لا توجد صور بعد</div></div>
+        </div>
+        <div style="text-align:center;margin-top:18px">
+          <button class="btn btn-gold" onclick="openDrawer('photoRequest')">📸 اطلب إضافة صورة شهيد (مجاناً)</button>
+        </div>
+      </section>
+
+      <section class="about">
       <div class="about-text">
         <h2>منصة للتكريم وإحياء الذكرى</h2>
         <p>«منصة الشهداء» مساحة رقمية مهداة لأرواح شهدائنا الأبرار، نلتقي فيها لنُهدي إليهم ثوابَ صلواتنا وأذكارنا وقراءاتنا للقرآن الكريم، ونُحيي ذكراهم بطريقة تليق بتضحياتهم.</p>
@@ -330,6 +343,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
     </div>
     <div class="drawer-body">
       <div class="side-link" onclick="openDrawer('request')"><span class="ico">＋</span>طلب إضافة شهيد جديد</div>
+      <div class="side-link" onclick="openDrawer('photoRequest')"><span class="ico" style="background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)">📸</span>اطلب إضافة صورة شهيد · مجاناً لروحه الطاهرة</div>
       <div class="side-link" onclick="openDrawer('login')"><span class="ico">🛡</span>لوحة مشرف الشهيد</div>
       <div style="margin-top:24px;margin-bottom:8px;font-weight:700;font-size:13px;color:var(--muted)">تابعنا</div>
       <a class="side-link" href="https://www.instagram.com/xa.l.yx" target="_blank" rel="noreferrer"><span class="ico" style="color:#E1306C">◉</span>إنستغرام</a>
@@ -362,6 +376,38 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
       <button class="btn btn-primary btn-block" id="reqSubmit" onclick="submitRequest()">إرسال الطلب</button>
     </div>
   </aside>
+
+    <aside class="drawer" id="drawer-photoRequest">
+      <div class="drawer-head">
+        <div class="drawer-title">اطلب إضافة صورة شهيد</div>
+        <button class="icon-btn" onclick="closeAllDrawers()">×</button>
+      </div>
+      <div class="drawer-body">
+        <div style="background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);padding:14px 16px;border-radius:14px;margin-bottom:18px;color:var(--ink-soft);font-size:14px;line-height:1.7">
+          خدمة <b>مجانية</b> إكراماً لأرواح الشهداء — أرسل صورة الشهيد ورقم تواصلك، وسنقوم بمراجعتها ونشرها في معرض الصور المهداة لأرواحهم الطاهرة. <span style="font-family:'Amiri',serif;color:var(--maroon-deep)">رحمهم الله وأسكنهم فسيح جناته.</span>
+        </div>
+        <div class="field">
+          <label>اسم الشهيد (اختياري)</label>
+          <input id="prName" placeholder="الاسم الكريم" />
+        </div>
+        <div class="field">
+          <label>صورة الشهيد <span style="color:var(--maroon)">*</span></label>
+          <div class="upload" onclick="document.getElementById('prFile').click()">
+            <div class="ico">⬆</div>
+            <div>اضغط لاختيار صورة من جهازك</div>
+            <small style="display:block;margin-top:4px;color:var(--muted)">JPG / PNG حتى 10 ميجابايت</small>
+            <input id="prFile" type="file" accept="image/*" style="display:none" onchange="onPickPhotoReq(event)" />
+            <div class="upload-preview" id="prPreview"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>رقم الهاتف <span style="color:var(--maroon)">*</span></label>
+          <input id="prPhone" type="tel" placeholder="05xxxxxxxx" />
+          <small>سنتواصل معك عند الحاجة لمزيد من التفاصيل.</small>
+        </div>
+        <button class="btn btn-primary btn-block" id="prSubmit" onclick="submitPhotoRequest()">إرسال الطلب</button>
+      </div>
+    </aside>
 
   <aside class="drawer" id="drawer-login">
     <div class="drawer-head">
@@ -561,10 +607,17 @@ function render(){
   }
   $("countLabel").textContent = `${arabicNum(list.length)} عنصر`;
 
-  const martyrs = allItems.filter(i=>i.type==="martyr");
-  const videos = allItems.filter(i=>i.type==="video");
-  const totalDeeds = martyrs.reduce((a,m)=>a+(m.fatiha||0)+(m.salawat||0)+(m.quran||0)+(m.prayers||0)+(m.dua||0)+(m.ziyara||0),0);
-
+const martyrs = allItems.filter(i=>i.type==="martyr");
+const videos = allItems.filter(i=>i.type==="video");
+const totalDeeds = martyrs.reduce((a,m)=>{
+  let sum = (m.fatiha||0)+(m.salawat||0)+(m.quran||0)+(m.prayers||0)+(m.dua||0)+(m.ziyara||0);
+  // ===== ADD THIS BLOCK =====
+  if (m.customWorks && typeof m.customWorks === 'object'){
+    sum += Object.values(m.customWorks).reduce((acc,val)=> acc + (val||0), 0);
+  }
+  // ===== END OF ADDED BLOCK =====
+  return a + sum;
+},0);
   $("statsRow").innerHTML = `
     <div class="stat"><div class="stat-value">${arabicNum(martyrs.length)}</div><div class="stat-label">شهيد مكرّم</div></div>
     <div class="stat"><div class="stat-value">${arabicNum(videos.length)}</div><div class="stat-label">مقطع مرئي</div></div>
@@ -593,6 +646,7 @@ function render(){
         </div>`;
     }
     const total = (i.fatiha||0)+(i.salawat||0)+(i.quran||0)+(i.prayers||0)+(i.dua||0)+(i.ziyara||0);
+    
     return `
       <div class="card" onclick="openDetail('${i.id}')">
         <div class="card-img-wrap">
@@ -678,8 +732,6 @@ window.submitLogin = async function(){
   }catch(e){ toast(e.message || "خطأ","error"); }
   finally{ btn.disabled = false; btn.textContent = "دخول إلى لوحة التحكم"; }
 };
-
-/* ====== Detail panel ====== */
 window.openDetail = async function(id){
   currentMartyrId = id;
   currentSelected = "";
@@ -700,6 +752,14 @@ window.openDetail = async function(id){
   const galleryCount = Array.isArray(m.gallery) ? m.gallery.length : 0;
   const videoCount = Array.isArray(m.videos) ? m.videos.length : 0;
 
+  // ===== ADD THIS BLOCK HERE =====
+  let customWorksTotal = 0;
+  if (m.customWorks && typeof m.customWorks === 'object'){
+    customWorksTotal = Object.values(m.customWorks).reduce((acc,val)=> acc + (val||0), 0);
+  }
+  const overallTotal = (m.fatiha||0)+(m.salawat||0)+(m.quran||0)+(m.prayers||0)+(m.dua||0)+(m.ziyara||0) + customWorksTotal;
+  // ===== END OF ADDED BLOCK =====
+
   $("detailBody").innerHTML = `
     <img class="detail-photo" src="${m.photo || placeholderImg(m.name)}" alt="${escapeHtml(m.name)}" onerror="this.src='${placeholderImg(m.name)}'"/>
 
@@ -711,15 +771,15 @@ window.openDetail = async function(id){
     ${m.description ? `<div class="bio">${escapeHtml(m.description)}</div>` : ""}
 
     <div class="stats-row">
+      <div class="stat-mini"><div class="v">${arabicNum(overallTotal)}</div><div class="l">✨ إجمالي الأعمال</div></div>
       <div class="stat-mini"><div class="v">${arabicNum(m.fatiha||0)}</div><div class="l">📖 الفاتحة</div></div>
-      <div class="stat-mini"><div class="v">${arabicNum(m.salawat||0)}</div><div class="l">🌿 الصلوات</div></div>
       <div class="stat-mini"><div class="v">${arabicNum(m.quran||0)}</div><div class="l">📚 القرآن</div></div>
     </div>
 
     <div style="font-weight:800;margin-top:6px;color:var(--ink)">اختر عملاً لتهديه إلى روحه:</div>
     <div class="chips" id="chipsRow">
       ${ACTIONS.map(a=>`<span class="chip" data-key="${a.key}" onclick="selectChip('${a.key}')">${a.label}</span>`).join("")}
-      ${m.customWorks ? Object.keys(m.customWorks).map(k=>`<span class="chip" data-key="custom_${k}" onclick="selectChip('custom_${escapeHtml(k)}')">✨ ${escapeHtml(k)}</span>`).join("") : ""}
+      ${m.customWorks ? Object.keys(m.customWorks).map(k=>`<span class="chip" data-key="custom_${escapeHtml(k)}" onclick="selectChip('custom_${escapeHtml(k)}')">✨ ${escapeHtml(k)}</span>`).join("") : ""}
     </div>
     <button class="btn btn-gold btn-block" onclick="confirmAction()">♥ تأكيد وإهداء الثواب</button>
 
@@ -729,7 +789,6 @@ window.openDetail = async function(id){
     </div>
   `;
 };
-
 window.backToDetail = function(){
   if (currentMartyrId) openDetail(currentMartyrId);
   else closeAllDrawers();
@@ -780,11 +839,13 @@ window.confirmAction = async function(){
   try{
     if (currentSelected.startsWith("custom_")){
       const key = currentSelected.replace("custom_","");
+      // Custom works increment their specific counter
       await updateDoc(doc(db,"martyrs",currentMartyrId), { [`customWorks.${key}`]: increment(1) });
-      toast(`تمت إضافة "${key}" للشهيد`);
+      toast(`تقبل الله عملك (${key})`);
     } else {
+      // Regular actions increment their counter
       await updateDoc(doc(db,"martyrs",currentMartyrId), { [currentSelected]: increment(1) });
-      toast("تقبل الله عملك وأهدي للشهيد");
+      toast("تقبل الله عملك");
     }
     closeAllDrawers();
     loadFeed();
@@ -825,7 +886,67 @@ window.finishPart = async function(n){
   catch(e){ toast(e.message,"error"); }
 };
 
-$("searchInput").addEventListener("input", render);
+
+  /* ====== Public Photo Requests (free, in honor of martyrs' souls) ====== */
+  let pendingPhotoReqFile = null;
+  window.onPickPhotoReq = function(e){
+    const f = e.target.files?.[0] || null;
+    pendingPhotoReqFile = f;
+    const wrap = $("prPreview");
+    wrap.innerHTML = "";
+    if (f){
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(f);
+      wrap.appendChild(img);
+    }
+  };
+
+  window.submitPhotoRequest = async function(){
+    const name = $("prName").value.trim();
+    const phone = $("prPhone").value.trim();
+    if (!pendingPhotoReqFile) return toast("الرجاء اختيار صورة","error");
+    if (!phone) return toast("الرجاء إدخال رقم الهاتف","error");
+    const btn = $("prSubmit"); btn.disabled = true; btn.textContent = "جاري الإرسال...";
+    try{
+      const photoUrl = await uploadImage(pendingPhotoReqFile, "photoRequests");
+      await addDoc(collection(db,"photoRequests"), {
+        name, phone, photo: photoUrl, status: "pending", createdAt: serverTimestamp()
+      });
+      toast("شكراً لك، تم إرسال الصورة بنجاح. تقبل الله منك");
+      $("prName").value = ""; $("prPhone").value = ""; $("prFile").value = "";
+      $("prPreview").innerHTML = ""; pendingPhotoReqFile = null;
+      setTimeout(closeAllDrawers, 900);
+    }catch(e){
+      toast(e.message || "فشل الإرسال","error");
+    }finally{
+      btn.disabled = false; btn.textContent = "إرسال الطلب";
+    }
+  };
+
+  async function loadPublicPhotos(){
+    try{
+      const snap = await getDocs(query(collection(db,"martyrPhotos"), orderBy("createdAt","desc")));
+      const grid = $("publicPhotosGrid");
+      if (snap.empty){
+        grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="big">لا توجد صور بعد</div><div>كن أول من يهدي صورة لإحياء الذكرى</div></div>';
+        return;
+      }
+      const items = [];
+      snap.forEach(d=>{
+        const p = d.data();
+        const url = p.photo || "";
+        const name = p.name ? escapeHtml(p.name) : "";
+        items.push(`<div class="item" onclick="openLightbox('<img src=&quot;${escapeHtml(url)}&quot;/>')">
+          <img src="${escapeHtml(url)}" loading="lazy" alt="${name}"/>
+          ${name ? `<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font-size:12px;font-weight:700;padding:18px 8px 6px;text-align:center;font-family:Amiri,serif">${name}</div>` : ""}
+        </div>`);
+      });
+      grid.innerHTML = items.join("");
+    }catch(e){ console.error(e); }
+  }
+  loadPublicPhotos();
+
+  $("searchInput").addEventListener("input", render);
 loadFeed();
 </script>
 </body>

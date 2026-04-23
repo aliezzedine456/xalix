@@ -91,6 +91,10 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .access-denied{text-align:center;padding:80px 20px}
 .access-denied h2{font-family:"Amiri",serif;color:var(--maroon-deep);font-size:28px;margin-bottom:10px}
 .access-denied p{color:var(--ink-soft);margin-bottom:20px}
+
+.progress-bar{height:6px;background:var(--line);border-radius:4px;margin:12px 0;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:var(--gold);transition:width .2s ease}
+.compress-status{font-size:12px;color:var(--ink-soft);margin:8px 0;text-align:center}
 </style>
 </head>
 <body>
@@ -129,11 +133,13 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
     <div class="upload" id="vidUploadArea">
       <div class="ico">⬆</div>
       <div>اضغط لاختيار فيديو (MP4 / WEBM)</div>
-      <small style="display:block;margin-top:4px;color:var(--muted)">حتى 50 ميجابايت لكل ملف</small>
+      <small style="display:block;margin-top:4px;color:var(--muted)">يتم ضغط الفيديو تلقائياً (الحد الأقصى بعد الضغط 15 ميجابايت)</small>
       <input type="file" id="vidFile" accept="video/*" multiple style="display:none" />
       <div class="preview-grid" id="vidPreview"></div>
     </div>
-    <button class="btn btn-primary btn-block" id="uploadVidsBtn">📤 رفع الفيديوهات</button>
+    <div id="compressStatus" class="compress-status"></div>
+    <div id="compressProgress" class="progress-bar" style="display:none"><div class="progress-fill"></div></div>
+    <button class="btn btn-primary btn-block" id="uploadVidsBtn">📤 رفع الفيديوهات (ضغط تلقائي)</button>
     <div class="gallery-display" id="videosDisplay"></div>
   </div>
 
@@ -164,7 +170,19 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
   </div>
 </div>
 
-<div class="toasts" id="toasts"></div>
+<div class="card" style="border-right:4px solid var(--gold)">
+      <h3><span class="ico">📸</span>طلبات صور الشهداء (مجاناً) <span id="prCount" style="font-size:13px;color:var(--muted);font-weight:400"></span></h3>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px">طلبات نشر صور الشهداء المرسلة من الزوار — راجع الصور واعتمدها لتظهر في معرض الصور العام.</p>
+      <div id="photoReqList"></div>
+    </div>
+
+    <div class="card" style="border-right:4px solid var(--green)">
+      <h3><span class="ico">🖼</span>معرض الصور العام <span id="ppCount" style="font-size:13px;color:var(--muted);font-weight:400"></span></h3>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px">جميع الصور المنشورة في القسم العام بالصفحة الرئيسية.</p>
+      <div id="publicPhotoList"></div>
+    </div>
+
+  <div class="toasts" id="toasts"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
@@ -184,16 +202,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* ============================================================
-   CLOUDFLARE R2 UPLOADS — via secure backend proxy.
-   We DO NOT put R2 secrets in the browser. Uploads go to the
-   Replit api-server which holds the secrets and uploads to R2.
-   When you publish your Replit app, replace API_BASE_PROD with
-   your stable .replit.app URL.
-   ============================================================ */
 const API_BASE_PROD = "https://467135b9-2f99-421d-bfe0-8599a496e147-00-2gs48ihtkjm0i.picard.replit.dev";
-const onReplitDev = location.hostname.endsWith(".replit.dev") || location.hostname === "localhost";
-const UPLOAD_URL = (onReplitDev ? "" : API_BASE_PROD) + "/api/upload";
+const UPLOAD_URL = `${API_BASE_PROD}/api/upload`;
 
 const $ = id => document.getElementById(id);
 const url = new URLSearchParams(location.search);
@@ -216,19 +226,118 @@ function toast(msg, type="success"){
   setTimeout(()=>t.remove(), 2800);
 }
 
-async function uploadFile(file, folder){
-  const fd = new FormData();
-  fd.append("file", file);
-  fd.append("folder", folder);
-  const res = await fetch(UPLOAD_URL, { method:"POST", body:fd });
-  if (!res.ok){
-    let msg = "فشل الرفع إلى التخزين السحابي";
-    try { const j = await res.json(); if (j?.error) msg = j.error; } catch {}
-    throw new Error(msg);
-  }
-  const json = await res.json();
-  if (!json?.url) throw new Error("استجابة غير صالحة من الخادم");
-  return json.url;
+// Video compression function using FFmpeg.wasm (lightweight)
+async function compressVideo(file, onProgress) {
+  return new Promise((resolve, reject) => {
+    // If file is already small enough (< 12MB), return original
+    if (file.size < 12 * 1024 * 1024) {
+      onProgress && onProgress(100);
+      resolve(file);
+      return;
+    }
+
+    const video = document.createElement('video');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+    
+    const objectUrl = URL.createObjectURL(file);
+    video.src = objectUrl;
+    
+    let resolved = false;
+    
+    const cleanup = () => {
+      URL.revokeObjectURL(objectUrl);
+      video.removeAttribute('src');
+      video.load();
+    };
+    
+    video.onloadedmetadata = () => {
+      const duration = video.duration;
+      const targetMaxDuration = 180; // 3 minutes max for compression consideration
+      
+      // For longer videos, use more aggressive compression
+      const width = video.videoWidth > 854 ? 854 : video.videoWidth;
+      const height = (width * video.videoHeight) / video.videoWidth;
+      canvas.width = width;
+      canvas.height = height;
+      
+      const stream = canvas.captureStream(30);
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: MediaRecorder.isTypeSupported('video/mp4;codecs=h264') ? 'video/mp4;codecs=h264' : 'video/webm',
+        videoBitsPerSecond: duration > 120 ? 800000 : 1500000 // 0.8 Mbps for long, 1.5 Mbps for short
+      });
+      
+      const chunks = [];
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.push(e.data);
+      };
+      
+      mediaRecorder.onstop = () => {
+        const compressedBlob = new Blob(chunks, { type: 'video/mp4' });
+        const compressedFile = new File([compressedBlob], file.name.replace(/\.[^/.]+$/, '.mp4'), { type: 'video/mp4' });
+        cleanup();
+        if (!resolved) {
+          resolved = true;
+          onProgress && onProgress(100);
+          resolve(compressedFile);
+        }
+      };
+      
+      mediaRecorder.onerror = (err) => {
+        cleanup();
+        if (!resolved) {
+          resolved = true;
+          reject(err);
+        }
+      };
+      
+      mediaRecorder.start(1000);
+      
+      video.play().then(() => {
+        const drawFrame = () => {
+          if (video.paused || video.ended || resolved) return;
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const percent = (video.currentTime / duration) * 100;
+          onProgress && onProgress(Math.min(95, Math.floor(percent)));
+          requestAnimationFrame(drawFrame);
+        };
+        drawFrame();
+        
+        setTimeout(() => {
+          if (!resolved) {
+            video.pause();
+            mediaRecorder.stop();
+          }
+        }, duration * 1000);
+      }).catch(err => {
+        cleanup();
+        if (!resolved) {
+          resolved = true;
+          reject(err);
+        }
+      });
+    };
+    
+    video.onerror = () => {
+      cleanup();
+      if (!resolved) {
+        resolved = true;
+        reject(new Error("فشل تحميل الفيديو للضغط"));
+      }
+    };
+    
+    setTimeout(() => {
+      if (!resolved) {
+        cleanup();
+        resolved = true;
+        reject(new Error("انتهت مهلة ضغط الفيديو، جرب ملف أصغر"));
+      }
+    }, 60000);
+  });
 }
 
 let pendingImgs = [];
@@ -254,40 +363,136 @@ $("vidFile").addEventListener("change", e => {
     v.src = URL.createObjectURL(f); v.muted = true; v.playsInline = true;
     p.appendChild(v);
   });
+  if (pendingVids.length) {
+    $("compressStatus").textContent = `📹 تم اختيار ${pendingVids.length} فيديو، سيتم ضغطها قبل الرفع`;
+  } else {
+    $("compressStatus").textContent = "";
+  }
 });
+
+async function uploadFile(file, folder){
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("folder", folder);
+  
+  const res = await fetch(UPLOAD_URL, { 
+    method: "POST", 
+    body: fd,
+    mode: "cors"
+  });
+  
+  if (!res.ok){
+    let msg = "فشل الرفع إلى التخزين السحابي";
+    try { 
+      const j = await res.json(); 
+      if (j?.error) msg = j.error;
+      else if (j?.message) msg = j.message;
+    } catch { 
+      msg = `خطأ ${res.status}: ${res.statusText}`;
+    }
+    throw new Error(msg);
+  }
+  const json = await res.json();
+  if (!json?.url) throw new Error("استجابة غير صالحة من الخادم");
+  return json.url;
+}
 
 $("uploadImagesBtn").addEventListener("click", async () => {
   if (!pendingImgs.length) return toast("الرجاء اختيار صور أولاً","error");
   const btn = $("uploadImagesBtn"); btn.disabled = true; btn.textContent = "جاري الرفع...";
   const urls = [];
+  let successCount = 0;
   for (const f of pendingImgs){
-    try { urls.push(await uploadFile(f, `martyrs/${martyrId}/photos`)); }
-    catch(e){ toast(`فشل رفع ${f.name}: ${e.message}`,"error"); }
+    try { 
+      const url = await uploadFile(f, `martyrs/${martyrId}/photos`);
+      urls.push(url);
+      successCount++;
+    } catch(e){ 
+      toast(`فشل رفع ${f.name}: ${e.message}`,"error"); 
+    }
   }
   if (urls.length){
     await updateDoc(doc(db,"martyrs",martyrId), { gallery: arrayUnion(...urls) });
-    toast(`✅ تم رفع ${urls.length} صورة`);
+    toast(`✅ تم رفع ${successCount} صورة`);
     pendingImgs = []; $("imgFile").value = ""; $("imgPreview").innerHTML = "";
     loadData();
+  } else {
+    toast("لم يتم رفع أي صورة", "error");
   }
   btn.disabled = false; btn.textContent = "📤 رفع الصور إلى المعرض";
 });
 
 $("uploadVidsBtn").addEventListener("click", async () => {
   if (!pendingVids.length) return toast("الرجاء اختيار فيديوهات أولاً","error");
-  const btn = $("uploadVidsBtn"); btn.disabled = true; btn.textContent = "جاري الرفع...";
+  const btn = $("uploadVidsBtn"); 
+  const progressBar = $("compressProgress");
+  const progressFill = progressBar.querySelector(".progress-fill");
+  const statusDiv = $("compressStatus");
+  
+  btn.disabled = true; 
+  btn.textContent = "جاري الضغط والرفع...";
+  progressBar.style.display = "block";
+  progressFill.style.width = "0%";
+  
   const urls = [];
-  for (const f of pendingVids){
-    try { urls.push(await uploadFile(f, `martyrs/${martyrId}/videos`)); }
-    catch(e){ toast(`فشل رفع ${f.name}: ${e.message}`,"error"); }
+  let successCount = 0;
+  
+  for (let idx = 0; idx < pendingVids.length; idx++) {
+    const f = pendingVids[idx];
+    statusDiv.textContent = `📀 جاري ضغط الفيديو ${idx+1}/${pendingVids.length}: ${f.name.substring(0, 30)}...`;
+    
+    try {
+      let fileToUpload = f;
+      
+      // Compress if larger than 12MB
+      if (f.size > 12 * 1024 * 1024) {
+        statusDiv.textContent = `⚙️ ضغط الفيديو ${idx+1}/${pendingVids.length}... قد يستغرق دقيقة`;
+        try {
+          fileToUpload = await compressVideo(f, (percent) => {
+            const totalPercent = ((idx + (percent/100)) / pendingVids.length) * 100;
+            progressFill.style.width = `${totalPercent}%`;
+          });
+          statusDiv.textContent = `✅ تم ضغط ${f.name.substring(0, 25)} (${(f.size/1024/1024).toFixed(1)}MB → ${(fileToUpload.size/1024/1024).toFixed(1)}MB)`;
+          toast(`تم ضغط ${f.name.substring(0, 20)} بنجاح`, "success");
+        } catch(compressErr) {
+          console.warn("Compression failed, using original:", compressErr);
+          toast(`تعذر ضغط ${f.name.substring(0, 20)}، سيتم رفعه بحجمه الأصلي`, "error");
+          fileToUpload = f;
+        }
+      } else {
+        statusDiv.textContent = `📹 رفع فيديو ${idx+1}/${pendingVids.length}: ${f.name.substring(0, 30)}...`;
+      }
+      
+      // Check file size after compression - if still too large (>25MB), reject
+      if (fileToUpload.size > 25 * 1024 * 1024) {
+        toast(`⚠️ الفيديو ${f.name.substring(0, 20)} كبير جداً (${(fileToUpload.size/1024/1024).toFixed(1)}MB)، الحد 25MB`, "error");
+        continue;
+      }
+      
+      const url = await uploadFile(fileToUpload, `martyrs/${martyrId}/videos`);
+      urls.push(url);
+      successCount++;
+      progressFill.style.width = `${((idx+1) / pendingVids.length) * 100}%`;
+      
+    } catch(e){ 
+      toast(`فشل رفع ${f.name.substring(0, 25)}: ${e.message}`,"error"); 
+    }
   }
+  
   if (urls.length){
     await updateDoc(doc(db,"martyrs",martyrId), { videos: arrayUnion(...urls) });
-    toast(`✅ تم رفع ${urls.length} فيديو`);
+    toast(`✅ تم رفع ${successCount} فيديو`);
     pendingVids = []; $("vidFile").value = ""; $("vidPreview").innerHTML = "";
+    statusDiv.textContent = "";
     loadData();
+  } else {
+    toast("لم يتم رفع أي فيديو", "error");
   }
-  btn.disabled = false; btn.textContent = "📤 رفع الفيديوهات";
+  
+  progressBar.style.display = "none";
+  progressFill.style.width = "0%";
+  btn.disabled = false; 
+  btn.textContent = "📤 رفع الفيديوهات (ضغط تلقائي)";
 });
 
 window.removeMedia = async function(field, url){
@@ -331,9 +536,9 @@ window.toggleQuran = async function(part){
     const parts = snap.data()?.quranParts || {};
     const cur = parts[part];
     let next;
-    if (cur === true) next = false;             // done -> available
-    else if (cur === "taken") next = true;       // taken -> done
-    else next = "taken";                          // available -> taken
+    if (cur === true) next = false;
+    else if (cur === "taken") next = true;
+    else next = "taken";
     const upd = { [`quranParts.${part}`]: next };
     if (next === true) upd.quran = increment(1);
     await updateDoc(ref, upd);
@@ -452,6 +657,107 @@ async function loadData(){
 }
 
 loadData();
+
+
+  /* ============ Photo Requests management ============ */
+  window.approvePhotoReq = async function(id, data){
+    try{
+      await addDoc(collection(db,"martyrPhotos"), {
+        name: data.name||"", phone: data.phone||"", photo: data.photo||"",
+        createdAt: serverTimestamp()
+      });
+      await updateDoc(doc(db,"photoRequests",id), { status:"approved" });
+      toast("تم نشر الصورة في المعرض العام");
+      loadPhotoRequests(); loadPublicPhotosList();
+    }catch(e){ toast(e.message||"فشل","error"); }
+  };
+  window.rejectPhotoReq = async function(id){
+    if (!confirm("رفض هذا الطلب؟")) return;
+    await updateDoc(doc(db,"photoRequests",id), { status:"rejected" });
+    toast("تم رفض الطلب"); loadPhotoRequests();
+  };
+  window.deletePhotoReq = async function(id){
+    if (!confirm("حذف هذا الطلب نهائياً؟")) return;
+    await deleteDoc(doc(db,"photoRequests",id));
+    toast("تم الحذف"); loadPhotoRequests();
+  };
+  window.deletePublicPhoto = async function(id){
+    if (!confirm("حذف الصورة من المعرض العام؟")) return;
+    await deleteDoc(doc(db,"martyrPhotos",id));
+    toast("تم الحذف"); loadPublicPhotosList();
+  };
+
+  async function loadPhotoRequests(){
+    try{
+      const snap = await getDocs(query(collection(db,"photoRequests"), orderBy("createdAt","desc")));
+      const list = $("photoReqList");
+      $("prCount").textContent = snap.empty ? "(لا توجد طلبات)" : "(" + snap.size + ")";
+      if (snap.empty){ list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px">لا توجد طلبات حالياً</p>'; return; }
+      list.innerHTML = "";
+      snap.forEach(d=>{
+        const r = d.data();
+        const dateStr = r.createdAt?.toDate ? r.createdAt.toDate().toLocaleString('ar-EG') : '';
+        const statusBadge = r.status==='approved' ? '<span style="color:var(--green);font-weight:700">✅ مُعتمد</span>'
+          : r.status==='rejected' ? '<span style="color:#c00;font-weight:700">❌ مرفوض</span>'
+          : '<span style="color:var(--gold-deep);font-weight:700">⏳ قيد المراجعة</span>';
+        const div = document.createElement("div");
+        div.style.cssText = "background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start";
+        div.innerHTML = `
+          <img src="${r.photo}" style="width:120px;height:120px;object-fit:cover;border-radius:10px;border:1px solid var(--line);cursor:pointer" onclick="window.open('${r.photo}','_blank')"/>
+          <div style="flex:1;min-width:200px">
+            <div style="font-weight:700;font-size:16px;font-family:Amiri,serif">${r.name || '(بدون اسم)'}</div>
+            <div style="color:var(--muted);font-size:13px;margin-top:4px">📞 <a href="tel:${r.phone}" style="color:var(--maroon);text-decoration:none;font-weight:700">${r.phone || '-'}</a></div>
+            <div style="color:var(--muted);font-size:12px;margin-top:4px">${dateStr}</div>
+            <div style="margin-top:8px">${statusBadge}</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${r.status!=='approved' ? `<button class="btn btn-primary" data-id="${d.id}" data-action="approve">✅ نشر</button>` : ''}
+            ${r.status!=='rejected' ? `<button class="btn btn-gold" data-id="${d.id}" data-action="reject">❌ رفض</button>` : ''}
+            <button class="btn btn-danger" data-id="${d.id}" data-action="delete">🗑 حذف</button>
+          </div>`;
+        // wire up buttons
+        div.querySelectorAll("button[data-action]").forEach(b=>{
+          const id=b.dataset.id, action=b.dataset.action;
+          b.addEventListener("click",()=>{
+            if(action==="approve") approvePhotoReq(id, r);
+            else if(action==="reject") rejectPhotoReq(id);
+            else if(action==="delete") deletePhotoReq(id);
+          });
+        });
+        list.appendChild(div);
+      });
+    }catch(e){ console.error(e); $("photoReqList").innerHTML='<p style="color:#c00">خطأ في التحميل: '+e.message+'</p>'; }
+  }
+
+  async function loadPublicPhotosList(){
+    try{
+      const snap = await getDocs(query(collection(db,"martyrPhotos"), orderBy("createdAt","desc")));
+      const list = $("publicPhotoList");
+      $("ppCount").textContent = snap.empty ? "(لا توجد صور)" : "(" + snap.size + ")";
+      if (snap.empty){ list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px">لا توجد صور منشورة</p>'; return; }
+      const grid = document.createElement("div");
+      grid.style.cssText="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px";
+      snap.forEach(d=>{
+        const p = d.data();
+        const item = document.createElement("div");
+        item.style.cssText="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative";
+        item.innerHTML = `
+          <img src="${p.photo}" style="width:100%;height:160px;object-fit:cover;cursor:pointer" onclick="window.open('${p.photo}','_blank')"/>
+          <div style="padding:8px">
+            <div style="font-weight:700;font-size:14px;font-family:Amiri,serif">${p.name || '(بدون اسم)'}</div>
+            <div style="color:var(--muted);font-size:11px">${p.phone || ''}</div>
+            <button class="btn btn-danger" style="width:100%;margin-top:8px;font-size:12px;padding:6px" data-id="${d.id}">🗑 حذف</button>
+          </div>`;
+        item.querySelector("button").addEventListener("click",()=>deletePublicPhoto(d.id));
+        grid.appendChild(item);
+      });
+      list.innerHTML = ""; list.appendChild(grid);
+    }catch(e){ console.error(e); $("publicPhotoList").innerHTML='<p style="color:#c00">خطأ: '+e.message+'</p>'; }
+  }
+
+  loadPhotoRequests();
+  loadPublicPhotosList();
+  
 </script>
 </body>
 </html>
