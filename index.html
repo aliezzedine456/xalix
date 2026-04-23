@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <link rel="icon" type="image/png" href="https://pub-651becc05c914db5ac262a9a1d4469ef.r2.dev/Untitled%20design%20(4)-Photoroom.png">
+    <title>منصة الشهداء · تكريم وإحياء</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --red-dark: #8B0000; --red-primary: #a61c1c; --gold-dark: #b8860b;
+            --gold: #e6b422; --gold-light: #f5d742; --green-dark: #1e5a1e;
+            --green: #2e7d32; --bg-cream: #fef9ef; --card-white: #ffffff;
+            --shadow: 0 12px 28px rgba(0, 0, 0, 0.08); --radius: 24px; --radius-sm: 18px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Tajawal', sans-serif; background: #fef9ef; color: #2c2416;
+            line-height: 1.6; padding-top: 70px; padding-bottom: 40px;
+        }
+        .notification-toast {
+            position: fixed; top: 80px; left: 20px; background: var(--red-dark); color: white;
+            padding: 12px 24px; border-radius: 50px; font-weight: 700; z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); border-right: 4px solid var(--gold);
+            transform: translateX(-120%); transition: transform 0.3s ease; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .notification-toast.show { transform: translateX(0); }
+        header {
+            background: var(--red-dark); padding: 12px 24px; display: flex; align-items: center;
+            justify-content: space-between; position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); border-bottom: 3px solid var(--gold); height: 70px;
+        }
+        .logo h1 { font-size: 1.8rem; font-weight: 800; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .icon-btn { background: rgba(255,255,255,0.2); border: none; width: 44px; height: 44px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; color: white; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .icon-btn:hover { background: var(--gold); color: var(--red-dark); }
+        .search-container { margin: 1rem auto; width: 90%; max-width: 600px; }
+        #search { width: 100%; padding: 0.9rem 1.5rem; border: 2px solid #e6ddce; border-radius: 50px; font-size: 1rem; text-align: right; background: white; }
+        #search:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px rgba(230, 180, 34, 0.2); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 26px; padding: 1.2rem 1.5rem; }
+        .martyr-card, .video-card { background: var(--card-white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s ease; cursor: pointer; border-bottom: 4px solid var(--gold); }
+        .martyr-card:hover, .video-card:hover { transform: translateY(-6px); box-shadow: 0 18px 32px rgba(139, 0, 0, 0.15); }
+        .martyr-img { width: 100%; height: 240px; object-fit: cover; background: #d9cdb0; }
+        .martyr-body { padding: 18px; }
+        .martyr-name { font-size: 1.5rem; font-weight: 800; color: var(--red-dark); margin-bottom: 8px; }
+        .martyr-stats-mini { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 8px; background: #fef7e8; padding: 10px; border-radius: 20px; justify-content: space-around; }
+        .stat-mini-item { font-size: 0.75rem; font-weight: 700; color: #8b5a2b; text-align: center; }
+        .stat-mini-item span { display: block; font-size: 1.1rem; color: var(--red-dark); }
+        .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .badge { background: #fef3e2; color: #8b5a2b; padding: 5px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; border-right: 2px solid var(--gold); }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 40; display: none; backdrop-filter: blur(3px); }
+        .overlay.active { display: block; }
+        .panel { position: fixed; top: 0; right: 0; width: 100%; max-width: 560px; height: 100vh; background: white; z-index: 50; box-shadow: -8px 0 30px rgba(0, 0, 0, 0.2); transform: translateX(105%); transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1); display: flex; flex-direction: column; overflow-y: auto; padding: 28px 24px; }
+        .panel.open { transform: translateX(0); }
+        .panel-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 3px solid var(--gold); }
+        .back-btn { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--red-primary); padding: 6px; border-radius: 12px; }
+        .panel-title { font-size: 1.6rem; font-weight: 800; color: var(--red-dark); flex: 1; }
+        .martyr-photo-large { width: 100%; border-radius: var(--radius-sm); max-height: 280px; object-fit: cover; margin-bottom: 20px; border: 3px solid var(--gold); }
+        .bio-block { background: #fef7e8; padding: 20px; border-radius: var(--radius-sm); margin: 18px 0; border-right: 6px solid var(--gold); font-size: 0.95rem; }
+        .action-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+        .action-chip { background: #f3efe6; border: none; padding: 12px 20px; border-radius: 40px; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.85rem; color: #3e2a1f; }
+        .action-chip.selected { background: var(--red-primary); color: white; box-shadow: 0 4px 10px rgba(139, 0, 0, 0.3); }
+        .primary-btn { background: var(--red-primary); color: white; border: none; padding: 14px; border-radius: 50px; font-weight: 800; font-size: 1rem; width: 100%; margin-top: 16px; transition: 0.2s; cursor: pointer; }
+        .primary-btn:hover { background: var(--red-dark); transform: scale(0.98); }
+        .gold-btn { background: var(--gold); color: #2c2416; }
+        .gold-btn:hover { background: var(--gold-dark); color: white; }
+        .stats-row { display: flex; justify-content: space-around; background: #fdf7ed; padding: 18px; border-radius: 28px; margin: 16px 0; text-align: center; flex-wrap: wrap; gap: 12px; }
+        .stat-item { font-weight: 700; }
+        .stat-item span { display: block; font-size: 1.6rem; color: var(--red-dark); font-weight: 800; }
+        .sidebar-btn, .form-group input, .form-group textarea { display: block; width: 100%; padding: 14px; margin: 10px 0; background: #fdf7ed; border: 2px solid #e6ddce; border-radius: 30px; cursor: pointer; font-weight: 700; text-align: right; transition: 0.2s; font-size: 1rem; font-family: 'Tajawal', sans-serif; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); outline: none; background: white; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 700; color: var(--red-dark); padding-right: 8px; }
+        .quran-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 22px 0; }
+        .quran-part { aspect-ratio: 1; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: 0.2s; background: #f3efe6; color: #3b2c1c; gap: 4px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); }
+        .quran-part.available { background: #fff1cf; border: 2px solid var(--gold); color: #8b5a2b; }
+        .quran-part.taken { background: #f5c542; border: 2px solid #e6a017; color: #2c2416; animation: subtlePulse 1.5s infinite; }
+        .quran-part.done { background: var(--green); border: 2px solid var(--green-dark); color: white; }
+        @keyframes subtlePulse { 0% { box-shadow: 0 0 0 0 rgba(245, 197, 66, 0.5); } 70% { box-shadow: 0 0 0 8px rgba(245, 197, 66, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 197, 66, 0); } }
+        .part-buttons { display: flex; gap: 6px; margin-top: 4px; }
+        .mini-btn { font-size: 0.65rem; padding: 4px 8px; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; }
+        .take-btn { background: var(--gold); color: #4a2e00; }
+        .finish-btn { background: var(--green); color: white; }
+        .file-upload-area { border: 2px dashed #e6c99c; border-radius: 20px; padding: 30px; text-align: center; cursor: pointer; background: #fef9ef; margin: 10px 0; }
+        .preview-img { width: 90px; height: 90px; object-fit: cover; border-radius: 16px; margin: 6px; border: 2px solid var(--gold); }
+        @media (max-width: 680px) { .quran-grid { grid-template-columns: repeat(4, 1fr); } .panel { max-width: 100%; } }
+        .feedback-msg { background: #e8f5e9; color: var(--green-dark); padding: 12px; border-radius: 40px; text-align: center; margin-top: 18px; }
+    </style>
+</head>
+<body>
+<div id="notificationToast" class="notification-toast"><i class="fas fa-bell"></i><span id="toastMessage"></span></div>
+<header>
+    <button class="icon-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+    <div class="logo"><h1>🕊️ شهداؤنا</h1></div>
+    <div></div>
+</header>
+<div class="search-container"><input type="text" id="search" placeholder="🔍 ابحث عن شهيد أو فيديو..."></div>
+<div class="grid" id="contentGrid"></div>
+<div class="overlay" id="overlay"></div>
+
+<!-- SIDEBAR -->
+<div class="panel" id="sidebarPanel">
+    <div class="panel-header"><span class="panel-title">القائمة الرئيسية</span><button class="back-btn" id="closeSidebar"><i class="fas fa-times"></i></button></div>
+    <div style="margin:10px 0 20px">
+        <a href="https://www.instagram.com/xa.l.yx" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px;color:#E1306C;text-decoration:none;font-weight:700;background:#faf4e8;border-radius:30px;margin:6px 0;"><i class="fab fa-instagram fa-lg"></i> إنستغرام</a>
+        <a href="https://www.tiktok.com/@xa.l.ix" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px;color:#000;text-decoration:none;font-weight:700;background:#faf4e8;border-radius:30px;"><i class="fab fa-tiktok fa-lg"></i> تيك توك</a>
+    </div>
+    <button class="sidebar-btn" id="requestMartyrBtn"><i class="fas fa-plus-circle"></i> طلب إضافة شهيد</button>
+    <button class="sidebar-btn" id="martyrAdminLoginBtn"><i class="fas fa-user-shield"></i> لوحة مشرف الشهيد</button>
+</div>
+<!-- REQUEST PANEL -->
+<div class="panel" id="requestPanel">
+    <div class="panel-header"><button class="back-btn" id="backFromRequest"><i class="fas fa-arrow-right"></i></button><span class="panel-title">طلب إضافة شهيد</span></div>
+    <div class="form-group"><label>اسم الشهيد *</label><input type="text" id="reqName" placeholder="الاسم الكريم"></div>
+    <div class="form-group"><label>صورة الشهيد</label><div class="file-upload-area" id="reqPhotoUploadArea"><i class="fas fa-cloud-upload-alt"></i><p>اضغط لرفع صورة</p><input type="file" id="reqPhotoFile" accept="image/*" style="display:none;"><div id="reqPhotoPreview"></div></div></div>
+    <div class="form-group"><label>رقم الهاتف *</label><input type="tel" id="reqPhone" placeholder="05xxxxxxxx"><small>📌 لمنح صلاحية المشرف</small></div>
+    <button class="primary-btn gold-btn" id="sendRequestBtn">إرسال الطلب</button>
+</div>
+<!-- DETAIL PANEL -->
+<div class="panel" id="detailPanel">
+    <div class="panel-header"><button class="back-btn" id="backFromDetail"><i class="fas fa-arrow-right"></i></button><span class="panel-title" id="detailTitle">الشهيد</span></div>
+    <div id="detailContent"></div>
+</div>
+<!-- QURAN PANEL -->
+<div class="panel" id="quranPanel">
+    <div class="panel-header"><button class="back-btn" id="backFromQuran"><i class="fas fa-arrow-right"></i></button><span class="panel-title">📖 ختمة القرآن</span></div>
+    <p style="margin-bottom:10px; background:#fef3e2; padding:8px; border-radius:40px; text-align:center;">🟡 متاح | 🟠 تم أخذه | 🟢 مكتمل</p>
+    <div class="quran-grid" id="quranPartsGrid"></div>
+    <p id="quranFeedback" class="feedback-msg" style="display:none;"></p>
+</div>
+<!-- ADMIN LOGIN PANEL -->
+<div class="panel" id="adminLoginPanel">
+    <div class="panel-header"><button class="back-btn" id="backFromAdminLogin"><i class="fas fa-arrow-right"></i></button><span class="panel-title">دخول مشرف الشهيد</span></div>
+    <div class="form-group"><label>رقم الهاتف المسجل</label><input type="tel" id="adminPhone" placeholder="05xxxxxxxx"></div>
+    <div class="form-group"><label>كلمة المرور</label><input type="password" id="adminPass" placeholder="******"></div>
+    <button class="primary-btn" id="adminLoginSubmitBtn">دخول إلى لوحة التحكم</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+<script>
+    const firebaseConfig = { apiKey: "AIzaSyDjGLXTZKPpV6U7gRMcdGVPN2uhguVWDSQ", authDomain: "xalyx-d248b.firebaseapp.com", databaseURL: "https://xalyx-d248b-default-rtdb.europe-west1.firebasedatabase.app", projectId: "xalyx-d248b", storageBucket: "xalyx-d248b.firebasestorage.app", messagingSenderId: "356891304194", appId: "1:356891304194:web:b3ccefeaf20101b222221b" };
+    firebase.initializeApp(firebaseConfig); const db = firebase.firestore();
+    const R2_PUBLIC = "https://pub-651becc05c914db5ac262a9a1d4469ef.r2.dev";
+    const R2_ENDPOINT = "https://3732813e81859bdecafdd5726576dd1e.r2.cloudflarestorage.com/xalix";
+    const R2_KEY = "11e16062f2963c227a844e88365313f5";
+    const R2_SECRET = "1bad653e307627ed3c5879c2aef5708d20d755a3d489c7e81c8026d58c732364";
+
+    function showNotification(msg, type = 'success') {
+        const toast = document.getElementById('notificationToast');
+        document.getElementById('toastMessage').textContent = msg;
+        toast.style.background = type === 'error' ? '#b91c1c' : 'var(--red-dark)';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+  async function uploadToR2(file, path) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = async () => {
+            try {
+                const base64 = reader.result.split(',')[1];
+                const binary = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+                
+                // Encode the path properly
+                const encodedPath = path.split('/').map(part => encodeURIComponent(part)).join('/');
+                const url = `${R2_ENDPOINT}/${encodedPath}`;
+                
+                console.log('Uploading to:', url);
+                
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Basic ' + btoa(`${R2_KEY}:${R2_SECRET}`),
+                        'Content-Type': file.type || 'application/octet-stream'
+                    },
+                    body: binary
+                });
+                
+                if (response.ok) {
+                    const publicUrl = `${R2_PUBLIC}/${encodedPath}`;
+                    console.log('Upload successful:', publicUrl);
+                    resolve(publicUrl);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Upload failed:', response.status, errorText);
+                    reject(new Error(`HTTP ${response.status}: ${errorText}`));
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                reject(error);
+            }
+        }; 
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+    });
+}
+
+// Sanitize filename function
+function sanitizeFilename(filename) {
+    // Remove special characters and replace spaces
+    return filename
+        .replace(/[^\u0600-\u06FF\u0750-\u077F\u08A0-\u08FFa-zA-Z0-9.-]/g, '_') // Keep Arabic/English letters
+        .replace(/\s+/g, '_')
+        .replace(/_{2,}/g, '_')
+        .substring(0, 200); // Limit length
+}
+    const overlay = document.getElementById('overlay');
+    function openPanel(p) { p.classList.add('open'); overlay.classList.add('active'); }
+    function closePanel(p) { p.classList.remove('open'); overlay.classList.remove('active'); }
+    function closeAll() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('open')); overlay.classList.remove('active'); }
+
+    async function loadContent(search = '') {
+        const grid = document.getElementById('contentGrid');
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;">جاري التحميل...</div>';
+        try {
+            const [vSnap, mSnap] = await Promise.all([db.collection('videos').orderBy('timestamp','desc').get(), db.collection('martyrs').orderBy('createdAt','desc').get()]);
+            let items = [];
+            vSnap.forEach(d => items.push({...d.data(), id:d.id, type:'video', time: d.data().timestamp?.seconds||0}));
+            mSnap.forEach(d => items.push({...d.data(), id:d.id, type:'martyr', time: d.data().createdAt?.seconds||0}));
+            items.sort((a,b) => b.time - a.time);
+            if(search) items = items.filter(i => (i.name||i.title||'').toLowerCase().includes(search.toLowerCase()));
+            grid.innerHTML = '';
+            if(!items.length) grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;">لا نتائج</p>';
+            items.forEach(i => i.type==='video' ? createVideoCard(i,grid) : createMartyrCard(i,grid));
+        } catch(e) { console.error(e); showNotification('خطأ في التحميل','error'); }
+    }
+    function createVideoCard(v, parent) {
+        const div = document.createElement('div'); div.className='video-card';
+        div.innerHTML = `<div style="position:relative;padding-bottom:56%;background:#000;"><video controls src="${v.videoUrl}" style="position:absolute;width:100%;height:100%;object-fit:cover;"></video></div><div style="padding:14px;"><b>${v.title||''}</b><p style="color:#8b5a2b;">${v.martyrName||''}</p></div>`;
+        parent.appendChild(div);
+    }
+    function createMartyrCard(m, parent) {
+        const div = document.createElement('div'); div.className='martyr-card';
+        const total = (m.fatiha||0)+(m.salawat||0)+(m.quran||0)+(m.prayers||0)+(m.dua||0)+(m.ziyara||0);
+        const customWorks = m.customWorks || {};
+        let customBadges = '';
+        for(let key in customWorks) {
+            customBadges += `<span class="badge">✨ ${key}: ${customWorks[key]}</span>`;
+        }
+        div.innerHTML = `<img class="martyr-img" src="${m.photo||'https://placehold.co/400x300/8B0000/FFD700?text=شهيد'}" onerror="this.src='https://placehold.co/400x300/8B0000/FFD700?text=شهيد'"><div class="martyr-body"><div class="martyr-name">${m.name}</div><div class="martyr-stats-mini"><div class="stat-mini-item"><span>📖 ${m.fatiha||0}</span> الفاتحة</div><div class="stat-mini-item"><span>🌿 ${m.salawat||0}</span> صلوات</div><div class="stat-mini-item"><span>📚 ${m.quran||0}</span> قرآن</div><div class="stat-mini-item"><span>🎯 ${total}</span> إجمالي</div></div><div class="badge-row">🤲 دعاء ${customBadges}</div></div>`;
+        div.addEventListener('click', () => openMartyrDetail(m.id));
+        parent.appendChild(div);
+    }
+    async function openMartyrDetail(id) {
+        const doc = await db.collection('martyrs').doc(id).get();
+        if(!doc.exists) return;
+        const m = doc.data();
+        document.getElementById('detailTitle').innerHTML = m.name;
+        let customActionChips = '';
+        const customWorks = m.customWorks || {};
+        for(let key in customWorks) {
+            customActionChips += `<span class="action-chip" data-action="custom_${key}">✨ ${key}</span>`;
+        }
+        document.getElementById('detailContent').innerHTML = `
+            <img class="martyr-photo-large" src="${m.photo||''}" onerror="this.src='https://placehold.co/400x300/8B0000/FFD700?text=شهيد'">
+            ${m.description ? `<div class="bio-block"><strong>📜 سيرته:</strong><br>${m.description.replace(/\n/g,'<br>')}</div>` : ''}
+            <div class="stats-row"><div class="stat-item">📖 الفاتحة<br><span>${m.fatiha||0}</span></div><div class="stat-item">🌿 الصلوات<br><span>${m.salawat||0}</span></div><div class="stat-item">📚 قرآن<br><span>${m.quran||0}</span></div><div class="stat-item">🤲 دعاء<br><span>${m.prayers||0}</span></div></div>
+            <div style="font-weight:700;">اختر عملاً تهديه:</div>
+            <div class="action-grid" id="actionChips">
+                <span class="action-chip" data-action="fatiha">📖 سورة الفاتحة</span>
+                <span class="action-chip" data-action="salawat">🌿 الصلاة على محمد وآل محمد</span>
+                <span class="action-chip" data-action="prayers">🤲 دعاء للشهيد</span>
+                <span class="action-chip" data-action="dua">📿 دعاء كميل</span>
+                <span class="action-chip" data-action="ziyara">🕋 زيارة</span>
+                <span class="action-chip" data-action="quran_khatma">📚 ختمة قرآن (اختر جزء)</span>
+                ${customActionChips}
+            </div>
+            <button class="primary-btn gold-btn" id="confirmActionBtn">✔️ تأكيد وإهداء الثواب</button>
+            <div style="margin-top:20px;"><strong>🔗 رابط المشاركة:</strong><input value="${location.origin}${location.pathname}?martyr=${m.id}" readonly style="width:100%;padding:8px;border-radius:20px;border:1px solid #ddd;"></div>
+        `;
+        openPanel(document.getElementById('detailPanel'));
+        document.querySelectorAll('#actionChips .action-chip').forEach(chip => {
+            chip.addEventListener('click', function() { document.querySelectorAll('#actionChips .action-chip').forEach(c=>c.classList.remove('selected')); this.classList.add('selected'); });
+        });
+        document.getElementById('confirmActionBtn').onclick = async () => {
+            const sel = document.querySelector('#actionChips .action-chip.selected');
+            if(!sel) return showNotification('اختر عملاً أولاً','error');
+            const act = sel.dataset.action;
+            if(act === 'quran_khatma') { await openQuranAdvanced(id); return; }
+            if(act.startsWith('custom_')) {
+                const customKey = act.replace('custom_','');
+                await db.collection('martyrs').doc(id).update({ [`customWorks.${customKey}`]: firebase.firestore.FieldValue.increment(1) });
+                showNotification(`✅ تمت إضافة ${customKey} للشهيد`);
+            } else {
+                await db.collection('martyrs').doc(id).update({ [act]: firebase.firestore.FieldValue.increment(1) });
+                showNotification('✅ تقبل الله عملك وأهدي للشهيد');
+            }
+        };
+    }
+    async function openQuranAdvanced(martyrId) {
+        const doc = await db.collection('martyrs').doc(martyrId).get();
+        const partsObj = doc.data()?.quranParts || {};
+        const container = document.getElementById('quranPartsGrid');
+        container.innerHTML = '';
+        for(let i=1;i<=30;i++) {
+            const partDiv = document.createElement('div'); partDiv.className='quran-part';
+            let status = partsObj[i] === true ? 'done' : (partsObj[i] === 'taken' ? 'taken' : 'available');
+            partDiv.classList.add(status);
+            partDiv.innerHTML = `<div style="font-weight:800;">الجزء ${i}</div>`;
+            const btnWrap = document.createElement('div'); btnWrap.className='part-buttons';
+            if(status === 'available') {
+                const takeBtn = document.createElement('button'); takeBtn.textContent = '📖 اختر الجزء'; takeBtn.className='mini-btn take-btn';
+                takeBtn.onclick = async (e) => { e.stopPropagation(); await takePart(i, martyrId, partDiv); };
+                btnWrap.appendChild(takeBtn);
+            } else if(status === 'taken') {
+                const finishBtn = document.createElement('button'); finishBtn.textContent = '✅ أنهيت القراءة'; finishBtn.className='mini-btn finish-btn';
+                finishBtn.onclick = async (e) => { e.stopPropagation(); await finishPart(i, martyrId, partDiv); };
+                btnWrap.appendChild(finishBtn);
+            } else {
+                btnWrap.innerHTML = '<span style="background:#ffffff80;padding:2px 8px;border-radius:20px;">✓ مكتمل</span>';
+            }
+            partDiv.appendChild(btnWrap);
+            container.appendChild(partDiv);
+        }
+        openPanel(document.getElementById('quranPanel'));
+    }
+    async function takePart(part, martyrId, el) {
+        const ref = db.collection('martyrs').doc(martyrId);
+        const snap = await ref.get();
+        if(snap.data()?.quranParts?.[part]) return showNotification('هذا الجزء غير متاح','error');
+        await ref.update({ [`quranParts.${part}`]: 'taken' });
+        showNotification(`📖 تم أخذ الجزء ${part}`);
+        el.classList.remove('available'); el.classList.add('taken');
+        el.querySelector('.part-buttons').innerHTML = '<button class="mini-btn finish-btn">✅ أنهيت القراءة</button>';
+        el.querySelector('.finish-btn').onclick = async (e) => { e.stopPropagation(); await finishPart(part, martyrId, el); };
+    }
+    async function finishPart(part, martyrId, el) {
+        const ref = db.collection('martyrs').doc(martyrId);
+        const snap = await ref.get();
+        if(snap.data()?.quranParts?.[part] !== 'taken') return showNotification('لم يتم أخذ هذا الجزء','error');
+        await ref.update({ [`quranParts.${part}`]: true, quran: firebase.firestore.FieldValue.increment(1) });
+        el.classList.remove('taken'); el.classList.add('done');
+        el.querySelector('.part-buttons').innerHTML = '<span>✓ مكتمل</span>';
+        showNotification(`✅ تم إكمال الجزء ${part}`);
+    }
+
+    document.getElementById('adminLoginSubmitBtn').onclick = async () => {
+        const phone = document.getElementById('adminPhone').value.trim();
+        const pass = document.getElementById('adminPass').value.trim();
+        if(!phone||!pass) return showNotification('أدخل رقم الهاتف وكلمة المرور','error');
+        const q = await db.collection('martyrs').where('adminPhone','==',phone).get();
+        if(q.empty) return showNotification('لا يوجد شهيد مسجل بهذا الرقم','error');
+        const doc = q.docs[0];
+        if(doc.data().adminPass === pass) window.location.href = 'martyr-admin.html?id=' + doc.id;
+        else showNotification('كلمة مرور خاطئة','error');
+    };
+    document.getElementById('reqPhotoUploadArea').addEventListener('click',()=>document.getElementById('reqPhotoFile').click());
+    document.getElementById('reqPhotoFile').addEventListener('change',(e)=>{ if(e.target.files[0]){ const r=new FileReader(); r.onload=ev=>document.getElementById('reqPhotoPreview').innerHTML=`<img src="${ev.target.result}" class="preview-img">`; r.readAsDataURL(e.target.files[0]);}});
+  document.getElementById('sendRequestBtn').onclick = async () => {
+    const name = document.getElementById('reqName').value.trim();
+    const phone = document.getElementById('reqPhone').value.trim();
+    
+    if (!name || !phone) {
+        return showNotification('املأ الاسم والهاتف', 'error');
+    }
+    
+    const btn = document.getElementById('sendRequestBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'جاري الرفع... 📤';
+    btn.disabled = true;
+    
+    try {
+        let photoUrl = '';
+        const file = document.getElementById('reqPhotoFile').files[0];
+        
+        if (file) {
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                throw new Error('الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)');
+            }
+            
+            const timestamp = Date.now();
+            const safeFilename = sanitizeFilename(file.name);
+            const path = `requests/${timestamp}_${safeFilename}`;
+            
+            showNotification('جاري رفع الصورة...', 'info');
+            photoUrl = await uploadToR2(file, path);
+        }
+        
+        // Save to Firestore
+        await db.collection('martyrRequests').add({
+            name,
+            photo: photoUrl,
+            phone,
+            status: 'pending',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        showNotification('✅ تم إرسال الطلب بنجاح');
+        
+        // Clear form
+        document.getElementById('reqName').value = '';
+        document.getElementById('reqPhone').value = '';
+        document.getElementById('reqPhotoFile').value = '';
+        document.getElementById('reqPhotoPreview').innerHTML = '';
+        
+        setTimeout(() => {
+            closePanel(document.getElementById('requestPanel'));
+        }, 1500);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification(`❌ فشل الإرسال: ${error.message}`, 'error');
+    } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }
+};
+    document.getElementById('closeSidebar').onclick = () => closePanel(document.getElementById('sidebarPanel'));
+    document.getElementById('backFromRequest').onclick = () => { closePanel(document.getElementById('requestPanel')); openPanel(document.getElementById('sidebarPanel')); };
+    document.getElementById('backFromDetail').onclick = () => closePanel(document.getElementById('detailPanel'));
+    document.getElementById('backFromQuran').onclick = () => closePanel(document.getElementById('quranPanel'));
+    document.getElementById('backFromAdminLogin').onclick = () => { closePanel(document.getElementById('adminLoginPanel')); openPanel(document.getElementById('sidebarPanel')); };
+    overlay.onclick = closeAll;
+    document.getElementById('menuBtn').onclick = () => openPanel(document.getElementById('sidebarPanel'));
+    document.getElementById('requestMartyrBtn').onclick = () => { closePanel(document.getElementById('sidebarPanel')); openPanel(document.getElementById('requestPanel')); };
+    document.getElementById('martyrAdminLoginBtn').onclick = () => { closePanel(document.getElementById('sidebarPanel')); openPanel(document.getElementById('adminLoginPanel')); };
+    document.getElementById('search').addEventListener('input', e => loadContent(e.target.value));
+    loadContent();
+</script>
+</body>
+</html>
