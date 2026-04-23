@@ -18,7 +18,7 @@
   --shadow-lg:0 20px 50px rgba(31,24,16,.12);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0}
+html,body{margin:0;padding:0;overflow-x:hidden;width:100%}
 body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
 .serif{font-family:"Amiri","Tajawal",serif}
 /* PURE FLAT BACKGROUND — no gradients, no dark patches anywhere */
@@ -27,10 +27,13 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 
 .header{position:sticky;top:0;z-index:30;background:rgba(250,246,236,.85);backdrop-filter:saturate(140%) blur(14px);border-bottom:1px solid var(--line)}
 .header-inner{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand-mark{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--maroon),var(--maroon-deep));display:grid;place-items:center;color:var(--gold-soft);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),var(--shadow-sm);font-size:22px}
-.brand-title{font-weight:800;font-size:20px;letter-spacing:-.01em;color:var(--ink)}
-.brand-sub{font-size:12px;color:var(--muted);margin-top:-2px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-mark{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#8a1c2a,var(--maroon-deep) 70%);display:grid;place-items:center;color:var(--gold-soft);box-shadow:inset 0 0 0 2px rgba(230,200,120,.45),inset 0 -6px 10px rgba(0,0,0,.25),0 4px 14px rgba(106,15,26,.35);position:relative}
+.brand-mark::after{content:"";position:absolute;inset:4px;border-radius:50%;border:1px dashed rgba(230,200,120,.35);pointer-events:none}
+.brand-title{font-weight:800;font-size:21px;letter-spacing:-.01em;color:var(--ink);font-family:"Amiri",serif}
+.brand-sub{font-size:11.5px;color:var(--gold-deep);margin-top:1px;letter-spacing:.04em;font-weight:700;display:flex;align-items:center;gap:6px}
+.brand-sub::before,.brand-sub::after{content:"";width:14px;height:1px;background:linear-gradient(to right,transparent,var(--gold))}
+.brand-sub::after{background:linear-gradient(to left,transparent,var(--gold))}
 .icon-btn{width:42px;height:42px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:all .18s ease}
 .icon-btn:hover{border-color:var(--gold);color:var(--maroon);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
 
@@ -56,10 +59,18 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .section-title h2{font-size:22px;font-weight:800;margin:0;color:var(--ink)}
 .section-title .count{font-size:13px;color:var(--muted)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px;padding-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px;padding-bottom:60px}
+@media (max-width:720px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .card-title{font-size:17px}
+  .card-body{padding:12px}
+  .card-meta{font-size:11.5px;margin-bottom:8px}
+  .card-stats{font-size:11px;gap:6px;padding-top:8px}
+  .card-stats .pill{padding:3px 7px}
+  .card-tag{font-size:10px;padding:4px 8px;top:8px;right:8px}
+}
 .card{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;cursor:pointer;transition:all .25s cubic-bezier(.2,.9,.4,1.1);box-shadow:var(--shadow-sm);position:relative}
 .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(201,164,71,.45)}
-.card-img-wrap{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--bg-soft)}
+.card-img-wrap{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--bg-soft)}
 .card-img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.9,.4,1.1)}
 .card:hover .card-img{transform:scale(1.05)}
 .card-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.45))}
@@ -97,8 +108,8 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 
 .overlay{position:fixed;inset:0;background:rgba(20,14,6,.5);backdrop-filter:blur(6px);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s ease}
 .overlay.open{opacity:1;pointer-events:auto}
-.drawer{position:fixed;top:0;right:0;height:100vh;width:100%;max-width:540px;background:var(--bg);z-index:50;transform:translateX(105%);transition:transform .35s cubic-bezier(.2,.9,.4,1.1);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.18)}
-.drawer.open{transform:translateX(0)}
+.drawer{position:fixed;top:0;right:-560px;height:100vh;width:100%;max-width:540px;background:var(--bg);z-index:50;transition:right .35s cubic-bezier(.2,.9,.4,1.1);display:flex;flex-direction:column;box-shadow:none;visibility:hidden}
+.drawer.open{right:0;box-shadow:-20px 0 60px rgba(0,0,0,.18);visibility:visible}
 .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--line);background:var(--card)}
 .drawer-title{font-size:18px;font-weight:800;color:var(--ink)}
 .drawer-body{padding:24px;overflow-y:auto;flex:1}
@@ -152,11 +163,55 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .empty{text-align:center;padding:30px 20px;color:var(--muted)}
 .empty .big{font-family:"Amiri",serif;font-size:18px;color:var(--ink-soft);margin-bottom:6px}
 
-.skeleton{background:linear-gradient(90deg,var(--bg-soft),#f8efd8,var(--bg-soft));background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:22px;aspect-ratio:4/3}
+.skeleton{background:linear-gradient(90deg,var(--bg-soft),#f8efd8,var(--bg-soft));background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:22px;aspect-ratio:4/5}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 .share-row{display:flex;gap:8px;margin-top:18px;align-items:center}
-.share-row input{flex:1;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:13px;color:var(--ink-soft);font-family:inherit}
+.share-row input{flex:1;padding:12px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);font-size:13px;color:var(--ink-soft);font-family:inherit}
+
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin:34px auto 8px;justify-content:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px;max-width:max-content;box-shadow:var(--shadow-sm)}
+.filter-bar .chip{padding:9px 18px;font-size:13px;border:none;background:transparent;border-radius:6px;color:var(--ink-soft)}
+.filter-bar .chip:hover{background:var(--bg-soft);color:var(--maroon)}
+.filter-bar .chip.selected{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;box-shadow:var(--shadow-sm)}
+@media (max-width:540px){.filter-bar{max-width:100%;width:100%;justify-content:space-between}.filter-bar .chip{flex:1;padding:9px 6px;font-size:12px;text-align:center}}
+
+/* About section */
+.about{margin:60px 0 30px;display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center}
+@media (max-width:820px){.about{grid-template-columns:1fr}}
+.about-text h2{font-family:"Amiri",serif;font-size:30px;color:var(--maroon-deep);margin:0 0 14px;line-height:1.3}
+.about-text p{color:var(--ink-soft);font-size:15.5px;margin:0 0 12px}
+.about-pillars{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.about-pillar{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.about-pillar .t{font-weight:800;color:var(--maroon);margin-bottom:4px;font-size:14px}
+.about-pillar .d{font-size:12.5px;color:var(--muted);line-height:1.5}
+.about-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px;text-align:center;box-shadow:var(--shadow-sm)}
+.about-card .verse{font-family:"Amiri",serif;font-size:22px;color:var(--maroon-deep);line-height:1.7;margin-bottom:10px}
+.about-card .src{color:var(--gold-deep);font-size:13px;font-weight:700}
+
+/* How it works */
+.how{margin:50px 0 20px}
+.how-title{text-align:center;margin-bottom:22px}
+.how-title h2{font-family:"Amiri",serif;font-size:28px;color:var(--maroon-deep);margin:0 0 6px}
+.how-title p{color:var(--muted);font-size:14px;margin:0}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:820px){.how-grid{grid-template-columns:1fr}}
+.how-step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;position:relative}
+.how-step .n{position:absolute;top:-14px;right:18px;width:32px;height:32px;border-radius:8px;background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:var(--gold-soft);display:grid;place-items:center;font-family:"Amiri",serif;font-weight:800;box-shadow:var(--shadow-sm)}
+.how-step .t{font-weight:800;color:var(--ink);margin:8px 0 6px;font-size:16px}
+.how-step .d{color:var(--ink-soft);font-size:13.5px;line-height:1.6}
+
+/* Footer */
+.footer{margin-top:80px;background:linear-gradient(180deg,#3a0810,var(--maroon-deep));color:#f3e9c8;padding:50px 0 24px;border-top:1px solid var(--gold)}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px}
+@media (max-width:820px){.footer-grid{grid-template-columns:1fr;gap:24px}}
+.footer h4{font-family:"Amiri",serif;font-size:18px;color:var(--gold-soft);margin:0 0 14px;font-weight:700}
+.footer p,.footer a{color:#e9d9a8;text-decoration:none;font-size:14px;line-height:1.8}
+.footer a:hover{color:#fff;text-decoration:underline}
+.footer ul{list-style:none;padding:0;margin:0}
+.footer ul li{margin-bottom:6px}
+.footer-bottom{margin-top:36px;padding-top:18px;border-top:1px solid rgba(230,200,120,.18);text-align:center;font-size:13px;color:#c9b888}
+.footer-bottom .verse{font-family:"Amiri",serif;font-size:17px;color:var(--gold-soft);margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -194,12 +249,77 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
       <div class="stats" id="statsRow"></div>
     </section>
 
+    <div class="filter-bar" id="filterBar">
+      <button class="chip selected" data-filter="all" onclick="setFilter('all')">الكل</button>
+      <button class="chip" data-filter="martyr" onclick="setFilter('martyr')">الشهداء</button>
+      <button class="chip" data-filter="video" onclick="setFilter('video')">الفيديوهات</button>
+      <button class="chip" data-filter="popular" onclick="setFilter('popular')">الأكثر تكريماً</button>
+    </div>
+
     <div class="section-title">
-      <h2>أحدث الإضافات</h2>
+      <h2 id="feedHeading">أحدث الإضافات</h2>
       <span class="count" id="countLabel">0 عنصر</span>
     </div>
     <div class="grid" id="feedGrid"></div>
+
+    <section class="about">
+      <div class="about-text">
+        <h2>منصة للتكريم وإحياء الذكرى</h2>
+        <p>«منصة الشهداء» مساحة رقمية مهداة لأرواح شهدائنا الأبرار، نلتقي فيها لنُهدي إليهم ثوابَ صلواتنا وأذكارنا وقراءاتنا للقرآن الكريم، ونُحيي ذكراهم بطريقة تليق بتضحياتهم.</p>
+        <p>كل عمل صالح تختاره يُسجَّل ويُهدى إلى روح شهيد، ويمكنك المشاركة في إكمال ختمات القرآن الكريم بالتعاون مع زوار المنصة من حول العالم.</p>
+        <div class="about-pillars">
+          <div class="about-pillar"><div class="t">تكريم</div><div class="d">صفحة كريمة لكل شهيد بسيرته وذكراه</div></div>
+          <div class="about-pillar"><div class="t">ثواب</div><div class="d">أهدِ صلواتك وأدعيتك بنية الشهيد</div></div>
+          <div class="about-pillar"><div class="t">ختمة</div><div class="d">شارك بختمة قرآن جماعية مكوّنة من ٣٠ جزءاً</div></div>
+          <div class="about-pillar"><div class="t">مشاركة</div><div class="d">انشر صفحة الشهيد بضغطة زر</div></div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="verse">﴿وَلَا تَحْسَبَنَّ الَّذِينَ قُتِلُوا فِي سَبِيلِ اللَّهِ أَمْوَاتًا ۚ بَلْ أَحْيَاءٌ عِنْدَ رَبِّهِمْ يُرْزَقُونَ﴾</div>
+        <div class="src">سورة آل عمران – ١٦٩</div>
+      </div>
+    </section>
+
+    <section class="how">
+      <div class="how-title">
+        <h2>كيف تعمل المنصة؟</h2>
+        <p>ثلاث خطوات بسيطة للمشاركة وإهداء الثواب</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-step"><div class="n">١</div><div class="t">اختر الشهيد</div><div class="d">تصفّح قائمة الشهداء وافتح صفحة الشهيد الذي تريد إهداء العمل لروحه الطاهرة.</div></div>
+        <div class="how-step"><div class="n">٢</div><div class="t">اختر العمل</div><div class="d">اختر العمل الذي ستهديه: فاتحة، صلوات، دعاء، زيارة، أو جزء من القرآن.</div></div>
+        <div class="how-step"><div class="n">٣</div><div class="t">سجّل وأهدِ</div><div class="d">يُسجَّل عملك فوراً ويُحتسب لإكمال ختمة الشهيد. شاركها مع غيرك ليكون لك مثل أجرهم.</div></div>
+      </div>
+    </section>
   </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <h4>منصة الشهداء</h4>
+        <p>مساحة رقمية لإحياء ذكرى الشهداء وتكريم أرواحهم الطاهرة بأعمال البر والذِّكر وتلاوة القرآن الكريم.</p>
+      </div>
+      <div>
+        <h4>روابط سريعة</h4>
+        <ul>
+          <li><a href="#" onclick="event.preventDefault();window.scrollTo({top:0,behavior:'smooth'})">الرئيسية</a></li>
+          <li><a href="#" onclick="event.preventDefault();openDrawer('request')">طلب إضافة شهيد</a></li>
+          <li><a href="#" onclick="event.preventDefault();openDrawer('login')">دخول المشرفين</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>تواصل معنا</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/xa.l.yx" target="_blank" rel="noreferrer">إنستغرام · @xa.l.yx</a></li>
+          <li><a href="https://www.tiktok.com/@xa.l.ix" target="_blank" rel="noreferrer">تيك توك · @xa.l.ix</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <div class="verse">﴿سَلَامٌ عَلَيْكُم بِمَا صَبَرْتُمْ ۚ فَنِعْمَ عُقْبَى الدَّارِ﴾</div>
+      <div>© ٢٠٢٦ منصة الشهداء — جميع الحقوق محفوظة</div>
+    </div>
+  </footer>
 
   <div class="overlay" id="overlay" onclick="closeAllDrawers()"></div>
 
@@ -324,28 +444,45 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 /* ============================================================
-   IMAGE UPLOADS — uses ImgBB (free, works from any host, no backend needed)
-   1) Go to https://api.imgbb.com/  →  click "Get API key"  →  sign up free.
-   2) Copy your key and paste it below in place of YOUR_IMGBB_KEY_HERE.
-   That's it. Uploads will work directly from GitHub Pages — no server,
-   no CORS issues, no R2 setup.
+   CLOUDFLARE R2 UPLOADS
+   GitHub Pages has no backend, so uploads are proxied to your
+   Replit API server which then stores files in your R2 bucket
+   and returns the public R2 URL. The backend already has CORS
+   open and a working /api/upload endpoint.
+
+   IMPORTANT: When you publish your Replit app, replace the URL
+   in API_BASE_PROD below with your stable .replit.app domain.
+   The current dev URL stops working when the Repl sleeps.
    ============================================================ */
-const IMGBB_KEY = "YOUR_IMGBB_KEY_HERE";
+const API_BASE_PROD = "https://467135b9-2f99-421d-bfe0-8599a496e147-00-2gs48ihtkjm0i.picard.replit.dev";
+const onReplitDev = location.hostname.endsWith(".replit.dev") || location.hostname === "localhost";
+const UPLOAD_URL = (onReplitDev ? "" : API_BASE_PROD) + "/api/upload";
 
 const ACTIONS = [
+  { key:"quran_khatma", label:"ختمة قرآن (اختر جزء)" },
   { key:"fatiha", label:"سورة الفاتحة" },
   { key:"salawat", label:"الصلاة على محمد وآل محمد" },
   { key:"prayers", label:"صلاة" },
   { key:"dua", label:"دعاء" },
   { key:"ziyara", label:"زيارة" },
-  { key:"quran_khatma", label:"ختمة قرآن (اختر جزء)" },
 ];
 
 let allItems = [];
+let currentFilter = "all";
 let currentMartyrId = null;
 let currentMartyr = null;
 let currentSelected = "";
 let pendingFile = null;
+
+window.setFilter = function(f){
+  currentFilter = f;
+  document.querySelectorAll(".filter-bar .chip").forEach(c=>{
+    c.classList.toggle("selected", c.dataset.filter === f);
+  });
+  const headings = { all:"أحدث الإضافات", martyr:"الشهداء المكرّمون", video:"المقاطع المرئية", popular:"الأكثر تكريماً" };
+  $("feedHeading").textContent = headings[f] || "أحدث الإضافات";
+  render();
+};
 
 const $ = (id) => document.getElementById(id);
 const arabicNum = (n) => Number(n||0).toLocaleString("ar-EG");
@@ -412,7 +549,16 @@ async function loadFeed(){
 
 function render(){
   const s = ($("searchInput").value || "").trim().toLowerCase();
-  const list = !s ? allItems : allItems.filter(i => ((i.name || i.title || "").toLowerCase().includes(s)));
+  let list = !s ? allItems.slice() : allItems.filter(i => ((i.name || i.title || "").toLowerCase().includes(s)));
+  if (currentFilter === "martyr") list = list.filter(i=>i.type==="martyr");
+  else if (currentFilter === "video") list = list.filter(i=>i.type==="video");
+  else if (currentFilter === "popular"){
+    list = list.filter(i=>i.type==="martyr").sort((a,b)=>{
+      const ta=(a.fatiha||0)+(a.salawat||0)+(a.quran||0)+(a.prayers||0)+(a.dua||0)+(a.ziyara||0);
+      const tb=(b.fatiha||0)+(b.salawat||0)+(b.quran||0)+(b.prayers||0)+(b.dua||0)+(b.ziyara||0);
+      return tb-ta;
+    });
+  }
   $("countLabel").textContent = `${arabicNum(list.length)} عنصر`;
 
   const martyrs = allItems.filter(i=>i.type==="martyr");
@@ -480,22 +626,21 @@ window.onPickFile = function(e){
   }
 };
 
-async function uploadImage(file){
+async function uploadImage(file, folder="requests"){
   if (!file.type.startsWith("image/")) throw new Error("الملف ليس صورة");
   if (file.size > 10*1024*1024) throw new Error("حجم الصورة كبير جداً (الحد الأقصى 10 ميجابايت)");
-  if (!IMGBB_KEY || IMGBB_KEY === "YOUR_IMGBB_KEY_HERE"){
-    throw new Error("لم يتم إعداد مفتاح رفع الصور. الرجاء إضافة مفتاح ImgBB في الكود.");
-  }
   const fd = new FormData();
-  fd.append("image", file);
-  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
-    method: "POST",
-    body: fd
-  });
-  if (!res.ok) throw new Error("فشل رفع الصورة");
+  fd.append("file", file);
+  fd.append("folder", folder);
+  const res = await fetch(UPLOAD_URL, { method:"POST", body: fd });
+  if (!res.ok){
+    let msg = "فشل رفع الصورة إلى التخزين السحابي";
+    try { const j = await res.json(); if (j?.error) msg = j.error; } catch {}
+    throw new Error(msg);
+  }
   const json = await res.json();
-  if (!json?.data?.url) throw new Error("فشل رفع الصورة");
-  return json.data.url;
+  if (!json?.url) throw new Error("استجابة غير صالحة من الخادم");
+  return json.url;
 }
 
 window.submitRequest = async function(){
@@ -528,7 +673,7 @@ window.submitLogin = async function(){
     const d = q.docs[0];
     if (d.data().adminPass === pass){
       toast("تم تسجيل الدخول");
-      setTimeout(()=>{ window.location.href = `admin?id=${d.id}`; }, 600);
+      setTimeout(()=>{ window.location.href = `martyr-admin.html?id=${d.id}`; }, 600);
     } else { toast("كلمة المرور غير صحيحة","error"); }
   }catch(e){ toast(e.message || "خطأ","error"); }
   finally{ btn.disabled = false; btn.textContent = "دخول إلى لوحة التحكم"; }

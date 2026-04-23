@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>لوحة مشرف الشهيد · منصة الشهداء</title>
+<link rel="icon" type="image/png" href="https://pub-651becc05c914db5ac262a9a1d4469ef.r2.dev/Untitled%20design%20(4)-Photoroom.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#faf6ec;--bg-soft:#f3ecd9;--ink:#1f1810;--ink-soft:#5a4a31;--muted:#8a7551;
+  --line:#e6dcc4;--card:#fff;--gold:#c9a447;--gold-soft:#e6c878;--gold-deep:#8a6b1e;
+  --maroon:#6b0f1a;--maroon-deep:#4a0a13;--green:#1f5d3a;--danger:#a02334;
+  --shadow-sm:0 2px 8px rgba(31,24,16,.06);--shadow-md:0 8px 24px rgba(31,24,16,.08);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;overflow-x:hidden;width:100%}
+body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+.container{max-width:960px;margin:0 auto;padding:24px}
+
+.topbar{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;border-radius:14px;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;box-shadow:var(--shadow-md);border-bottom:3px solid var(--gold)}
+.topbar h1{font-family:"Amiri",serif;font-size:22px;margin:0;font-weight:700}
+.topbar .sub{font-size:12.5px;color:var(--gold-soft);margin-top:2px}
+.topbar .right{display:flex;align-items:center;gap:12px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:6px;border:1px solid transparent;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:all .18s ease;text-decoration:none}
+.btn-primary{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1}
+.btn-gold{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)}
+.btn-ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn-block{width:100%}
+
+.card{background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
+.card h3{font-family:"Amiri",serif;color:var(--maroon-deep);margin:0 0 14px;font-size:19px;display:flex;align-items:center;gap:10px}
+.card h3 .ico{width:32px;height:32px;border-radius:8px;background:var(--bg-soft);color:var(--maroon);display:grid;place-items:center;font-size:16px}
+
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:700;color:var(--ink-soft);font-size:13px;margin-bottom:8px}
+.field input,.field textarea{width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:8px;background:#fefcf6;font-family:inherit;font-size:15px;color:var(--ink);outline:none;transition:all .18s ease}
+.field input:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,164,71,.18);background:#fff}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.stat-card{background:#fdfaf3;border:1px solid var(--line);border-radius:12px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .18s ease;position:relative;overflow:hidden}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--gold)}
+.stat-card .v{font-family:"Amiri",serif;font-size:30px;font-weight:800;color:var(--maroon);line-height:1.1}
+.stat-card .l{font-size:13px;color:var(--ink-soft);margin-top:6px;font-weight:700}
+.stat-card .t{font-size:10.5px;color:var(--muted);margin-top:4px}
+
+.quran-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+@media(max-width:600px){.quran-grid{grid-template-columns:repeat(5,1fr)}}
+.qpart{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;background:#f0e8d0;color:#8b7355;border:1px solid var(--line);font-family:"Amiri",serif;cursor:pointer;transition:all .18s ease}
+.qpart:hover{border-color:var(--gold)}
+.qpart.taken{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink);border-color:var(--gold)}
+.qpart.done{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#f0fff4;border-color:var(--green)}
+
+.legend{font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;gap:14px;flex-wrap:wrap}
+.legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-left:5px;vertical-align:middle}
+
+.upload{border:2px dashed var(--gold-soft);border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;background:#fdfaf3;transition:all .2s ease;margin-bottom:14px}
+.upload:hover{border-color:var(--gold);background:#fff7e0}
+.upload .ico{font-size:30px;color:var(--gold-deep);margin-bottom:6px}
+.preview-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.preview-grid img,.preview-grid video{width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid var(--gold)}
+
+.gallery-display{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px}
+.gallery-display .item{aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--line);position:relative;background:#000}
+.gallery-display .item img,.gallery-display .item video{width:100%;height:100%;object-fit:cover;display:block}
+.gallery-display .item .del{position:absolute;top:4px;left:4px;width:26px;height:26px;border-radius:6px;background:var(--danger);color:#fff;border:none;cursor:pointer;font-weight:800;font-size:12px;display:grid;place-items:center}
+
+.work-row{display:flex;justify-content:space-between;align-items:center;background:#fdfaf3;padding:12px 14px;border-radius:10px;border:1px solid var(--line);margin-bottom:8px}
+.work-name{font-weight:800;color:var(--maroon)}
+.work-val{font-family:"Amiri",serif;font-size:22px;font-weight:800;color:var(--gold-deep);margin:0 14px}
+.work-actions{display:flex;gap:6px}
+.work-actions button{width:34px;height:34px;border-radius:6px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:14px;display:grid;place-items:center}
+.work-actions .plus{color:var(--green);border-color:var(--green)}
+.work-actions .del{color:var(--danger);border-color:var(--danger)}
+
+.add-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.add-row input{flex:1;min-width:200px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;background:#fff}
+
+.toasts{position:fixed;top:20px;left:20px;z-index:100;display:flex;flex-direction:column;gap:10px;max-width:340px}
+.toast{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);padding:13px 16px;border-radius:10px;box-shadow:var(--shadow-md);font-weight:600;font-size:14px;animation:slideIn .25s ease}
+.toast.success{border-right-color:var(--green)}
+.toast.error{border-right-color:var(--danger)}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+
+.access-denied{text-align:center;padding:80px 20px}
+.access-denied h2{font-family:"Amiri",serif;color:var(--maroon-deep);font-size:28px;margin-bottom:10px}
+.access-denied p{color:var(--ink-soft);margin-bottom:20px}
+</style>
+</head>
+<body>
+<div class="container" id="app">
+  <div class="topbar">
+    <div>
+      <h1 id="martyrTitle">لوحة المشرف</h1>
+      <div class="sub">تكريم الشهيد · إدارة المحتوى</div>
+    </div>
+    <div class="right">
+      <a class="btn btn-gold" href="/standalone.html">↩ العودة للرئيسية</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="ico">📜</span>السيرة والوصف</h3>
+    <div class="field"><textarea id="descInput" rows="6" placeholder="اكتب سيرة الشهيد العطرة..."></textarea></div>
+    <button class="btn btn-primary" id="saveDescBtn">💾 حفظ السيرة</button>
+  </div>
+
+  <div class="card">
+    <h3><span class="ico">🖼</span>معرض الصور</h3>
+    <div class="upload" id="imgUploadArea">
+      <div class="ico">⬆</div>
+      <div>اضغط لاختيار صور (يمكن اختيار عدة صور)</div>
+      <small style="display:block;margin-top:4px;color:var(--muted)">JPG / PNG حتى 10 ميجابايت لكل صورة</small>
+      <input type="file" id="imgFile" accept="image/*" multiple style="display:none" />
+      <div class="preview-grid" id="imgPreview"></div>
+    </div>
+    <button class="btn btn-primary btn-block" id="uploadImagesBtn">📤 رفع الصور إلى المعرض</button>
+    <div class="gallery-display" id="galleryDisplay"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="ico">▶</span>معرض الفيديوهات</h3>
+    <div class="upload" id="vidUploadArea">
+      <div class="ico">⬆</div>
+      <div>اضغط لاختيار فيديو (MP4 / WEBM)</div>
+      <small style="display:block;margin-top:4px;color:var(--muted)">حتى 50 ميجابايت لكل ملف</small>
+      <input type="file" id="vidFile" accept="video/*" multiple style="display:none" />
+      <div class="preview-grid" id="vidPreview"></div>
+    </div>
+    <button class="btn btn-primary btn-block" id="uploadVidsBtn">📤 رفع الفيديوهات</button>
+    <div class="gallery-display" id="videosDisplay"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="ico">📊</span>إحصائيات الأعمال (انقر للزيادة)</h3>
+    <div class="stats" id="statsContainer"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="ico">➕</span>أعمال مخصصة</h3>
+    <div id="customWorksContainer"></div>
+    <div class="add-row">
+      <input type="text" id="newWorkName" placeholder="مثال: صلاة الوحشة، إهداء ثواب..." />
+      <button class="btn btn-primary" id="addCustomWorkBtn">➕ إضافة عمل</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="ico">📖</span>ختمة القرآن الكريم</h3>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--green)"></span>مكتمل</span>
+      <span><span class="dot" style="background:var(--gold)"></span>محجوز / يُقرأ</span>
+      <span><span class="dot" style="background:#e8e0d0"></span>متاح</span>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:10px">انقر على أي جزء لتغيير حالته (متاح → محجوز → مكتمل → متاح)</p>
+    <div class="quran-grid" id="quranStatus"></div>
+    <button class="btn btn-danger" id="resetKhatmaBtn" style="margin-top:14px">🔄 إعادة تعيين الختمة بالكامل</button>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, updateDoc, increment, deleteField, arrayUnion, arrayRemove
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDjGLXTZKPpV6U7gRMcdGVPN2uhguVWDSQ",
+  authDomain: "xalyx-d248b.firebaseapp.com",
+  databaseURL: "https://xalyx-d248b-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "xalyx-d248b",
+  storageBucket: "xalyx-d248b.firebasestorage.app",
+  messagingSenderId: "356891304194",
+  appId: "1:356891304194:web:b3ccefeaf20101b222221b"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/* ============================================================
+   CLOUDFLARE R2 UPLOADS — via secure backend proxy.
+   We DO NOT put R2 secrets in the browser. Uploads go to the
+   Replit api-server which holds the secrets and uploads to R2.
+   When you publish your Replit app, replace API_BASE_PROD with
+   your stable .replit.app URL.
+   ============================================================ */
+const API_BASE_PROD = "https://467135b9-2f99-421d-bfe0-8599a496e147-00-2gs48ihtkjm0i.picard.replit.dev";
+const onReplitDev = location.hostname.endsWith(".replit.dev") || location.hostname === "localhost";
+const UPLOAD_URL = (onReplitDev ? "" : API_BASE_PROD) + "/api/upload";
+
+const $ = id => document.getElementById(id);
+const url = new URLSearchParams(location.search);
+const martyrId = url.get("id");
+
+if (!martyrId){
+  document.body.innerHTML = `<div class="access-denied">
+    <h2>⛔ غير مصرح بالدخول</h2>
+    <p>الرجاء تسجيل الدخول من المنصة الرئيسية للوصول إلى لوحة الشهيد.</p>
+    <a class="btn btn-primary" href="/standalone.html">الذهاب إلى الرئيسية</a>
+  </div>`;
+  throw new Error("no id");
+}
+
+function toast(msg, type="success"){
+  const t = document.createElement("div");
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  $("toasts").appendChild(t);
+  setTimeout(()=>t.remove(), 2800);
+}
+
+async function uploadFile(file, folder){
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("folder", folder);
+  const res = await fetch(UPLOAD_URL, { method:"POST", body:fd });
+  if (!res.ok){
+    let msg = "فشل الرفع إلى التخزين السحابي";
+    try { const j = await res.json(); if (j?.error) msg = j.error; } catch {}
+    throw new Error(msg);
+  }
+  const json = await res.json();
+  if (!json?.url) throw new Error("استجابة غير صالحة من الخادم");
+  return json.url;
+}
+
+let pendingImgs = [];
+let pendingVids = [];
+
+$("imgUploadArea").addEventListener("click", e => { if (e.target.tagName !== "BUTTON") $("imgFile").click(); });
+$("imgFile").addEventListener("change", e => {
+  pendingImgs = Array.from(e.target.files);
+  const p = $("imgPreview"); p.innerHTML = "";
+  pendingImgs.forEach(f => {
+    const r = new FileReader();
+    r.onload = ev => { const img = document.createElement("img"); img.src = ev.target.result; p.appendChild(img); };
+    r.readAsDataURL(f);
+  });
+});
+
+$("vidUploadArea").addEventListener("click", e => { if (e.target.tagName !== "BUTTON") $("vidFile").click(); });
+$("vidFile").addEventListener("change", e => {
+  pendingVids = Array.from(e.target.files);
+  const p = $("vidPreview"); p.innerHTML = "";
+  pendingVids.forEach(f => {
+    const v = document.createElement("video");
+    v.src = URL.createObjectURL(f); v.muted = true; v.playsInline = true;
+    p.appendChild(v);
+  });
+});
+
+$("uploadImagesBtn").addEventListener("click", async () => {
+  if (!pendingImgs.length) return toast("الرجاء اختيار صور أولاً","error");
+  const btn = $("uploadImagesBtn"); btn.disabled = true; btn.textContent = "جاري الرفع...";
+  const urls = [];
+  for (const f of pendingImgs){
+    try { urls.push(await uploadFile(f, `martyrs/${martyrId}/photos`)); }
+    catch(e){ toast(`فشل رفع ${f.name}: ${e.message}`,"error"); }
+  }
+  if (urls.length){
+    await updateDoc(doc(db,"martyrs",martyrId), { gallery: arrayUnion(...urls) });
+    toast(`✅ تم رفع ${urls.length} صورة`);
+    pendingImgs = []; $("imgFile").value = ""; $("imgPreview").innerHTML = "";
+    loadData();
+  }
+  btn.disabled = false; btn.textContent = "📤 رفع الصور إلى المعرض";
+});
+
+$("uploadVidsBtn").addEventListener("click", async () => {
+  if (!pendingVids.length) return toast("الرجاء اختيار فيديوهات أولاً","error");
+  const btn = $("uploadVidsBtn"); btn.disabled = true; btn.textContent = "جاري الرفع...";
+  const urls = [];
+  for (const f of pendingVids){
+    try { urls.push(await uploadFile(f, `martyrs/${martyrId}/videos`)); }
+    catch(e){ toast(`فشل رفع ${f.name}: ${e.message}`,"error"); }
+  }
+  if (urls.length){
+    await updateDoc(doc(db,"martyrs",martyrId), { videos: arrayUnion(...urls) });
+    toast(`✅ تم رفع ${urls.length} فيديو`);
+    pendingVids = []; $("vidFile").value = ""; $("vidPreview").innerHTML = "";
+    loadData();
+  }
+  btn.disabled = false; btn.textContent = "📤 رفع الفيديوهات";
+});
+
+window.removeMedia = async function(field, url){
+  if (!confirm("هل تريد حذف هذا العنصر من المعرض؟")) return;
+  try {
+    await updateDoc(doc(db,"martyrs",martyrId), { [field]: arrayRemove(url) });
+    toast("✅ تم الحذف");
+    loadData();
+  } catch(e){ toast("فشل الحذف","error"); }
+};
+
+window.incWork = async function(field){
+  try {
+    await updateDoc(doc(db,"martyrs",martyrId), { [field]: increment(1) });
+    toast(`✅ تم تسجيل الإهداء`);
+    loadData();
+  } catch(e){ toast("حدث خطأ","error"); }
+};
+
+window.incCustom = async function(key){
+  try {
+    await updateDoc(doc(db,"martyrs",martyrId), { [`customWorks.${key}`]: increment(1) });
+    toast(`✅ تم زيادة "${key}"`);
+    loadData();
+  } catch(e){ toast("خطأ","error"); }
+};
+
+window.delCustom = async function(key){
+  if (!confirm(`هل تريد حذف العمل "${key}"؟`)) return;
+  try {
+    await updateDoc(doc(db,"martyrs",martyrId), { [`customWorks.${key}`]: deleteField() });
+    toast("✅ تم الحذف");
+    loadData();
+  } catch(e){ toast("خطأ في الحذف","error"); }
+};
+
+window.toggleQuran = async function(part){
+  try {
+    const ref = doc(db,"martyrs",martyrId);
+    const snap = await getDoc(ref);
+    const parts = snap.data()?.quranParts || {};
+    const cur = parts[part];
+    let next;
+    if (cur === true) next = false;             // done -> available
+    else if (cur === "taken") next = true;       // taken -> done
+    else next = "taken";                          // available -> taken
+    const upd = { [`quranParts.${part}`]: next };
+    if (next === true) upd.quran = increment(1);
+    await updateDoc(ref, upd);
+    loadData();
+  } catch(e){ toast("خطأ في التحديث","error"); }
+};
+
+$("addCustomWorkBtn").addEventListener("click", async () => {
+  const name = $("newWorkName").value.trim();
+  if (!name) return toast("الرجاء إدخال اسم العمل","error");
+  try {
+    await updateDoc(doc(db,"martyrs",martyrId), { [`customWorks.${name}`]: 0 });
+    $("newWorkName").value = "";
+    toast(`✅ تم إضافة "${name}"`);
+    loadData();
+  } catch(e){ toast("خطأ في الإضافة","error"); }
+});
+
+$("saveDescBtn").addEventListener("click", async () => {
+  try {
+    await updateDoc(doc(db,"martyrs",martyrId), { description: $("descInput").value.trim() });
+    toast("✅ تم حفظ السيرة");
+  } catch(e){ toast("فشل الحفظ","error"); }
+});
+
+$("resetKhatmaBtn").addEventListener("click", async () => {
+  if (!confirm("⚠️ هل أنت متأكد من إعادة تعيين الختمة بالكامل؟")) return;
+  const reset = { quran: 0 };
+  for (let i=1; i<=30; i++) reset[`quranParts.${i}`] = false;
+  try {
+    await updateDoc(doc(db,"martyrs",martyrId), reset);
+    toast("✅ تمت إعادة تعيين الختمة");
+    loadData();
+  } catch(e){ toast("فشل إعادة التعيين","error"); }
+});
+
+function escapeHtml(s){ return String(s||"").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+
+async function loadData(){
+  try {
+    const snap = await getDoc(doc(db,"martyrs",martyrId));
+    if (!snap.exists()){ toast("الشهيد غير موجود","error"); return; }
+    const m = snap.data();
+    $("martyrTitle").textContent = `🕊 الشهيد: ${m.name || ""}`;
+    $("descInput").value = m.description || "";
+
+    const baseStats = [
+      { f:"fatiha", l:"📖 الفاتحة" },
+      { f:"salawat", l:"🌿 الصلوات" },
+      { f:"quran", l:"📚 أجزاء القرآن" },
+      { f:"prayers", l:"🤲 صلاة" },
+      { f:"dua", l:"📿 دعاء" },
+      { f:"ziyara", l:"🕋 زيارة" },
+    ];
+    let html = baseStats.map(s => `
+      <div class="stat-card" onclick="incWork('${s.f}')">
+        <div class="v">${m[s.f]||0}</div>
+        <div class="l">${s.l}</div>
+        <div class="t">انقر للزيادة</div>
+      </div>
+    `).join("");
+    $("statsContainer").innerHTML = html;
+
+    const cw = m.customWorks || {};
+    const cwc = $("customWorksContainer");
+    if (Object.keys(cw).length === 0){
+      cwc.innerHTML = `<p style="color:var(--muted);text-align:center;padding:14px">لا توجد أعمال مخصصة بعد.</p>`;
+    } else {
+      cwc.innerHTML = Object.entries(cw).map(([k,v])=>`
+        <div class="work-row">
+          <div class="work-name">✨ ${escapeHtml(k)}</div>
+          <div class="work-val">${v}</div>
+          <div class="work-actions">
+            <button class="plus" onclick="incCustom('${escapeHtml(k)}')" title="زيادة">+</button>
+            <button class="del" onclick="delCustom('${escapeHtml(k)}')" title="حذف">🗑</button>
+          </div>
+        </div>`).join("");
+    }
+
+    const grid = $("quranStatus");
+    const parts = m.quranParts || {};
+    grid.innerHTML = "";
+    for (let i=1; i<=30; i++){
+      const cls = parts[i] === true ? "done" : (parts[i] === "taken" ? "taken" : "");
+      const txt = parts[i] === true ? `✓ ${i}` : i;
+      const d = document.createElement("div");
+      d.className = `qpart ${cls}`;
+      d.textContent = txt;
+      d.onclick = () => toggleQuran(i);
+      grid.appendChild(d);
+    }
+
+    const gallery = Array.isArray(m.gallery) ? m.gallery : [];
+    $("galleryDisplay").innerHTML = gallery.length === 0
+      ? `<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:10px">لا توجد صور بعد</p>`
+      : gallery.map(u => `
+          <div class="item">
+            <img src="${u}" alt="" />
+            <button class="del" onclick="removeMedia('gallery','${u}')">×</button>
+          </div>`).join("");
+
+    const videos = Array.isArray(m.videos) ? m.videos : [];
+    $("videosDisplay").innerHTML = videos.length === 0
+      ? `<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:10px">لا توجد فيديوهات بعد</p>`
+      : videos.map(u => {
+          const url = typeof u === "string" ? u : (u?.url || "");
+          return `<div class="item">
+            <video src="${url}" muted playsinline></video>
+            <button class="del" onclick="removeMedia('videos','${url}')">×</button>
+          </div>`;
+        }).join("");
+  } catch(e){
+    console.error(e);
+    toast("خطأ في تحميل البيانات","error");
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>
