@@ -21,10 +21,8 @@
 html,body{margin:0;padding:0}
 body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
 .serif{font-family:"Amiri","Tajawal",serif}
-/* CLEAN, EVEN BACKGROUND — no dark patches on either side */
-.app{min-height:100vh;background:
-  radial-gradient(900px 500px at 50% -260px, rgba(201,164,71,.10), transparent 70%),
-  var(--bg)}
+/* PURE FLAT BACKGROUND — no gradients, no dark patches anywhere */
+.app{min-height:100vh;background:var(--bg)}
 .container{max-width:1280px;margin:0 auto;padding:0 24px}
 
 .header{position:sticky;top:0;z-index:30;background:rgba(250,246,236,.85);backdrop-filter:saturate(140%) blur(14px);border-bottom:1px solid var(--line)}
@@ -33,7 +31,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .brand-mark{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,var(--maroon),var(--maroon-deep));display:grid;place-items:center;color:var(--gold-soft);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),var(--shadow-sm);font-size:22px}
 .brand-title{font-weight:800;font-size:20px;letter-spacing:-.01em;color:var(--ink)}
 .brand-sub{font-size:12px;color:var(--muted);margin-top:-2px}
-.icon-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:all .18s ease}
+.icon-btn{width:42px;height:42px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:all .18s ease}
 .icon-btn:hover{border-color:var(--gold);color:var(--maroon);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
 
 .hero{padding:56px 0 28px;text-align:center}
@@ -44,7 +42,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .hero-divider::after{background:linear-gradient(to right,transparent,var(--gold))}
 
 .search-wrap{position:relative;max-width:620px;margin:0 auto}
-.search-wrap input{width:100%;padding:16px 56px 16px 22px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-family:inherit;font-size:15px;color:var(--ink);outline:none;transition:all .18s ease;box-shadow:var(--shadow-sm)}
+.search-wrap input{width:100%;padding:16px 56px 16px 22px;border-radius:8px;border:1px solid var(--line);background:var(--card);font-family:inherit;font-size:15px;color:var(--ink);outline:none;transition:all .18s ease;box-shadow:var(--shadow-sm)}
 .search-wrap input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,164,71,.18)}
 .search-icon{position:absolute;right:22px;top:50%;transform:translateY(-50%);color:var(--muted)}
 
@@ -65,14 +63,14 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .card-img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.9,.4,1.1)}
 .card:hover .card-img{transform:scale(1.05)}
 .card-img-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.45))}
-.card-tag{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.95);color:var(--maroon);font-size:11px;font-weight:800;padding:6px 12px;border-radius:999px;border:1px solid var(--line);display:inline-flex;align-items:center;gap:6px}
+.card-tag{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.95);color:var(--maroon);font-size:11px;font-weight:800;padding:6px 12px;border-radius:4px;border:1px solid var(--line);display:inline-flex;align-items:center;gap:6px}
 .card-body{padding:18px 18px 20px}
 .card-title{font-family:"Amiri",serif;font-size:22px;font-weight:700;color:var(--maroon-deep);margin:0 0 6px;line-height:1.3}
 .card-meta{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:12px}
 .card-stats{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:12px;flex-wrap:wrap}
-.card-stats .pill{background:var(--bg-soft);border-radius:999px;padding:4px 10px;font-weight:700;color:var(--gold-deep)}
+.card-stats .pill{background:var(--bg-soft);border-radius:4px;padding:4px 10px;font-weight:700;color:var(--gold-deep)}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;border:1px solid transparent;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:all .18s ease;text-decoration:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:6px;border:1px solid transparent;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:all .18s ease;text-decoration:none}
 .btn-primary{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;box-shadow:var(--shadow-sm)}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
 .btn-gold{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)}
@@ -95,7 +93,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .lightbox.open{display:flex}
 .lightbox-content{max-width:96vw;max-height:92vh;border-radius:16px;overflow:hidden;background:#000}
 .lightbox-content img,.lightbox-content video{max-width:96vw;max-height:92vh;display:block}
-.lightbox-close{position:absolute;top:16px;left:16px;width:44px;height:44px;border-radius:50%;background:#fff;border:none;cursor:pointer;font-size:20px;font-weight:800}
+.lightbox-close{position:absolute;top:16px;left:16px;width:44px;height:44px;border-radius:6px;background:#fff;border:none;cursor:pointer;font-size:20px;font-weight:800}
 
 .overlay{position:fixed;inset:0;background:rgba(20,14,6,.5);backdrop-filter:blur(6px);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s ease}
 .overlay.open{opacity:1;pointer-events:auto}
@@ -124,7 +122,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .stat-mini .v{font-family:"Amiri",serif;font-size:22px;font-weight:800;color:var(--maroon)}
 .stat-mini .l{font-size:11px;color:var(--muted);margin-top:2px}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
-.chip{background:var(--card);border:1px solid var(--line);padding:11px 16px;border-radius:999px;font-size:14px;font-weight:700;color:var(--ink-soft);cursor:pointer;transition:all .18s ease}
+.chip{background:var(--card);border:1px solid var(--line);padding:11px 16px;border-radius:6px;font-size:14px;font-weight:700;color:var(--ink-soft);cursor:pointer;transition:all .18s ease}
 .chip:hover{border-color:var(--gold);color:var(--maroon)}
 .chip.selected{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;border-color:transparent;box-shadow:var(--shadow-sm)}
 
@@ -139,7 +137,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .qpart.taken{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink);border-color:var(--gold)}
 .qpart.done{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#f0fff4;border-color:var(--green)}
 .qpart .num{font-family:"Amiri",serif;font-size:16px}
-.qpart button.mini,.qpart span.mini{font-size:10px;background:rgba(255,255,255,.7);color:var(--ink);padding:3px 7px;border-radius:999px;font-weight:700;border:none;cursor:pointer;font-family:inherit}
+.qpart button.mini,.qpart span.mini{font-size:10px;background:rgba(255,255,255,.7);color:var(--ink);padding:3px 7px;border-radius:4px;font-weight:700;border:none;cursor:pointer;font-family:inherit}
 
 .side-link{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:700;margin-bottom:10px;cursor:pointer;transition:all .18s ease}
 .side-link:hover{border-color:var(--gold);transform:translateX(-2px)}
@@ -267,7 +265,10 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 
   <aside class="drawer" id="drawer-quran">
     <div class="drawer-head">
-      <div class="drawer-title">ختمة القرآن الكريم</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="icon-btn" onclick="backToDetail()" title="رجوع">→</button>
+        <div class="drawer-title">ختمة القرآن الكريم</div>
+      </div>
       <button class="icon-btn" onclick="closeAllDrawers()">×</button>
     </div>
     <div class="drawer-body" id="quranBody"></div>
@@ -275,7 +276,10 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 
   <aside class="drawer" id="drawer-photos">
     <div class="drawer-head">
-      <div class="drawer-title">معرض الصور</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="icon-btn" onclick="backToDetail()" title="رجوع">→</button>
+        <div class="drawer-title">معرض الصور</div>
+      </div>
       <button class="icon-btn" onclick="closeAllDrawers()">×</button>
     </div>
     <div class="drawer-body" id="photosBody"></div>
@@ -283,7 +287,10 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 
   <aside class="drawer" id="drawer-videos">
     <div class="drawer-head">
-      <div class="drawer-title">معرض الفيديوهات</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="icon-btn" onclick="backToDetail()" title="رجوع">→</button>
+        <div class="drawer-title">معرض الفيديوهات</div>
+      </div>
       <button class="icon-btn" onclick="closeAllDrawers()">×</button>
     </div>
     <div class="drawer-body" id="videosBody"></div>
@@ -317,15 +324,13 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 /* ============================================================
-   IMPORTANT — Set this to your DEPLOYED Replit API URL.
-   When this HTML is hosted on GitHub Pages it CANNOT call /api/upload
-   on github.io (no backend). It must call your Replit backend.
-   After publishing your Replit app, replace this URL with the
-   ".replit.app" domain you receive, e.g.:
-     const UPLOAD_URL = "https://shuhada.your-name.replit.app/api/upload";
-   The backend already has CORS enabled to accept requests from any origin.
+   IMAGE UPLOADS — uses ImgBB (free, works from any host, no backend needed)
+   1) Go to https://api.imgbb.com/  →  click "Get API key"  →  sign up free.
+   2) Copy your key and paste it below in place of YOUR_IMGBB_KEY_HERE.
+   That's it. Uploads will work directly from GitHub Pages — no server,
+   no CORS issues, no R2 setup.
    ============================================================ */
-const UPLOAD_URL = "https://467135b9-2f99-421d-bfe0-8599a496e147-00-2gs48ihtkjm0i.picard.replit.dev/api/upload";
+const IMGBB_KEY = "YOUR_IMGBB_KEY_HERE";
 
 const ACTIONS = [
   { key:"fatiha", label:"سورة الفاتحة" },
@@ -475,20 +480,22 @@ window.onPickFile = function(e){
   }
 };
 
-async function uploadImage(file, folder="general"){
+async function uploadImage(file){
   if (!file.type.startsWith("image/")) throw new Error("الملف ليس صورة");
   if (file.size > 10*1024*1024) throw new Error("حجم الصورة كبير جداً (الحد الأقصى 10 ميجابايت)");
-  const fd = new FormData();
-  fd.append("file", file);
-  fd.append("folder", folder);
-  const res = await fetch(UPLOAD_URL, { method:"POST", body: fd });
-  if (!res.ok){
-    let msg = "فشل رفع الصورة";
-    try { const j = await res.json(); if (j?.error) msg = j.error; } catch {}
-    throw new Error(msg);
+  if (!IMGBB_KEY || IMGBB_KEY === "YOUR_IMGBB_KEY_HERE"){
+    throw new Error("لم يتم إعداد مفتاح رفع الصور. الرجاء إضافة مفتاح ImgBB في الكود.");
   }
+  const fd = new FormData();
+  fd.append("image", file);
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+    method: "POST",
+    body: fd
+  });
+  if (!res.ok) throw new Error("فشل رفع الصورة");
   const json = await res.json();
-  return json.url;
+  if (!json?.data?.url) throw new Error("فشل رفع الصورة");
+  return json.data.url;
 }
 
 window.submitRequest = async function(){
@@ -498,7 +505,7 @@ window.submitRequest = async function(){
   const btn = $("reqSubmit"); btn.disabled = true; btn.textContent = "جاري الإرسال...";
   try{
     let photoUrl = "";
-    if (pendingFile) photoUrl = await uploadImage(pendingFile, "requests");
+    if (pendingFile) photoUrl = await uploadImage(pendingFile);
     await addDoc(collection(db,"martyrRequests"), { name, phone, photo: photoUrl, status:"pending", createdAt: serverTimestamp() });
     toast("تم إرسال الطلب بنجاح، سنراجعه قريباً");
     $("reqName").value = ""; $("reqPhone").value = ""; $("reqFile").value=""; $("reqPreview").innerHTML=""; pendingFile=null;
@@ -576,6 +583,11 @@ window.openDetail = async function(id){
       <button class="btn btn-ghost" onclick="copyShare()">نسخ</button>
     </div>
   `;
+};
+
+window.backToDetail = function(){
+  if (currentMartyrId) openDetail(currentMartyrId);
+  else closeAllDrawers();
 };
 
 window.openPhotos = function(){
