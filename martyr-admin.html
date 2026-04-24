@@ -56,7 +56,7 @@ textarea:focus,input[type=text]:focus{border-color:var(--gold);box-shadow:0 0 0 
 .stat-card .v{font-family:"Amiri",serif;font-size:30px;font-weight:800;color:var(--maroon)}
 .stat-card .l{font-size:13px;color:var(--ink-soft);margin-top:4px;font-weight:700}
 .stat-card .t{font-size:11px;color:var(--muted);margin-top:6px;font-style:italic}
-
+.upload-limit-warning{display:flex;align-items:center;gap:6px;color:var(--danger);font-size:13px;margin-top:8px;font-weight:700}
 /* ========== Works management (toggle + rename) ========== */
 .works-list{display:flex;flex-direction:column;gap:10px}
 .work-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;transition:all .25s var(--ease)}
@@ -256,13 +256,29 @@ let pendingImgs = [];
 
 $("imgUploadArea").addEventListener("click", e => { if (e.target.tagName !== "BUTTON") $("imgFile").click(); });
 $("imgFile").addEventListener("change", e => {
-  pendingImgs = Array.from(e.target.files);
+  const selectedFiles = Array.from(e.target.files);
+  
+  // Check total would exceed 6
+  if (selectedFiles.length > 6) {
+    toast("⚠️ لا يمكن اختيار أكثر من 6 صور دفعة واحدة", "error");
+    $("imgFile").value = "";
+    $("imgPreview").innerHTML = "";
+    return;
+  }
+  
+  pendingImgs = selectedFiles;
   const p = $("imgPreview"); p.innerHTML = "";
   pendingImgs.forEach(f => {
     const r = new FileReader();
     r.onload = ev => { const img = document.createElement("img"); img.src = ev.target.result; p.appendChild(img); };
     r.readAsDataURL(f);
   });
+  
+  // Optional: show count
+  const countEl = document.createElement("div");
+  countEl.className = "upload-limit-warning";
+  countEl.textContent = `📸 ${pendingImgs.length} / 6 صور مختارة`;
+  p.appendChild(countEl);
 });
 async function compressImage(file, maxSizeMB = 1) {
   if (!file.type.startsWith('image/')) return file;
@@ -345,9 +361,23 @@ async function uploadFile(file, folder){
   if (!json?.url) throw new Error("استجابة غير صالحة من ImageKit");
   return json.url;
 }
-
 $("uploadImagesBtn").addEventListener("click", async () => {
   if (!pendingImgs.length) return toast("اختر صوراً أولاً","error");
+  
+  // Check how many images already in gallery
+  const currentGallery = Array.isArray(martyrData?.gallery) ? martyrData.gallery : [];
+  const remaining = 6 - currentGallery.length;
+  
+  if (remaining <= 0) {
+    toast("⚠️ المعرض مكتمل (الحد الأقصى 6 صور). احذف صورة قبل إضافة جديدة", "error");
+    return;
+  }
+  
+  if (pendingImgs.length > remaining) {
+    toast(`⚠️ يمكنك إضافة ${remaining} صورة فقط. المعرض به ${currentGallery.length} صورة حالياً`, "error");
+    return;
+  }
+  
   const btn = $("uploadImagesBtn"); btn.disabled = true; btn.textContent = "جاري الرفع...";
   const urls = [];
   for (const f of pendingImgs){
@@ -362,15 +392,52 @@ $("uploadImagesBtn").addEventListener("click", async () => {
   }
   btn.disabled = false; btn.textContent = "📤 رفع الصور إلى المعرض";
 });
-
 window.removeMedia = async function(field, url){
   if (!confirm("حذف هذا العنصر من المعرض؟")) return;
   try {
+    // Try to delete from ImageKit using the full URL as search parameter
+    try {
+      // First, search for the file to get its proper fileId
+      const searchUrl = `https://api.imagekit.io/v1/files?url=${encodeURIComponent(url)}`;
+      const searchRes = await fetch(searchUrl, {
+        method: "GET",
+        headers: {
+          "Authorization": `Basic ${btoa(IMAGEKIT_PRIVATE_KEY + ":")}`
+        }
+      });
+      
+      if (searchRes.ok) {
+        const files = await searchRes.json();
+        if (files && files.length > 0 && files[0].fileId) {
+          // Delete using the correct fileId
+          const deleteRes = await fetch(`https://api.imagekit.io/v1/files/${files[0].fileId}`, {
+            method: "DELETE",
+            headers: {
+              "Authorization": `Basic ${btoa(IMAGEKIT_PRIVATE_KEY + ":")}`
+            }
+          });
+          
+          if (!deleteRes.ok) {
+            console.warn("ImageKit deletion warning:", await deleteRes.text());
+          }
+        }
+      } else {
+        console.warn("ImageKit search warning:", await searchRes.text());
+      }
+    } catch (ikError) {
+      console.warn("ImageKit deletion failed:", ikError);
+      // Continue anyway
+    }
+    
+    // Remove from Firebase regardless of ImageKit result
     await updateDoc(doc(db,"martyrs",martyrId), { [field]: arrayRemove(url) });
-    toast("✅ تم الحذف"); loadData();
-  } catch(e){ toast("فشل الحذف","error"); }
+    toast("✅ تم الحذف"); 
+    loadData();
+  } catch(e){ 
+    console.error(e);
+    toast("فشل الحذف","error"); 
+  }
 };
-
 /* ========== Works toggle / rename ========== */
 async function setWorkConfig(key, patch){
   try {
@@ -575,8 +642,20 @@ async function loadData(){
       grid.appendChild(d);
     }
 
-    /* Gallery */
-    const gallery = Array.isArray(m.gallery) ? m.gallery : [];
+   /* Gallery */
+const gallery = Array.isArray(m.gallery) ? m.gallery : [];
+const galleryHeader = gallery.length > 0 
+  ? `<div style="grid-column:1/-1;font-size:12px;color:var(--muted);margin-bottom:4px">
+       📸 ${gallery.length} / 6 صور ${gallery.length >= 6 ? '(الحد الأقصى)' : ''}
+     </div>` 
+  : '';
+$("galleryDisplay").innerHTML = gallery.length === 0
+  ? `<div class="empty-mini" style="grid-column:1/-1">لا توجد صور بعد (الحد الأقصى 6)</div>`
+  : galleryHeader + gallery.map(u => `
+      <div class="item">
+        <img src="${u}" alt="" />
+        <button class="del" onclick="removeMedia('gallery','${u}')" title="حذف">×</button>
+      </div>`).join("");
     $("galleryDisplay").innerHTML = gallery.length === 0
       ? `<div class="empty-mini" style="grid-column:1/-1">لا توجد صور بعد</div>`
       : gallery.map(u => `
