@@ -652,7 +652,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const IMGBB_API_KEY = "522870512c188ddca7e0bcd4d64618e0";
+
 
 const PAGE_SIZE = 6;
 
@@ -1027,21 +1027,82 @@ window.onPickFile = function(e){
     wrap.appendChild(img);
   }
 };
-async function uploadImage(file, folder="requests"){
+async function uploadImage(file, folder = "requests") {
   if (!file.type.startsWith("image/")) throw new Error("الملف ليس صورة");
-  if (file.size > 32*1024*1024) throw new Error("حجم الصورة كبير جداً (الحد الأقصى 32 ميجابايت)");
-  const fd = new FormData();
-  fd.append("image", file);
-  fd.append("key", IMGBB_API_KEY);
-  const res = await fetch("https://api.imgbb.com/1/upload", { method:"POST", body: fd });
-  if (!res.ok){
-    let msg = "فشل رفع الصورة";
-    try { const j = await res.json(); if (j?.error?.message) msg = j.error.message; } catch {}
-    throw new Error(msg);
+  if (file.size > 32 * 1024 * 1024) throw new Error("حجم الصورة كبير جداً (الحد الأقصى 32 ميجابايت)");
+  
+  // إعادة تسمية الملف
+  const ext = file.name.split('.').pop();
+  const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
+  
+  // إعداد طلب R2 عبر S3 API
+  const accessKeyId = "11e16062f2963c227a844e88365313f5";
+  const secretAccessKey = "adf86b9a62b074f69380076d009198557232ea3d63ef348497353658aa83cb20";
+  const endpoint = "https://3732813e81859bdecafdd5726576dd1e.r2.cloudflarestorage.com/xalix";
+  const publicUrl = "https://pub-651becc05c914db5ac262a9a1d4469ef.r2.dev";
+  
+  // إنشاء توقيع AWS Signature V4
+  const date = new Date();
+  const amzDate = date.toISOString().replace(/[:\-]|\.\d{3}/g, '');
+  const dateStamp = amzDate.slice(0, 8);
+  
+  const method = "PUT";
+  const service = "s3";
+  const region = "auto";
+  const host = new URL(endpoint).host;
+  const bucketPath = `/xalix/${fileName}`;
+  
+  const headers = {
+    "Host": host,
+    "x-amz-content-sha256": "UNSIGNED-PAYLOAD",
+    "x-amz-date": amzDate,
+    "Content-Type": file.type
+  };
+  
+  // بناء canonical request
+  const canonicalHeaders = Object.keys(headers)
+    .sort()
+    .map(key => `${key.toLowerCase()}:${headers[key]}`)
+    .join('\n');
+  
+  const signedHeaders = Object.keys(headers).sort().map(k => k.toLowerCase()).join(';');
+  
+  const canonicalRequest = [
+    method,
+    bucketPath,
+    '',
+    canonicalHeaders + '\n',
+    signedHeaders,
+    "UNSIGNED-PAYLOAD"
+  ].join('\n');
+  
+  // حساب التوقيع
+  const encoder = new TextEncoder();
+  const stringToSign = [
+    "AWS4-HMAC-SHA256",
+    amzDate,
+    `${dateStamp}/${region}/${service}/aws4_request`,
+    await crypto.subtle.digest("SHA-256", encoder.encode(canonicalRequest)).then(h => 
+      Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('')
+    )
+  ].join('\n');
+  
+  const uploadUrl = `${endpoint}/xalix/${fileName}`;
+  
+  const response = await fetch(uploadUrl, {
+    method: "PUT",
+    headers: {
+      "Content-Type": file.type,
+    
+    },
+    body: file
+  });
+  
+  if (!response.ok) {
+    throw new Error(`فشل الرفع إلى R2: ${response.status}`);
   }
-  const json = await res.json();
-  if (!json?.data?.url) throw new Error("استجابة غير صالحة من ImgBB");
-  return json.data.url;
+  
+  return `${publicUrl}/${fileName}`;
 }
 window.submitRequest = async function(){
   const name = $("reqName").value.trim();
