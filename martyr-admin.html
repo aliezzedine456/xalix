@@ -213,7 +213,9 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const IMGBB_API_KEY = "522870512c188ddca7e0bcd4d64618e0";
+const IMAGEKIT_PUBLIC_KEY = "public_oU2VlNjqNxzcGEUiatRDZVtClQg=";
+const IMAGEKIT_PRIVATE_KEY = "private_a3vND6fJ/2gP1EQvdOH2wpmvKUc=";
+const IMAGEKIT_URL_ENDPOINT = "https://ik.imagekit.io/ekd1puefs/xalix";
 const $ = id => document.getElementById(id);
 const url = new URLSearchParams(location.search);
 const martyrId = url.get("id");
@@ -262,21 +264,86 @@ $("imgFile").addEventListener("change", e => {
     r.readAsDataURL(f);
   });
 });
+async function compressImage(file, maxSizeMB = 1) {
+  if (!file.type.startsWith('image/')) return file;
+  
+  // If already small enough, return as is
+  if (file.size <= maxSizeMB * 1024 * 1024) return file;
+  
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      
+      const compress = (quality) => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            reject(new Error('فشل ضغط الصورة'));
+            return;
+          }
+          
+          if (blob.size <= maxSizeMB * 1024 * 1024 || quality <= 0.1) {
+            const compressedFile = new File([blob], file.name, { type: 'image/jpeg' });
+            resolve(compressedFile);
+          } else {
+            compress(quality - 0.15);
+          }
+        }, 'image/jpeg', quality);
+      };
+      
+      compress(0.8);
+    };
+    
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      resolve(file); // Return original if can't load
+    };
+    
+    img.src = url;
+  });
+}
 async function uploadFile(file, folder){
+  // Compress image before upload
+  file = await compressImage(file, 1); // Compress to under 1MB
+  
   if (!file.type.startsWith("image/")) throw new Error("الملف ليس صورة");
   if (file.size > 32*1024*1024) throw new Error("حجم الصورة كبير جداً (الحد الأقصى 32 ميجابايت)");
-  const fd = new FormData();
-  fd.append("image", file);
-  fd.append("key", IMGBB_API_KEY);
-  const res = await fetch("https://api.imgbb.com/1/upload", { method:"POST", body: fd });
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("fileName", `${folder}_${Date.now()}_${file.name}`);
+  formData.append("folder", `/martyrs/${folder}/`);
+  
+  const auth = btoa(`${IMAGEKIT_PRIVATE_KEY}:`);
+  
+  const res = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
+    method: "POST",
+    headers: {
+      "Authorization": `Basic ${auth}`
+    },
+    body: formData
+  });
+  
   if (!res.ok){
     let msg = "فشل رفع الصورة";
-    try { const j = await res.json(); if (j?.error?.message) msg = j.error.message; } catch {}
+    try { const j = await res.json(); if (j?.message) msg = j.message; } catch {}
     throw new Error(msg);
   }
+  
   const json = await res.json();
-  if (!json?.data?.url) throw new Error("استجابة غير صالحة من ImgBB");
-  return json.data.url;
+  if (!json?.url) throw new Error("استجابة غير صالحة من ImageKit");
+  return json.url;
 }
 
 $("uploadImagesBtn").addEventListener("click", async () => {
