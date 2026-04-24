@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>لوحة مشرف الشهيد · منصة الشهداء</title>
+<title>لوحة الشهيد · منصة الشهداء</title>
 <link rel="icon" type="image/png" href="https://pub-651becc05c914db5ac262a9a1d4469ef.r2.dev/Untitled%20design%20(4)-Photoroom.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,180 +14,191 @@
   --line:#e6dcc4;--card:#fff;--gold:#c9a447;--gold-soft:#e6c878;--gold-deep:#8a6b1e;
   --maroon:#6b0f1a;--maroon-deep:#4a0a13;--green:#1f5d3a;--danger:#a02334;
   --shadow-sm:0 2px 8px rgba(31,24,16,.06);--shadow-md:0 8px 24px rgba(31,24,16,.08);
+  --shadow-lg:0 20px 50px rgba(31,24,16,.14);
+  --ease:cubic-bezier(.2,.9,.4,1.1);
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;overflow-x:hidden;width:100%}
-body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
-.container{max-width:960px;margin:0 auto;padding:24px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Tajawal",sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);min-height:100vh;padding:18px;line-height:1.6}
+.container{max-width:1180px;margin:0 auto}
 
-.topbar{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;border-radius:14px;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;box-shadow:var(--shadow-md);border-bottom:3px solid var(--gold)}
-.topbar h1{font-family:"Amiri",serif;font-size:22px;margin:0;font-weight:700}
-.topbar .sub{font-size:12.5px;color:var(--gold-soft);margin-top:2px}
-.topbar .right{display:flex;align-items:center;gap:12px}
+.access-denied{text-align:center;padding:60px 20px;color:var(--ink-soft)}
+.access-denied h2{color:var(--maroon-deep);font-family:"Amiri",serif;font-size:26px;margin-bottom:12px}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:6px;border:1px solid transparent;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:all .18s ease;text-decoration:none}
-.btn-primary{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1}
+.topbar{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;border-radius:18px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;box-shadow:var(--shadow-md);border-bottom:3px solid var(--gold);animation:slideDown .55s var(--ease) both}
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+.topbar h1{font-family:"Amiri",serif;font-size:24px;margin:0;font-weight:700;display:flex;align-items:center;gap:10px}
+.topbar .sub{font-size:12.5px;color:var(--gold-soft);margin-top:3px;letter-spacing:.02em}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:8px;border:1px solid transparent;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:all .25s var(--ease);text-decoration:none}
+.btn-primary{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;box-shadow:var(--shadow-sm)}
 .btn-gold{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)}
 .btn-ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
 .btn-danger{background:var(--danger);color:#fff}
-.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
-.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn-success{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#fff}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
 .btn-block{width:100%}
+.btn-sm{padding:7px 12px;font-size:12.5px}
 
-.card{background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
-.card h3{font-family:"Amiri",serif;color:var(--maroon-deep);margin:0 0 14px;font-size:19px;display:flex;align-items:center;gap:10px}
-.card h3 .ico{width:32px;height:32px;border-radius:8px;background:var(--bg-soft);color:var(--maroon);display:grid;place-items:center;font-size:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:18px;box-shadow:var(--shadow-sm);animation:fadeIn .35s var(--ease) both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-h{font-family:"Amiri",serif;font-size:22px;color:var(--maroon-deep);margin:0 0 18px;display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px dashed var(--line)}
+.section-h::before{content:"";width:6px;height:24px;background:linear-gradient(180deg,var(--gold),var(--maroon));border-radius:3px}
+.section-h .sub{font-family:"Tajawal",sans-serif;font-size:12.5px;color:var(--muted);font-weight:500;margin-right:auto}
 
-.field{margin-bottom:16px}
-.field label{display:block;font-weight:700;color:var(--ink-soft);font-size:13px;margin-bottom:8px}
-.field input,.field textarea{width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:8px;background:#fefcf6;font-family:inherit;font-size:15px;color:var(--ink);outline:none;transition:all .18s ease}
-.field input:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,164,71,.18);background:#fff}
+textarea,input[type=text]{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:14px;background:#fefcf6;color:var(--ink);outline:none;transition:all .22s var(--ease)}
+textarea:focus,input[type=text]:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,164,71,.18);background:#fff}
 
-.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.stat-card{background:#fdfaf3;border:1px solid var(--line);border-radius:12px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .18s ease;position:relative;overflow:hidden}
-.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--gold)}
-.stat-card .v{font-family:"Amiri",serif;font-size:30px;font-weight:800;color:var(--maroon);line-height:1.1}
-.stat-card .l{font-size:13px;color:var(--ink-soft);margin-top:6px;font-weight:700}
-.stat-card .t{font-size:10.5px;color:var(--muted);margin-top:4px}
+/* ========== Stats display only — no incrementing ========== */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.stat-card{background:#fdfaf3;border:1px solid var(--line);border-right:4px solid var(--maroon);border-radius:14px;padding:16px 14px;text-align:center;transition:all .25s var(--ease)}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-sm);border-color:var(--gold-soft)}
+.stat-card .v{font-family:"Amiri",serif;font-size:30px;font-weight:800;color:var(--maroon)}
+.stat-card .l{font-size:13px;color:var(--ink-soft);margin-top:4px;font-weight:700}
+.stat-card .t{font-size:11px;color:var(--muted);margin-top:6px;font-style:italic}
 
-.quran-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
-@media(max-width:600px){.quran-grid{grid-template-columns:repeat(5,1fr)}}
-.qpart{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;background:#f0e8d0;color:#8b7355;border:1px solid var(--line);font-family:"Amiri",serif;cursor:pointer;transition:all .18s ease}
-.qpart:hover{border-color:var(--gold)}
+/* ========== Works management (toggle + rename) ========== */
+.works-list{display:flex;flex-direction:column;gap:10px}
+.work-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;transition:all .25s var(--ease)}
+.work-row:hover{box-shadow:var(--shadow-sm);border-color:var(--gold-soft)}
+.work-row.disabled{opacity:.55;background:#fbf6e8}
+.work-row .ico{width:42px;height:42px;border-radius:10px;background:var(--bg-soft);display:grid;place-items:center;font-size:20px;color:var(--maroon)}
+.work-row .info{display:flex;flex-direction:column;gap:4px;min-width:0}
+.work-row .label-input{padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;color:var(--ink);background:transparent;outline:none;transition:all .2s ease;width:100%}
+.work-row .label-input:focus,.work-row .label-input:hover{background:#fff;border-color:var(--gold)}
+.work-row .meta{font-size:11.5px;color:var(--muted)}
+.work-row .count{font-family:"Amiri",serif;font-size:22px;font-weight:800;color:var(--gold-deep);background:var(--bg-soft);padding:6px 14px;border-radius:10px;min-width:60px;text-align:center}
+.work-row.disabled .count{color:var(--muted)}
+.work-row .controls{display:flex;align-items:center;gap:8px}
+.work-row .del{background:transparent;color:var(--danger);border:1px solid var(--line);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:14px;display:grid;place-items:center;transition:all .2s ease}
+.work-row .del:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+
+/* Toggle switch */
+.switch{position:relative;display:inline-block;width:48px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch .slider{position:absolute;cursor:pointer;inset:0;background:#d4cdb6;border-radius:26px;transition:.25s ease}
+.switch .slider::before{content:"";position:absolute;height:20px;width:20px;right:3px;top:3px;background:#fff;border-radius:50%;transition:.25s ease;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.switch input:checked + .slider{background:linear-gradient(180deg,#2a7a4b,var(--green))}
+.switch input:checked + .slider::before{right:25px}
+
+@media(max-width:640px){
+  .work-row{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .work-row .count{grid-column:1/-1;justify-self:start}
+  .work-row .controls{grid-column:2/3;justify-self:end}
+}
+
+/* ========== Add custom work ========== */
+.add-work-row{display:flex;gap:8px;margin-top:14px}
+.add-work-row input{flex:1}
+
+/* ========== Quran ========== */
+.quran-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;margin-top:14px}
+@media(max-width:720px){.quran-grid{grid-template-columns:repeat(6,1fr)}}
+@media(max-width:480px){.quran-grid{grid-template-columns:repeat(5,1fr)}}
+.qpart{aspect-ratio:1;background:#fff;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;cursor:pointer;font-weight:800;color:var(--ink-soft);transition:all .22s var(--ease);font-size:13px}
+.qpart:hover{border-color:var(--gold);transform:translateY(-2px)}
 .qpart.taken{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink);border-color:var(--gold)}
-.qpart.done{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#f0fff4;border-color:var(--green)}
+.qpart.done{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#fff;border-color:var(--green)}
 
-.legend{font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;gap:14px;flex-wrap:wrap}
-.legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-left:5px;vertical-align:middle}
+/* ========== Upload areas ========== */
+.upload-zone{border:2px dashed var(--gold-soft);border-radius:14px;padding:30px 20px;text-align:center;cursor:pointer;background:linear-gradient(180deg,#fffaef,#fdf3da);color:var(--ink-soft);transition:all .25s var(--ease)}
+.upload-zone:hover{border-color:var(--gold);background:#fff5dc;transform:translateY(-2px)}
+.upload-zone .ico{font-size:32px;color:var(--gold-deep);margin-bottom:8px}
+.upload-preview-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+.upload-preview-row img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--gold)}
 
-.upload{border:2px dashed var(--gold-soft);border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;background:#fdfaf3;transition:all .2s ease;margin-bottom:14px}
-.upload:hover{border-color:var(--gold);background:#fff7e0}
-.upload .ico{font-size:30px;color:var(--gold-deep);margin-bottom:6px}
-.preview-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.preview-grid img,.preview-grid video{width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid var(--gold)}
-
-.gallery-display{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:10px}
-.gallery-display .item{aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--line);position:relative;background:#000}
-.gallery-display .item img,.gallery-display .item video{width:100%;height:100%;object-fit:cover;display:block}
-.gallery-display .item .del{position:absolute;top:4px;left:4px;width:26px;height:26px;border-radius:6px;background:var(--danger);color:#fff;border:none;cursor:pointer;font-weight:800;font-size:12px;display:grid;place-items:center}
-
-.work-row{display:flex;justify-content:space-between;align-items:center;background:#fdfaf3;padding:12px 14px;border-radius:10px;border:1px solid var(--line);margin-bottom:8px}
-.work-name{font-weight:800;color:var(--maroon)}
-.work-val{font-family:"Amiri",serif;font-size:22px;font-weight:800;color:var(--gold-deep);margin:0 14px}
-.work-actions{display:flex;gap:6px}
-.work-actions button{width:34px;height:34px;border-radius:6px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:14px;display:grid;place-items:center}
-.work-actions .plus{color:var(--green);border-color:var(--green)}
-.work-actions .del{color:var(--danger);border-color:var(--danger)}
-
-.add-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.add-row input{flex:1;min-width:200px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;background:#fff}
+.gallery-display{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:14px}
+.gallery-display .item{aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--line);position:relative;background:var(--bg-soft);transition:all .25s var(--ease)}
+.gallery-display .item:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.gallery-display .item img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery-display .item .del{position:absolute;top:6px;left:6px;background:rgba(255,255,255,.9);color:var(--danger);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;font-weight:800;display:grid;place-items:center;transition:all .2s ease}
+.gallery-display .item .del:hover{background:var(--danger);color:#fff}
 
 .toasts{position:fixed;top:20px;left:20px;z-index:100;display:flex;flex-direction:column;gap:10px;max-width:340px}
-.toast{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);padding:13px 16px;border-radius:10px;box-shadow:var(--shadow-md);font-weight:600;font-size:14px;animation:slideIn .25s ease}
+.toast{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);padding:13px 16px;border-radius:12px;box-shadow:var(--shadow-md);font-weight:600;font-size:14px;animation:slideIn .3s var(--ease)}
 .toast.success{border-right-color:var(--green)}
 .toast.error{border-right-color:var(--danger)}
-@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
 
-.access-denied{text-align:center;padding:80px 20px}
-.access-denied h2{font-family:"Amiri",serif;color:var(--maroon-deep);font-size:28px;margin-bottom:10px}
-.access-denied p{color:var(--ink-soft);margin-bottom:20px}
-
-.progress-bar{height:6px;background:var(--line);border-radius:4px;margin:12px 0;overflow:hidden}
-.progress-fill{height:100%;width:0%;background:var(--gold);transition:width .2s ease}
-.compress-status{font-size:12px;color:var(--ink-soft);margin:8px 0;text-align:center}
+.empty-mini{padding:16px;text-align:center;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
-<div class="container" id="app">
+<div class="container">
   <div class="topbar">
     <div>
-      <h1 id="martyrTitle">لوحة المشرف</h1>
-      <div class="sub">تكريم الشهيد · إدارة المحتوى</div>
+      <h1 id="martyrTitle">🕊 لوحة الشهيد</h1>
+      <div class="sub">إدارة صفحة الشهيد · الأعمال · المعرض</div>
     </div>
-    <div class="right">
-      <a class="btn btn-gold" href="/standalone.html">↩ العودة للرئيسية</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <h3><span class="ico">📜</span>السيرة والوصف</h3>
-    <div class="field"><textarea id="descInput" rows="6" placeholder="اكتب سيرة الشهيد العطرة..."></textarea></div>
-    <button class="btn btn-primary" id="saveDescBtn">💾 حفظ السيرة</button>
-  </div>
-
-  <div class="card">
-    <h3><span class="ico">🖼</span>معرض الصور</h3>
-    <div class="upload" id="imgUploadArea">
-      <div class="ico">⬆</div>
-      <div>اضغط لاختيار صور (يمكن اختيار عدة صور)</div>
-      <small style="display:block;margin-top:4px;color:var(--muted)">JPG / PNG حتى 10 ميجابايت لكل صورة</small>
-      <input type="file" id="imgFile" accept="image/*" multiple style="display:none" />
-      <div class="preview-grid" id="imgPreview"></div>
-    </div>
-    <button class="btn btn-primary btn-block" id="uploadImagesBtn">📤 رفع الصور إلى المعرض</button>
-    <div class="gallery-display" id="galleryDisplay"></div>
-  </div>
-
-  <div class="card">
-    <h3><span class="ico">▶</span>معرض الفيديوهات</h3>
-    <div class="upload" id="vidUploadArea">
-      <div class="ico">⬆</div>
-      <div>اضغط لاختيار فيديو (MP4 / WEBM)</div>
-      <small style="display:block;margin-top:4px;color:var(--muted)">يتم ضغط الفيديو تلقائياً (الحد الأقصى بعد الضغط 15 ميجابايت)</small>
-      <input type="file" id="vidFile" accept="video/*" multiple style="display:none" />
-      <div class="preview-grid" id="vidPreview"></div>
-    </div>
-    <div id="compressStatus" class="compress-status"></div>
-    <div id="compressProgress" class="progress-bar" style="display:none"><div class="progress-fill"></div></div>
-    <button class="btn btn-primary btn-block" id="uploadVidsBtn">📤 رفع الفيديوهات (ضغط تلقائي)</button>
-    <div class="gallery-display" id="videosDisplay"></div>
-  </div>
-
-  <div class="card">
-    <h3><span class="ico">📊</span>إحصائيات الأعمال (انقر للزيادة)</h3>
-    <div class="stats" id="statsContainer"></div>
-  </div>
-
-  <div class="card">
-    <h3><span class="ico">➕</span>أعمال مخصصة</h3>
-    <div id="customWorksContainer"></div>
-    <div class="add-row">
-      <input type="text" id="newWorkName" placeholder="مثال: صلاة الوحشة، إهداء ثواب..." />
-      <button class="btn btn-primary" id="addCustomWorkBtn">➕ إضافة عمل</button>
+    <div style="display:flex;gap:10px">
+      <a class="btn btn-gold" href="standalone.html" target="_blank">👁 عرض الصفحة</a>
+      <a class="btn btn-ghost" href="standalone.html">↩ خروج</a>
     </div>
   </div>
 
+  <!-- Bio -->
   <div class="card">
-    <h3><span class="ico">📖</span>ختمة القرآن الكريم</h3>
-    <div class="legend">
-      <span><span class="dot" style="background:var(--green)"></span>مكتمل</span>
-      <span><span class="dot" style="background:var(--gold)"></span>محجوز / يُقرأ</span>
-      <span><span class="dot" style="background:#e8e0d0"></span>متاح</span>
+    <h2 class="section-h">📜 سيرة الشهيد <span class="sub">تظهر للزوار في صفحة الشهيد</span></h2>
+    <textarea id="descInput" rows="5" placeholder="اكتب سيرة الشهيد هنا..."></textarea>
+    <button class="btn btn-primary" id="saveDescBtn" style="margin-top:12px">💾 حفظ السيرة</button>
+  </div>
+
+  <!-- Stats display -->
+  <div class="card">
+    <h2 class="section-h">📊 إحصائيات الأعمال <span class="sub">عدد الأعمال المُهداة من الزوار (للعرض فقط)</span></h2>
+    <div class="stats-grid" id="statsContainer"></div>
+  </div>
+
+  <!-- Works management: enable/disable + rename -->
+  <div class="card">
+    <h2 class="section-h">🛠 إدارة الأعمال <span class="sub">فعّل/عطّل أو غيّر اسم أي عمل يظهر في صفحة الشهيد</span></h2>
+    <div style="background:#fff7df;border:1px solid var(--gold-soft);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13.5px;color:var(--ink-soft);line-height:1.7">
+      <b style="color:var(--gold-deep)">ℹ️ ملاحظة:</b> الأعمال المُعطّلة لن تظهر للزوار في صفحة الشهيد. تغيير الاسم يحدّث ما يظهر للزوار. التعديلات تُحفظ تلقائياً.
     </div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:10px">انقر على أي جزء لتغيير حالته (متاح → محجوز → مكتمل → متاح)</p>
+    <div class="works-list" id="worksList"></div>
+
+    <div style="margin-top:22px">
+      <h3 style="font-family:'Amiri',serif;color:var(--maroon-deep);font-size:17px;margin-bottom:10px">➕ إضافة عمل مخصّص جديد</h3>
+      <div class="add-work-row">
+        <input type="text" id="newWorkName" placeholder="مثال: تسبيح، استغفار، صدقة..." />
+        <button class="btn btn-primary" id="addCustomWorkBtn">➕ إضافة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quran -->
+  <div class="card">
+    <h2 class="section-h">📚 ختمة القرآن الكريم <span class="sub">٣٠ جزءاً · يُكمل الزوار الأجزاء</span></h2>
+    <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-bottom:8px">
+      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#fff;border:1px solid var(--line);border-radius:4px"></span> متاح</span>
+      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:var(--gold);border-radius:4px"></span> تم أخذه</span>
+      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:var(--green);border-radius:4px"></span> مكتمل</span>
+    </div>
     <div class="quran-grid" id="quranStatus"></div>
-    <button class="btn btn-danger" id="resetKhatmaBtn" style="margin-top:14px">🔄 إعادة تعيين الختمة بالكامل</button>
+    <button class="btn btn-danger" id="resetKhatmaBtn" style="margin-top:14px">♻️ إعادة تعيين الختمة</button>
+  </div>
+
+  <!-- Photo gallery -->
+  <div class="card">
+    <h2 class="section-h">📷 معرض صور الشهيد <span class="sub">الصور التي تظهر في "معرض الصور" داخل صفحة الشهيد</span></h2>
+    <div class="upload-zone" id="imgUploadArea">
+      <div class="ico">⬆</div>
+      <div>اضغط لاختيار صور من جهازك (يمكن اختيار عدة صور)</div>
+      <small style="color:var(--muted);font-size:12px;display:block;margin-top:4px">JPG / PNG حتى 10 ميجابايت لكل صورة</small>
+      <input type="file" id="imgFile" accept="image/*" multiple style="display:none" />
+      <div class="upload-preview-row" id="imgPreview"></div>
+    </div>
+    <button class="btn btn-primary" id="uploadImagesBtn" style="margin-top:14px">📤 رفع الصور إلى المعرض</button>
+    <div class="gallery-display" id="galleryDisplay"></div>
   </div>
 </div>
 
-<div class="card" style="border-right:4px solid var(--gold)">
-      <h3><span class="ico">📸</span>طلبات صور الشهداء (مجاناً) <span id="prCount" style="font-size:13px;color:var(--muted);font-weight:400"></span></h3>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:12px">طلبات نشر صور الشهداء المرسلة من الزوار — راجع الصور واعتمدها لتظهر في معرض الصور العام.</p>
-      <div id="photoReqList"></div>
-    </div>
-
-    <div class="card" style="border-right:4px solid var(--green)">
-      <h3><span class="ico">🖼</span>معرض الصور العام <span id="ppCount" style="font-size:13px;color:var(--muted);font-weight:400"></span></h3>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:12px">جميع الصور المنشورة في القسم العام بالصفحة الرئيسية.</p>
-      <div id="publicPhotoList"></div>
-    </div>
-
-  <div class="toasts" id="toasts"></div>
+<div class="toasts" id="toasts"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import {
-  getFirestore, doc, getDoc, updateDoc, increment, deleteField, arrayUnion, arrayRemove
+  getFirestore, doc, getDoc, updateDoc, deleteField, arrayUnion, arrayRemove
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -203,18 +214,19 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const API_BASE_PROD = "https://d5239521-1305-401d-a04a-62ba24fd99db-00-1o4fk5cd2uvy4.kirk.replit.dev";
-const UPLOAD_URL = `${API_BASE_PROD}/api/upload`;
+const onReplitDev = location.hostname.endsWith(".replit.dev") || location.hostname === "localhost";
+const UPLOAD_URL = (onReplitDev ? "" : API_BASE_PROD) + "/api/upload";
 
 const $ = id => document.getElementById(id);
 const url = new URLSearchParams(location.search);
 const martyrId = url.get("id");
 
 if (!martyrId){
-  document.body.innerHTML = `<div class="access-denied">
+  document.body.innerHTML = `<div class="container"><div class="card access-denied">
     <h2>⛔ غير مصرح بالدخول</h2>
     <p>الرجاء تسجيل الدخول من المنصة الرئيسية للوصول إلى لوحة الشهيد.</p>
-    <a class="btn btn-primary" href="/standalone.html">الذهاب إلى الرئيسية</a>
-  </div>`;
+    <a class="btn btn-primary" href="standalone.html" style="margin-top:16px">الذهاب إلى الرئيسية</a>
+  </div></div>`;
   throw new Error("no id");
 }
 
@@ -226,122 +238,22 @@ function toast(msg, type="success"){
   setTimeout(()=>t.remove(), 2800);
 }
 
-// Video compression function using FFmpeg.wasm (lightweight)
-async function compressVideo(file, onProgress) {
-  return new Promise((resolve, reject) => {
-    // If file is already small enough (< 12MB), return original
-    if (file.size < 12 * 1024 * 1024) {
-      onProgress && onProgress(100);
-      resolve(file);
-      return;
-    }
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 
-    const video = document.createElement('video');
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = 'metadata';
-    
-    const objectUrl = URL.createObjectURL(file);
-    video.src = objectUrl;
-    
-    let resolved = false;
-    
-    const cleanup = () => {
-      URL.revokeObjectURL(objectUrl);
-      video.removeAttribute('src');
-      video.load();
-    };
-    
-    video.onloadedmetadata = () => {
-      const duration = video.duration;
-      const targetMaxDuration = 180; // 3 minutes max for compression consideration
-      
-      // For longer videos, use more aggressive compression
-      const width = video.videoWidth > 854 ? 854 : video.videoWidth;
-      const height = (width * video.videoHeight) / video.videoWidth;
-      canvas.width = width;
-      canvas.height = height;
-      
-      const stream = canvas.captureStream(30);
-      const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: MediaRecorder.isTypeSupported('video/mp4;codecs=h264') ? 'video/mp4;codecs=h264' : 'video/webm',
-        videoBitsPerSecond: duration > 120 ? 800000 : 1500000 // 0.8 Mbps for long, 1.5 Mbps for short
-      });
-      
-      const chunks = [];
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunks.push(e.data);
-      };
-      
-      mediaRecorder.onstop = () => {
-        const compressedBlob = new Blob(chunks, { type: 'video/mp4' });
-        const compressedFile = new File([compressedBlob], file.name.replace(/\.[^/.]+$/, '.mp4'), { type: 'video/mp4' });
-        cleanup();
-        if (!resolved) {
-          resolved = true;
-          onProgress && onProgress(100);
-          resolve(compressedFile);
-        }
-      };
-      
-      mediaRecorder.onerror = (err) => {
-        cleanup();
-        if (!resolved) {
-          resolved = true;
-          reject(err);
-        }
-      };
-      
-      mediaRecorder.start(1000);
-      
-      video.play().then(() => {
-        const drawFrame = () => {
-          if (video.paused || video.ended || resolved) return;
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          const percent = (video.currentTime / duration) * 100;
-          onProgress && onProgress(Math.min(95, Math.floor(percent)));
-          requestAnimationFrame(drawFrame);
-        };
-        drawFrame();
-        
-        setTimeout(() => {
-          if (!resolved) {
-            video.pause();
-            mediaRecorder.stop();
-          }
-        }, duration * 1000);
-      }).catch(err => {
-        cleanup();
-        if (!resolved) {
-          resolved = true;
-          reject(err);
-        }
-      });
-    };
-    
-    video.onerror = () => {
-      cleanup();
-      if (!resolved) {
-        resolved = true;
-        reject(new Error("فشل تحميل الفيديو للضغط"));
-      }
-    };
-    
-    setTimeout(() => {
-      if (!resolved) {
-        cleanup();
-        resolved = true;
-        reject(new Error("انتهت مهلة ضغط الفيديو، جرب ملف أصغر"));
-      }
-    }, 60000);
-  });
-}
+/* Same DEFAULT_WORKS list as the public page */
+const DEFAULT_WORKS = [
+  { key:"fatiha",  label:"📖 الفاتحة",   icon:"📖", default:"سورة الفاتحة" },
+  { key:"salawat", label:"🌿 الصلوات",   icon:"🌿", default:"الصلاة على محمد وآل محمد" },
+  { key:"quran",   label:"📚 أجزاء القرآن", icon:"📚", default:"ختمة قرآن (اختر جزء)" },
+  { key:"prayers", label:"🤲 صلاة",       icon:"🤲", default:"صلاة" },
+  { key:"dua",     label:"📿 دعاء",       icon:"📿", default:"دعاء" },
+  { key:"ziyara",  label:"🕋 زيارة",      icon:"🕋", default:"زيارة" },
+];
 
+let martyrData = null;
+
+/* ========== Photo upload ========== */
 let pendingImgs = [];
-let pendingVids = [];
 
 $("imgUploadArea").addEventListener("click", e => { if (e.target.tagName !== "BUTTON") $("imgFile").click(); });
 $("imgFile").addEventListener("change", e => {
@@ -354,181 +266,98 @@ $("imgFile").addEventListener("change", e => {
   });
 });
 
-$("vidUploadArea").addEventListener("click", e => { if (e.target.tagName !== "BUTTON") $("vidFile").click(); });
-$("vidFile").addEventListener("change", e => {
-  pendingVids = Array.from(e.target.files);
-  const p = $("vidPreview"); p.innerHTML = "";
-  pendingVids.forEach(f => {
-    const v = document.createElement("video");
-    v.src = URL.createObjectURL(f); v.muted = true; v.playsInline = true;
-    p.appendChild(v);
-  });
-  if (pendingVids.length) {
-    $("compressStatus").textContent = `📹 تم اختيار ${pendingVids.length} فيديو، سيتم ضغطها قبل الرفع`;
-  } else {
-    $("compressStatus").textContent = "";
-  }
-});
-
 async function uploadFile(file, folder){
   const fd = new FormData();
   fd.append("file", file);
   fd.append("folder", folder);
-  
-  const res = await fetch(UPLOAD_URL, { 
-    method: "POST", 
-    body: fd,
-    mode: "cors"
-  });
-  
+  const res = await fetch(UPLOAD_URL, { method:"POST", body:fd, mode:"cors" });
   if (!res.ok){
     let msg = "فشل الرفع إلى التخزين السحابي";
-    try { 
-      const j = await res.json(); 
-      if (j?.error) msg = j.error;
-      else if (j?.message) msg = j.message;
-    } catch { 
-      msg = `خطأ ${res.status}: ${res.statusText}`;
-    }
+    try { const j = await res.json(); if (j?.error) msg = j.error; } catch { msg = `خطأ ${res.status}`; }
     throw new Error(msg);
   }
   const json = await res.json();
-  if (!json?.url) throw new Error("استجابة غير صالحة من الخادم");
+  if (!json?.url) throw new Error("استجابة غير صالحة");
   return json.url;
 }
 
 $("uploadImagesBtn").addEventListener("click", async () => {
-  if (!pendingImgs.length) return toast("الرجاء اختيار صور أولاً","error");
+  if (!pendingImgs.length) return toast("اختر صوراً أولاً","error");
   const btn = $("uploadImagesBtn"); btn.disabled = true; btn.textContent = "جاري الرفع...";
   const urls = [];
-  let successCount = 0;
   for (const f of pendingImgs){
-    try { 
-      const url = await uploadFile(f, `martyrs/${martyrId}/photos`);
-      urls.push(url);
-      successCount++;
-    } catch(e){ 
-      toast(`فشل رفع ${f.name}: ${e.message}`,"error"); 
-    }
+    try { urls.push(await uploadFile(f, `martyrs/${martyrId}/photos`)); }
+    catch(e){ toast(`فشل رفع ${f.name}: ${e.message}`,"error"); }
   }
   if (urls.length){
     await updateDoc(doc(db,"martyrs",martyrId), { gallery: arrayUnion(...urls) });
-    toast(`✅ تم رفع ${successCount} صورة`);
+    toast(`✅ تم رفع ${urls.length} صورة`);
     pendingImgs = []; $("imgFile").value = ""; $("imgPreview").innerHTML = "";
     loadData();
-  } else {
-    toast("لم يتم رفع أي صورة", "error");
   }
   btn.disabled = false; btn.textContent = "📤 رفع الصور إلى المعرض";
 });
 
-$("uploadVidsBtn").addEventListener("click", async () => {
-  if (!pendingVids.length) return toast("الرجاء اختيار فيديوهات أولاً","error");
-  const btn = $("uploadVidsBtn"); 
-  const progressBar = $("compressProgress");
-  const progressFill = progressBar.querySelector(".progress-fill");
-  const statusDiv = $("compressStatus");
-  
-  btn.disabled = true; 
-  btn.textContent = "جاري الضغط والرفع...";
-  progressBar.style.display = "block";
-  progressFill.style.width = "0%";
-  
-  const urls = [];
-  let successCount = 0;
-  
-  for (let idx = 0; idx < pendingVids.length; idx++) {
-    const f = pendingVids[idx];
-    statusDiv.textContent = `📀 جاري ضغط الفيديو ${idx+1}/${pendingVids.length}: ${f.name.substring(0, 30)}...`;
-    
-    try {
-      let fileToUpload = f;
-      
-      // Compress if larger than 12MB
-      if (f.size > 12 * 1024 * 1024) {
-        statusDiv.textContent = `⚙️ ضغط الفيديو ${idx+1}/${pendingVids.length}... قد يستغرق دقيقة`;
-        try {
-          fileToUpload = await compressVideo(f, (percent) => {
-            const totalPercent = ((idx + (percent/100)) / pendingVids.length) * 100;
-            progressFill.style.width = `${totalPercent}%`;
-          });
-          statusDiv.textContent = `✅ تم ضغط ${f.name.substring(0, 25)} (${(f.size/1024/1024).toFixed(1)}MB → ${(fileToUpload.size/1024/1024).toFixed(1)}MB)`;
-          toast(`تم ضغط ${f.name.substring(0, 20)} بنجاح`, "success");
-        } catch(compressErr) {
-          console.warn("Compression failed, using original:", compressErr);
-          toast(`تعذر ضغط ${f.name.substring(0, 20)}، سيتم رفعه بحجمه الأصلي`, "error");
-          fileToUpload = f;
-        }
-      } else {
-        statusDiv.textContent = `📹 رفع فيديو ${idx+1}/${pendingVids.length}: ${f.name.substring(0, 30)}...`;
-      }
-      
-      // Check file size after compression - if still too large (>25MB), reject
-      if (fileToUpload.size > 25 * 1024 * 1024) {
-        toast(`⚠️ الفيديو ${f.name.substring(0, 20)} كبير جداً (${(fileToUpload.size/1024/1024).toFixed(1)}MB)، الحد 25MB`, "error");
-        continue;
-      }
-      
-      const url = await uploadFile(fileToUpload, `martyrs/${martyrId}/videos`);
-      urls.push(url);
-      successCount++;
-      progressFill.style.width = `${((idx+1) / pendingVids.length) * 100}%`;
-      
-    } catch(e){ 
-      toast(`فشل رفع ${f.name.substring(0, 25)}: ${e.message}`,"error"); 
-    }
-  }
-  
-  if (urls.length){
-    await updateDoc(doc(db,"martyrs",martyrId), { videos: arrayUnion(...urls) });
-    toast(`✅ تم رفع ${successCount} فيديو`);
-    pendingVids = []; $("vidFile").value = ""; $("vidPreview").innerHTML = "";
-    statusDiv.textContent = "";
-    loadData();
-  } else {
-    toast("لم يتم رفع أي فيديو", "error");
-  }
-  
-  progressBar.style.display = "none";
-  progressFill.style.width = "0%";
-  btn.disabled = false; 
-  btn.textContent = "📤 رفع الفيديوهات (ضغط تلقائي)";
-});
-
 window.removeMedia = async function(field, url){
-  if (!confirm("هل تريد حذف هذا العنصر من المعرض؟")) return;
+  if (!confirm("حذف هذا العنصر من المعرض؟")) return;
   try {
     await updateDoc(doc(db,"martyrs",martyrId), { [field]: arrayRemove(url) });
+    toast("✅ تم الحذف"); loadData();
+  } catch(e){ toast("فشل الحذف","error"); }
+};
+
+/* ========== Works toggle / rename ========== */
+async function setWorkConfig(key, patch){
+  try {
+    const updates = {};
+    for (const [k,v] of Object.entries(patch)){
+      updates[`worksConfig.${key}.${k}`] = v;
+    }
+    await updateDoc(doc(db,"martyrs",martyrId), updates);
+  } catch(e){ toast("فشل الحفظ","error"); throw e; }
+}
+
+window.toggleWork = async function(key, enabled){
+  try {
+    await setWorkConfig(key, { enabled });
+    /* Update local cache so the row UI flips immediately on next render */
+    martyrData.worksConfig = martyrData.worksConfig || {};
+    martyrData.worksConfig[key] = martyrData.worksConfig[key] || {};
+    martyrData.worksConfig[key].enabled = enabled;
+    /* update the row's disabled class */
+    const row = document.querySelector(`.work-row[data-key="${key}"]`);
+    if (row) row.classList.toggle("disabled", !enabled);
+    toast(enabled ? "✅ تم تفعيل العمل" : "⏸ تم تعطيل العمل");
+  } catch(e){}
+};
+
+let renameDebounce = null;
+window.renameWork = function(key, label){
+  clearTimeout(renameDebounce);
+  renameDebounce = setTimeout(async ()=>{
+    try {
+      await setWorkConfig(key, { label });
+      martyrData.worksConfig = martyrData.worksConfig || {};
+      martyrData.worksConfig[key] = martyrData.worksConfig[key] || {};
+      martyrData.worksConfig[key].label = label;
+      toast("💾 تم حفظ الاسم");
+    } catch(e){}
+  }, 700);
+};
+
+window.delCustom = async function(name){
+  if (!confirm(`حذف العمل المخصّص "${name}" نهائياً؟ سيختفي من صفحة الشهيد ولن يُحتسب بعد الآن.`)) return;
+  try {
+    await updateDoc(doc(db,"martyrs",martyrId), {
+      [`customWorks.${name}`]: deleteField(),
+      [`worksConfig.custom_${name}`]: deleteField()
+    });
     toast("✅ تم الحذف");
     loadData();
   } catch(e){ toast("فشل الحذف","error"); }
 };
 
-window.incWork = async function(field){
-  try {
-    await updateDoc(doc(db,"martyrs",martyrId), { [field]: increment(1) });
-    toast(`✅ تم تسجيل الإهداء`);
-    loadData();
-  } catch(e){ toast("حدث خطأ","error"); }
-};
-
-window.incCustom = async function(key){
-  try {
-    await updateDoc(doc(db,"martyrs",martyrId), { [`customWorks.${key}`]: increment(1) });
-    toast(`✅ تم زيادة "${key}"`);
-    loadData();
-  } catch(e){ toast("خطأ","error"); }
-};
-
-window.delCustom = async function(key){
-  if (!confirm(`هل تريد حذف العمل "${key}"؟`)) return;
-  try {
-    await updateDoc(doc(db,"martyrs",martyrId), { [`customWorks.${key}`]: deleteField() });
-    toast("✅ تم الحذف");
-    loadData();
-  } catch(e){ toast("خطأ في الحذف","error"); }
-};
-
+/* ========== Quran ========== */
 window.toggleQuran = async function(part){
   try {
     const ref = doc(db,"martyrs",martyrId);
@@ -540,21 +369,25 @@ window.toggleQuran = async function(part){
     else if (cur === "taken") next = true;
     else next = "taken";
     const upd = { [`quranParts.${part}`]: next };
-    if (next === true) upd.quran = increment(1);
     await updateDoc(ref, upd);
     loadData();
-  } catch(e){ toast("خطأ في التحديث","error"); }
+  } catch(e){ toast("خطأ","error"); }
 };
 
 $("addCustomWorkBtn").addEventListener("click", async () => {
   const name = $("newWorkName").value.trim();
-  if (!name) return toast("الرجاء إدخال اسم العمل","error");
+  if (!name) return toast("أدخل اسم العمل","error");
   try {
-    await updateDoc(doc(db,"martyrs",martyrId), { [`customWorks.${name}`]: 0 });
+    /* Initialize counter and config — enabled by default with the entered label */
+    await updateDoc(doc(db,"martyrs",martyrId), {
+      [`customWorks.${name}`]: 0,
+      [`worksConfig.custom_${name}.enabled`]: true,
+      [`worksConfig.custom_${name}.label`]: name
+    });
     $("newWorkName").value = "";
     toast(`✅ تم إضافة "${name}"`);
     loadData();
-  } catch(e){ toast("خطأ في الإضافة","error"); }
+  } catch(e){ toast("فشل الإضافة","error"); }
 });
 
 $("saveDescBtn").addEventListener("click", async () => {
@@ -565,91 +398,128 @@ $("saveDescBtn").addEventListener("click", async () => {
 });
 
 $("resetKhatmaBtn").addEventListener("click", async () => {
-  if (!confirm("⚠️ هل أنت متأكد من إعادة تعيين الختمة بالكامل؟")) return;
+  if (!confirm("⚠️ إعادة تعيين الختمة بالكامل؟ سيُمحى تقدّم جميع الأجزاء.")) return;
   const reset = { quran: 0 };
   for (let i=1; i<=30; i++) reset[`quranParts.${i}`] = false;
   try {
     await updateDoc(doc(db,"martyrs",martyrId), reset);
     toast("✅ تمت إعادة تعيين الختمة");
     loadData();
-  } catch(e){ toast("فشل إعادة التعيين","error"); }
+  } catch(e){ toast("فشل","error"); }
 });
 
-function escapeHtml(s){ return String(s||"").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
-
+/* ========== Render ========== */
 async function loadData(){
   try {
     const snap = await getDoc(doc(db,"martyrs",martyrId));
     if (!snap.exists()){ toast("الشهيد غير موجود","error"); return; }
     const m = snap.data();
+    martyrData = m;
+
     $("martyrTitle").textContent = `🕊 الشهيد: ${m.name || ""}`;
-    $("descInput").value = m.description || "";
-
-    const baseStats = [
-      { f:"fatiha", l:"📖 الفاتحة" },
-      { f:"salawat", l:"🌿 الصلوات" },
-      { f:"quran", l:"📚 أجزاء القرآن" },
-      { f:"prayers", l:"🤲 صلاة" },
-      { f:"dua", l:"📿 دعاء" },
-      { f:"ziyara", l:"🕋 زيارة" },
-    ];
-    let html = baseStats.map(s => `
-      <div class="stat-card" onclick="incWork('${s.f}')">
-        <div class="v">${m[s.f]||0}</div>
-        <div class="l">${s.l}</div>
-        <div class="t">انقر للزيادة</div>
-      </div>
-    `).join("");
-    $("statsContainer").innerHTML = html;
-
-    const cw = m.customWorks || {};
-    const cwc = $("customWorksContainer");
-    if (Object.keys(cw).length === 0){
-      cwc.innerHTML = `<p style="color:var(--muted);text-align:center;padding:14px">لا توجد أعمال مخصصة بعد.</p>`;
-    } else {
-      cwc.innerHTML = Object.entries(cw).map(([k,v])=>`
-        <div class="work-row">
-          <div class="work-name">✨ ${escapeHtml(k)}</div>
-          <div class="work-val">${v}</div>
-          <div class="work-actions">
-            <button class="plus" onclick="incCustom('${escapeHtml(k)}')" title="زيادة">+</button>
-            <button class="del" onclick="delCustom('${escapeHtml(k)}')" title="حذف">🗑</button>
-          </div>
-        </div>`).join("");
+    if (document.activeElement !== $("descInput")) {
+      $("descInput").value = m.description || "";
     }
 
+    const cfg = m.worksConfig || {};
+    const cw = m.customWorks || {};
+
+    /* Stats — display only, no clickable increment */
+    $("statsContainer").innerHTML = DEFAULT_WORKS.map(s => {
+      const c = cfg[s.key] || {};
+      const lab = c.label || s.label;
+      const enabled = c.enabled !== false;
+      return `
+        <div class="stat-card" style="${enabled?'':'opacity:.55'}">
+          <div class="v">${m[s.key]||0}</div>
+          <div class="l">${escapeHtml(lab)}</div>
+          <div class="t">${enabled?'مُفعّل':'مُعطّل'}</div>
+        </div>`;
+    }).concat(Object.entries(cw).map(([k,v])=>{
+      const c = cfg["custom_"+k] || {};
+      const lab = c.label || k;
+      const enabled = c.enabled !== false;
+      return `
+        <div class="stat-card" style="border-right-color:var(--gold);${enabled?'':'opacity:.55'}">
+          <div class="v">${v||0}</div>
+          <div class="l">✨ ${escapeHtml(lab)}</div>
+          <div class="t">${enabled?'مُفعّل':'مُعطّل'}</div>
+        </div>`;
+    })).join("");
+
+    /* Works management list — toggle + rename for ALL works (defaults + custom) */
+    const rows = [];
+    for (const s of DEFAULT_WORKS){
+      const c = cfg[s.key] || {};
+      const enabled = c.enabled !== false;
+      const lab = c.label || s.default;
+      const count = m[s.key]||0;
+      rows.push(`
+        <div class="work-row ${enabled?'':'disabled'}" data-key="${s.key}">
+          <div class="ico">${s.icon}</div>
+          <div class="info">
+            <input class="label-input" type="text" value="${escapeHtml(lab)}" oninput="renameWork('${s.key}', this.value)" placeholder="اسم العمل كما يظهر للزوار" />
+            <div class="meta">معرّف: ${s.key} · افتراضي</div>
+          </div>
+          <div class="count">${count}</div>
+          <div class="controls">
+            <label class="switch" title="${enabled?'تعطيل':'تفعيل'} العمل">
+              <input type="checkbox" ${enabled?'checked':''} onchange="toggleWork('${s.key}', this.checked)" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      `);
+    }
+    for (const [k,v] of Object.entries(cw)){
+      const c = cfg["custom_"+k] || {};
+      const enabled = c.enabled !== false;
+      const lab = c.label || k;
+      rows.push(`
+        <div class="work-row ${enabled?'':'disabled'}" data-key="custom_${escapeHtml(k)}">
+          <div class="ico" style="background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)">✨</div>
+          <div class="info">
+            <input class="label-input" type="text" value="${escapeHtml(lab)}" oninput="renameWork('custom_${escapeHtml(k)}', this.value)" placeholder="اسم العمل كما يظهر للزوار" />
+            <div class="meta">معرّف: custom_${escapeHtml(k)} · مخصّص</div>
+          </div>
+          <div class="count">${v||0}</div>
+          <div class="controls">
+            <label class="switch" title="${enabled?'تعطيل':'تفعيل'} العمل">
+              <input type="checkbox" ${enabled?'checked':''} onchange="toggleWork('custom_${escapeHtml(k)}', this.checked)" />
+              <span class="slider"></span>
+            </label>
+            <button class="del" title="حذف العمل" onclick="delCustom('${escapeHtml(k)}')">🗑</button>
+          </div>
+        </div>
+      `);
+    }
+    $("worksList").innerHTML = rows.join("") || `<div class="empty-mini">لا توجد أعمال بعد</div>`;
+
+    /* Quran grid */
     const grid = $("quranStatus");
     const parts = m.quranParts || {};
     grid.innerHTML = "";
     for (let i=1; i<=30; i++){
       const cls = parts[i] === true ? "done" : (parts[i] === "taken" ? "taken" : "");
-      const txt = parts[i] === true ? `✓ ${i}` : i;
+      const txt = parts[i] === true ? `✓` : i;
       const d = document.createElement("div");
       d.className = `qpart ${cls}`;
       d.textContent = txt;
+      d.title = `الجزء ${i}`;
       d.onclick = () => toggleQuran(i);
       grid.appendChild(d);
     }
 
+    /* Gallery */
     const gallery = Array.isArray(m.gallery) ? m.gallery : [];
     $("galleryDisplay").innerHTML = gallery.length === 0
-      ? `<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:10px">لا توجد صور بعد</p>`
+      ? `<div class="empty-mini" style="grid-column:1/-1">لا توجد صور بعد</div>`
       : gallery.map(u => `
           <div class="item">
             <img src="${u}" alt="" />
-            <button class="del" onclick="removeMedia('gallery','${u}')">×</button>
+            <button class="del" onclick="removeMedia('gallery','${u}')" title="حذف">×</button>
           </div>`).join("");
 
-    const videos = Array.isArray(m.videos) ? m.videos : [];
-    $("videosDisplay").innerHTML = videos.length === 0
-      ? `<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:10px">لا توجد فيديوهات بعد</p>`
-      : videos.map(u => {
-          const url = typeof u === "string" ? u : (u?.url || "");
-          return `<div class="item">
-            <video src="${url}" muted playsinline></video>
-            <button class="del" onclick="removeMedia('videos','${url}')">×</button>
-          </div>`;
-        }).join("");
   } catch(e){
     console.error(e);
     toast("خطأ في تحميل البيانات","error");
@@ -657,107 +527,6 @@ async function loadData(){
 }
 
 loadData();
-
-
-  /* ============ Photo Requests management ============ */
-  window.approvePhotoReq = async function(id, data){
-    try{
-      await addDoc(collection(db,"martyrPhotos"), {
-        name: data.name||"", phone: data.phone||"", photo: data.photo||"",
-        createdAt: serverTimestamp()
-      });
-      await updateDoc(doc(db,"photoRequests",id), { status:"approved" });
-      toast("تم نشر الصورة في المعرض العام");
-      loadPhotoRequests(); loadPublicPhotosList();
-    }catch(e){ toast(e.message||"فشل","error"); }
-  };
-  window.rejectPhotoReq = async function(id){
-    if (!confirm("رفض هذا الطلب؟")) return;
-    await updateDoc(doc(db,"photoRequests",id), { status:"rejected" });
-    toast("تم رفض الطلب"); loadPhotoRequests();
-  };
-  window.deletePhotoReq = async function(id){
-    if (!confirm("حذف هذا الطلب نهائياً؟")) return;
-    await deleteDoc(doc(db,"photoRequests",id));
-    toast("تم الحذف"); loadPhotoRequests();
-  };
-  window.deletePublicPhoto = async function(id){
-    if (!confirm("حذف الصورة من المعرض العام؟")) return;
-    await deleteDoc(doc(db,"martyrPhotos",id));
-    toast("تم الحذف"); loadPublicPhotosList();
-  };
-
-  async function loadPhotoRequests(){
-    try{
-      const snap = await getDocs(query(collection(db,"photoRequests"), orderBy("createdAt","desc")));
-      const list = $("photoReqList");
-      $("prCount").textContent = snap.empty ? "(لا توجد طلبات)" : "(" + snap.size + ")";
-      if (snap.empty){ list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px">لا توجد طلبات حالياً</p>'; return; }
-      list.innerHTML = "";
-      snap.forEach(d=>{
-        const r = d.data();
-        const dateStr = r.createdAt?.toDate ? r.createdAt.toDate().toLocaleString('ar-EG') : '';
-        const statusBadge = r.status==='approved' ? '<span style="color:var(--green);font-weight:700">✅ مُعتمد</span>'
-          : r.status==='rejected' ? '<span style="color:#c00;font-weight:700">❌ مرفوض</span>'
-          : '<span style="color:var(--gold-deep);font-weight:700">⏳ قيد المراجعة</span>';
-        const div = document.createElement("div");
-        div.style.cssText = "background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start";
-        div.innerHTML = `
-          <img src="${r.photo}" style="width:120px;height:120px;object-fit:cover;border-radius:10px;border:1px solid var(--line);cursor:pointer" onclick="window.open('${r.photo}','_blank')"/>
-          <div style="flex:1;min-width:200px">
-            <div style="font-weight:700;font-size:16px;font-family:Amiri,serif">${r.name || '(بدون اسم)'}</div>
-            <div style="color:var(--muted);font-size:13px;margin-top:4px">📞 <a href="tel:${r.phone}" style="color:var(--maroon);text-decoration:none;font-weight:700">${r.phone || '-'}</a></div>
-            <div style="color:var(--muted);font-size:12px;margin-top:4px">${dateStr}</div>
-            <div style="margin-top:8px">${statusBadge}</div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            ${r.status!=='approved' ? `<button class="btn btn-primary" data-id="${d.id}" data-action="approve">✅ نشر</button>` : ''}
-            ${r.status!=='rejected' ? `<button class="btn btn-gold" data-id="${d.id}" data-action="reject">❌ رفض</button>` : ''}
-            <button class="btn btn-danger" data-id="${d.id}" data-action="delete">🗑 حذف</button>
-          </div>`;
-        // wire up buttons
-        div.querySelectorAll("button[data-action]").forEach(b=>{
-          const id=b.dataset.id, action=b.dataset.action;
-          b.addEventListener("click",()=>{
-            if(action==="approve") approvePhotoReq(id, r);
-            else if(action==="reject") rejectPhotoReq(id);
-            else if(action==="delete") deletePhotoReq(id);
-          });
-        });
-        list.appendChild(div);
-      });
-    }catch(e){ console.error(e); $("photoReqList").innerHTML='<p style="color:#c00">خطأ في التحميل: '+e.message+'</p>'; }
-  }
-
-  async function loadPublicPhotosList(){
-    try{
-      const snap = await getDocs(query(collection(db,"martyrPhotos"), orderBy("createdAt","desc")));
-      const list = $("publicPhotoList");
-      $("ppCount").textContent = snap.empty ? "(لا توجد صور)" : "(" + snap.size + ")";
-      if (snap.empty){ list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px">لا توجد صور منشورة</p>'; return; }
-      const grid = document.createElement("div");
-      grid.style.cssText="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px";
-      snap.forEach(d=>{
-        const p = d.data();
-        const item = document.createElement("div");
-        item.style.cssText="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative";
-        item.innerHTML = `
-          <img src="${p.photo}" style="width:100%;height:160px;object-fit:cover;cursor:pointer" onclick="window.open('${p.photo}','_blank')"/>
-          <div style="padding:8px">
-            <div style="font-weight:700;font-size:14px;font-family:Amiri,serif">${p.name || '(بدون اسم)'}</div>
-            <div style="color:var(--muted);font-size:11px">${p.phone || ''}</div>
-            <button class="btn btn-danger" style="width:100%;margin-top:8px;font-size:12px;padding:6px" data-id="${d.id}">🗑 حذف</button>
-          </div>`;
-        item.querySelector("button").addEventListener("click",()=>deletePublicPhoto(d.id));
-        grid.appendChild(item);
-      });
-      list.innerHTML = ""; list.appendChild(grid);
-    }catch(e){ console.error(e); $("publicPhotoList").innerHTML='<p style="color:#c00">خطأ: '+e.message+'</p>'; }
-  }
-
-  loadPhotoRequests();
-  loadPublicPhotosList();
-  
 </script>
 </body>
 </html>
