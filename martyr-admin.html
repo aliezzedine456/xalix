@@ -1,202 +1,539 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>لوحة الشهيد · منصة الشهداء</title>
-<link rel="icon" type="image/png" href="https://pub-651becc05c914db5ac262a9a1d4469ef.r2.dev/Untitled%20design%20(4)-Photoroom.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
-<style>
-:root{
-  --bg:#faf6ec;--bg-soft:#f3ecd9;--ink:#1f1810;--ink-soft:#5a4a31;--muted:#8a7551;
-  --line:#e6dcc4;--card:#fff;--gold:#c9a447;--gold-soft:#e6c878;--gold-deep:#8a6b1e;
-  --maroon:#6b0f1a;--maroon-deep:#4a0a13;--green:#1f5d3a;--danger:#a02334;
-  --shadow-sm:0 2px 8px rgba(31,24,16,.06);--shadow-md:0 8px 24px rgba(31,24,16,.08);
-  --shadow-lg:0 20px 50px rgba(31,24,16,.14);
-  --ease:cubic-bezier(.2,.9,.4,1.1);
-}
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Tajawal",sans-serif;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--ink);min-height:100vh;padding:18px;line-height:1.6}
-.container{max-width:1180px;margin:0 auto}
+  <html lang="ar" dir="rtl">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#6b0f1a" />
+  <title>لوحة الشهيد · منصة الشهداء</title>
+  <link rel="icon" type="image/png" href="https://pub-651becc05c914db5ac262a9a1d4469ef.r2.dev/Untitled%20design%20(4)-Photoroom.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+  :root{
+    --bg:#faf6ec;--bg-soft:#f3ecd9;--ink:#1f1810;--ink-soft:#5a4a31;--muted:#8a7551;
+    --line:#e6dcc4;--line-strong:#d6c9a3;--card:#fff;
+    --gold:#c9a447;--gold-soft:#e6c878;--gold-deep:#8a6b1e;--gold-faint:#f6ecc8;
+    --maroon:#6b0f1a;--maroon-deep:#4a0a13;--maroon-soft:#8a1d2a;
+    --green:#1f5d3a;--danger:#a02334;
+    --shadow-sm:0 2px 8px rgba(31,24,16,.06);
+    --shadow-md:0 8px 24px rgba(31,24,16,.08);
+    --shadow-lg:0 20px 50px rgba(31,24,16,.14);
+    --shadow-xl:0 28px 80px rgba(31,24,16,.22);
+    --ease:cubic-bezier(.2,.9,.4,1.1);
+    --ease-out:cubic-bezier(.16,1,.3,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:"Tajawal",sans-serif;-webkit-tap-highlight-color:transparent}
+  *::selection{background:var(--gold-soft);color:var(--ink)}
+  html,body{overscroll-behavior-x:none}
+  body{background:var(--bg);color:var(--ink);min-height:100vh;line-height:1.6;padding-bottom:40px}
+  body::before{content:"";position:fixed;inset:0;background:
+    radial-gradient(circle at 0% 0%, rgba(201,164,71,.08), transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(107,15,26,.06), transparent 50%);
+    pointer-events:none;z-index:-1}
+  .container{max-width:980px;margin:0 auto;padding:0 14px}
+  @media(min-width:720px){.container{padding:0 18px}}
 
-.access-denied{text-align:center;padding:60px 20px;color:var(--ink-soft)}
-.access-denied h2{color:var(--maroon-deep);font-family:"Amiri",serif;font-size:26px;margin-bottom:12px}
+  .access-denied{text-align:center;padding:60px 20px;color:var(--ink-soft);background:var(--card);border-radius:18px;margin-top:30px}
+  .access-denied h2{color:var(--maroon-deep);font-family:"Amiri",serif;font-size:26px;margin-bottom:12px}
 
-.topbar{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;border-radius:18px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;box-shadow:var(--shadow-md);border-bottom:3px solid var(--gold);animation:slideDown .55s var(--ease) both}
-@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
-.topbar h1{font-family:"Amiri",serif;font-size:24px;margin:0;font-weight:700;display:flex;align-items:center;gap:10px}
-.topbar .sub{font-size:12.5px;color:var(--gold-soft);margin-top:3px;letter-spacing:.02em}
+  /* ===== Buttons ===== */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:999px;border:1px solid transparent;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:all .25s var(--ease);text-decoration:none;white-space:nowrap}
+  .btn-primary{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;box-shadow:var(--shadow-sm)}
+  .btn-gold{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)}
+  .btn-ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
+  .btn-outline{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+  .btn-danger{background:var(--danger);color:#fff}
+  .btn-success{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#fff}
+  .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+  .btn:active{transform:translateY(0)}
+  .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+  .btn-block{width:100%;border-radius:14px}
+  .btn-sm{padding:7px 12px;font-size:12.5px}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:8px;border:1px solid transparent;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:all .25s var(--ease);text-decoration:none}
-.btn-primary{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;box-shadow:var(--shadow-sm)}
-.btn-gold{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)}
-.btn-ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
-.btn-danger{background:var(--danger);color:#fff}
-.btn-success{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#fff}
-.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
-.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.btn-block{width:100%}
-.btn-sm{padding:7px 12px;font-size:12.5px}
+  /* ===== Profile header (Twitter-style) ===== */
+  .profile-shell{position:relative;border-radius:24px;overflow:hidden;background:var(--card);box-shadow:var(--shadow-md);border:1px solid var(--line);margin:18px 0 22px;animation:hero-in .7s var(--ease-out) both}
+  @keyframes hero-in{from{opacity:0;transform:translateY(-14px) scale(.985)}to{opacity:1;transform:none}}
 
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:18px;box-shadow:var(--shadow-sm);animation:fadeIn .35s var(--ease) both}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.section-h{font-family:"Amiri",serif;font-size:22px;color:var(--maroon-deep);margin:0 0 18px;display:flex;align-items:center;gap:10px;padding-bottom:14px;border-bottom:1px dashed var(--line)}
-.section-h::before{content:"";width:6px;height:24px;background:linear-gradient(180deg,var(--gold),var(--maroon));border-radius:3px}
-.section-h .sub{font-family:"Tajawal",sans-serif;font-size:12.5px;color:var(--muted);font-weight:500;margin-right:auto}
+  .cover{position:relative;height:230px;background:
+    linear-gradient(135deg,var(--maroon-deep) 0%, var(--maroon) 45%, #8a1d2a 100%);
+    overflow:hidden}
+  .cover::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(ellipse at 20% 30%, rgba(201,164,71,.35), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(255,255,255,.08), transparent 50%);}
+  .cover::after{content:"";position:absolute;inset:0;background-image:
+    repeating-linear-gradient(45deg, transparent 0 12px, rgba(255,255,255,.04) 12px 13px);}
+  .cover .verse{display:none}
+  .cover .top-actions{position:absolute;top:12px;left:12px;display:flex;gap:8px;z-index:2}
+  .cover .top-actions .icon-btn{width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);color:#fff;display:grid;place-items:center;cursor:pointer;text-decoration:none;font-size:16px;transition:all .2s ease}
+  .cover .top-actions .icon-btn:hover{background:rgba(0,0,0,.5);transform:scale(1.06)}
 
-textarea,input[type=text]{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:14px;background:#fefcf6;color:var(--ink);outline:none;transition:all .22s var(--ease)}
-textarea:focus,input[type=text]:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,164,71,.18);background:#fff}
+  .profile-body{position:relative;padding:0 22px 22px}
+  @media(max-width:520px){.profile-body{padding:0 16px 18px}}
 
-/* ========== Stats display only — no incrementing ========== */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-.stat-card{background:#fdfaf3;border:1px solid var(--line);border-right:4px solid var(--maroon);border-radius:14px;padding:16px 14px;text-align:center;transition:all .25s var(--ease)}
-.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-sm);border-color:var(--gold-soft)}
-.stat-card .v{font-family:"Amiri",serif;font-size:30px;font-weight:800;color:var(--maroon)}
-.stat-card .l{font-size:13px;color:var(--ink-soft);margin-top:4px;font-weight:700}
-.stat-card .t{font-size:11px;color:var(--muted);margin-top:6px;font-style:italic}
-.upload-limit-warning{display:flex;align-items:center;gap:6px;color:var(--danger);font-size:13px;margin-top:8px;font-weight:700}
-/* ========== Works management (toggle + rename) ========== */
-.works-list{display:flex;flex-direction:column;gap:10px}
-.work-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;transition:all .25s var(--ease)}
-.work-row:hover{box-shadow:var(--shadow-sm);border-color:var(--gold-soft)}
-.work-row.disabled{opacity:.55;background:#fbf6e8}
-.work-row .ico{width:42px;height:42px;border-radius:10px;background:var(--bg-soft);display:grid;place-items:center;font-size:20px;color:var(--maroon)}
-.work-row .info{display:flex;flex-direction:column;gap:4px;min-width:0}
-.work-row .label-input{padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;color:var(--ink);background:transparent;outline:none;transition:all .2s ease;width:100%}
-.work-row .label-input:focus,.work-row .label-input:hover{background:#fff;border-color:var(--gold)}
-.work-row .meta{font-size:11.5px;color:var(--muted)}
-.work-row .count{font-family:"Amiri",serif;font-size:22px;font-weight:800;color:var(--gold-deep);background:var(--bg-soft);padding:6px 14px;border-radius:10px;min-width:60px;text-align:center}
-.work-row.disabled .count{color:var(--muted)}
-.work-row .controls{display:flex;align-items:center;gap:8px}
-.work-row .del{background:transparent;color:var(--danger);border:1px solid var(--line);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:14px;display:grid;place-items:center;transition:all .2s ease}
-.work-row .del:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+  .avatar-wrap{position:relative;margin-top:-62px;display:flex;justify-content:flex-end;align-items:flex-end;gap:14px}
+  @media(max-width:720px){.cover{height:200px}}
+  @media(max-width:480px){.cover{height:175px}}
+  .avatar{width:118px;height:118px;border-radius:50%;background:linear-gradient(135deg,var(--gold-soft),var(--gold));border:4px solid var(--card);display:grid;place-items:center;font-family:"Amiri",serif;font-size:46px;color:var(--maroon-deep);font-weight:800;box-shadow:0 8px 22px rgba(0,0,0,.22),0 2px 6px rgba(0,0,0,.1);position:relative;overflow:hidden;flex-shrink:0;animation:pop .6s .15s var(--ease) both;z-index:4;isolation:isolate}
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:1}
+  @keyframes pop{from{opacity:0;transform:scale(.6) rotate(-6deg)}to{opacity:1;transform:none}}
+  @media(max-width:520px){.avatar{width:96px;height:96px;font-size:38px;margin-top:0}.avatar-wrap{margin-top:-48px}}
 
-/* Toggle switch */
-.switch{position:relative;display:inline-block;width:48px;height:26px;flex-shrink:0}
-.switch input{opacity:0;width:0;height:0}
-.switch .slider{position:absolute;cursor:pointer;inset:0;background:#d4cdb6;border-radius:26px;transition:.25s ease}
-.switch .slider::before{content:"";position:absolute;height:20px;width:20px;right:3px;top:3px;background:#fff;border-radius:50%;transition:.25s ease;box-shadow:0 2px 4px rgba(0,0,0,.2)}
-.switch input:checked + .slider{background:linear-gradient(180deg,#2a7a4b,var(--green))}
-.switch input:checked + .slider::before{right:25px}
+  .profile-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-bottom:8px;flex:1}
+  @media(max-width:520px){.profile-actions{justify-content:flex-start;width:100%;margin-top:10px}}
 
-@media(max-width:640px){
-  .work-row{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
-  .work-row .count{grid-column:1/-1;justify-self:start}
-  .work-row .controls{grid-column:2/3;justify-self:end}
-}
+  .icon-tile{width:42px;height:42px;border-radius:14px;background:var(--card);border:1px solid var(--line-strong);color:var(--maroon-deep);font-size:18px;display:grid;place-items:center;cursor:pointer;transition:all .25s var(--ease);position:relative;overflow:hidden}
+  .icon-tile:hover{transform:translateY(-2px);border-color:var(--gold);background:#fff;box-shadow:var(--shadow-sm);color:var(--maroon)}
+  .icon-tile::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);right:50%;transform:translate(50%,4px);background:var(--ink);color:#fff8e1;font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:all .2s ease;z-index:10}
+  .icon-tile:hover::after{opacity:1;transform:translate(50%,0)}
 
-/* ========== Add custom work ========== */
-.add-work-row{display:flex;gap:8px;margin-top:14px}
-.add-work-row input{flex:1}
+  .profile-meta{margin-top:14px;animation:fade-up .6s .25s var(--ease-out) both}
+  @keyframes fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .profile-meta h1{font-family:"Amiri",serif;font-size:26px;color:var(--maroon-deep);font-weight:700;line-height:1.2;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .profile-meta h1 .verified{font-size:18px;color:var(--gold-deep)}
+  .profile-meta .handle{color:var(--muted);font-size:13.5px;margin-top:4px;font-weight:500}
+  .profile-meta .handle .dot{display:inline-block;width:5px;height:5px;background:var(--gold);border-radius:50%;margin:0 6px;vertical-align:middle}
+  .profile-meta .tag{display:inline-flex;align-items:center;gap:5px;background:var(--gold-faint);color:var(--gold-deep);padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:800;margin-top:8px;border:1px solid var(--gold-soft)}
 
-/* ========== Quran ========== */
-.quran-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;margin-top:14px}
-@media(max-width:720px){.quran-grid{grid-template-columns:repeat(6,1fr)}}
-@media(max-width:480px){.quran-grid{grid-template-columns:repeat(5,1fr)}}
-.qpart{aspect-ratio:1;background:#fff;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;cursor:pointer;font-weight:800;color:var(--ink-soft);transition:all .22s var(--ease);font-size:13px}
-.qpart:hover{border-color:var(--gold);transform:translateY(-2px)}
-.qpart.taken{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink);border-color:var(--gold)}
-.qpart.done{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#fff;border-color:var(--green)}
+  .profile-stats{display:flex;gap:22px;margin-top:14px;flex-wrap:wrap;animation:fade-up .6s .35s var(--ease-out) both}
+  .profile-stats .ps{cursor:default;transition:all .2s ease}
+  .profile-stats .ps b{font-weight:800;color:var(--ink);font-size:15px}
+  .profile-stats .ps span{color:var(--muted);font-size:13.5px;margin-right:5px}
+  .profile-stats .ps:hover b{color:var(--maroon)}
 
-/* ========== Upload areas ========== */
-.upload-zone{border:2px dashed var(--gold-soft);border-radius:14px;padding:30px 20px;text-align:center;cursor:pointer;background:linear-gradient(180deg,#fffaef,#fdf3da);color:var(--ink-soft);transition:all .25s var(--ease)}
-.upload-zone:hover{border-color:var(--gold);background:#fff5dc;transform:translateY(-2px)}
-.upload-zone .ico{font-size:32px;color:var(--gold-deep);margin-bottom:8px}
-.upload-preview-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
-.upload-preview-row img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid var(--gold)}
+  /* ===== Tabs ===== */
+  .tabs{position:sticky;top:0;background:var(--bg);z-index:5;display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--line);margin:0 -14px 18px;padding:0 14px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:14px 18px;font-weight:700;font-size:14px;color:var(--muted);cursor:pointer;border:none;background:transparent;font-family:inherit;position:relative;transition:all .2s ease;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+  .tab:hover{color:var(--maroon);background:rgba(201,164,71,.08)}
+  .tab.active{color:var(--maroon-deep)}
+  .tab.active::after{content:"";position:absolute;bottom:-1px;right:18px;left:18px;height:3px;background:linear-gradient(90deg,var(--gold),var(--maroon));border-radius:3px 3px 0 0;animation:tab-in .3s var(--ease)}
+  @keyframes tab-in{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
-.gallery-display{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:14px}
-.gallery-display .item{aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--line);position:relative;background:var(--bg-soft);transition:all .25s var(--ease)}
-.gallery-display .item:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
-.gallery-display .item img{width:100%;height:100%;object-fit:cover;display:block}
-.gallery-display .item .del{position:absolute;top:6px;left:6px;background:rgba(255,255,255,.9);color:var(--danger);border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:14px;font-weight:800;display:grid;place-items:center;transition:all .2s ease}
-.gallery-display .item .del:hover{background:var(--danger);color:#fff}
+  .tab-panel{display:none;animation:panel-in .4s var(--ease-out) both}
+  .tab-panel.active{display:block}
+  @keyframes panel-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-.toasts{position:fixed;top:20px;left:20px;z-index:100;display:flex;flex-direction:column;gap:10px;max-width:340px}
-.toast{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);padding:13px 16px;border-radius:12px;box-shadow:var(--shadow-md);font-weight:600;font-size:14px;animation:slideIn .3s var(--ease)}
-.toast.success{border-right-color:var(--green)}
-.toast.error{border-right-color:var(--danger)}
-@keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+  /* ===== Cards ===== */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:14px;box-shadow:var(--shadow-sm);transition:all .25s var(--ease)}
+  .card:hover{box-shadow:var(--shadow-md)}
+  @media(max-width:520px){.card{padding:18px 16px;border-radius:16px}}
 
-.empty-mini{padding:16px;text-align:center;color:var(--muted);font-size:13px}
-</style>
-</head>
-<body>
-<div class="container">
-  <div class="topbar">
-    <div>
-      <h1 id="martyrTitle">🕊 لوحة الشهيد</h1>
-      <div class="sub">إدارة صفحة الشهيد · الأعمال · المعرض</div>
+  .section-h{font-family:"Amiri",serif;font-size:20px;color:var(--maroon-deep);margin:0 0 16px;display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px dashed var(--line);font-weight:700}
+  .section-h::before{content:"";width:5px;height:22px;background:linear-gradient(180deg,var(--gold),var(--maroon));border-radius:3px}
+  .section-h .sub{font-family:"Tajawal",sans-serif;font-size:12px;color:var(--muted);font-weight:500;margin-right:auto;text-align:left}
+
+  textarea,input[type=text]{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;font-family:inherit;font-size:14px;background:#fefcf6;color:var(--ink);outline:none;transition:all .22s var(--ease)}
+  textarea:focus,input[type=text]:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,164,71,.18);background:#fff}
+  textarea{resize:vertical;min-height:90px;font-family:"Amiri",serif;font-size:15px;line-height:1.8}
+
+  /* ===== Stats ===== */
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+  @media(max-width:480px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+  .stat-card{background:linear-gradient(180deg,#fdfaf3,#f9f1da);border:1px solid var(--line);border-right:4px solid var(--maroon);border-radius:14px;padding:14px 12px;text-align:center;transition:all .3s var(--ease);position:relative;overflow:hidden;animation:fade-up .4s var(--ease) both}
+  .stat-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%, rgba(201,164,71,.15) 100%);opacity:0;transition:opacity .3s ease}
+  .stat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--gold-soft)}
+  .stat-card:hover::before{opacity:1}
+  .stat-card .v{font-family:"Amiri",serif;font-size:30px;font-weight:800;color:var(--maroon);position:relative;line-height:1.1}
+  .stat-card .l{font-size:12.5px;color:var(--ink-soft);margin-top:4px;font-weight:700;position:relative}
+  .stat-card .t{font-size:10.5px;color:var(--muted);margin-top:5px;font-style:italic;position:relative}
+  .upload-limit-warning{display:flex;align-items:center;gap:6px;color:var(--danger);font-size:13px;margin-top:8px;font-weight:700;width:100%;justify-content:center}
+
+  /* ===== Works ===== */
+  .works-list{display:flex;flex-direction:column;gap:8px}
+  .work-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;transition:all .25s var(--ease);animation:fade-up .35s var(--ease) both}
+  .work-row:hover{box-shadow:var(--shadow-sm);border-color:var(--gold-soft);transform:translateX(-2px)}
+  .work-row.disabled{opacity:.55;background:#fbf6e8}
+  .work-row .ico{width:40px;height:40px;border-radius:12px;background:var(--bg-soft);display:grid;place-items:center;font-size:20px;color:var(--maroon)}
+  .work-row .info{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .work-row .label-input{padding:7px 10px;border:1px solid transparent;border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;color:var(--ink);background:transparent;outline:none;transition:all .2s ease;width:100%}
+  .work-row .label-input:focus,.work-row .label-input:hover{background:#fff;border-color:var(--gold)}
+  .work-row .meta{font-size:11px;color:var(--muted)}
+  .work-row .count{font-family:"Amiri",serif;font-size:20px;font-weight:800;color:var(--gold-deep);background:var(--bg-soft);padding:5px 12px;border-radius:10px;min-width:54px;text-align:center}
+  .work-row.disabled .count{color:var(--muted)}
+  .work-row .controls{display:flex;align-items:center;gap:6px}
+  .work-row .del{background:transparent;color:var(--danger);border:1px solid var(--line);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:13px;display:grid;place-items:center;transition:all .2s ease}
+  .work-row .del:hover{background:var(--danger);color:#fff;border-color:var(--danger);transform:scale(1.05)}
+
+  .switch{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0}
+  .switch input{opacity:0;width:0;height:0}
+  .switch .slider{position:absolute;cursor:pointer;inset:0;background:#d4cdb6;border-radius:24px;transition:.25s ease}
+  .switch .slider::before{content:"";position:absolute;height:18px;width:18px;right:3px;top:3px;background:#fff;border-radius:50%;transition:.25s ease;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+  .switch input:checked + .slider{background:linear-gradient(180deg,#2a7a4b,var(--green))}
+  .switch input:checked + .slider::before{right:23px}
+
+  @media(max-width:640px){
+    .work-row{grid-template-columns:auto 1fr auto;grid-template-areas:"ico info count" "ico info controls";row-gap:6px}
+    .work-row .ico{grid-area:ico}
+    .work-row .info{grid-area:info}
+    .work-row .count{grid-area:count;font-size:17px;padding:3px 10px;min-width:46px}
+    .work-row .controls{grid-area:controls;justify-self:end}
+  }
+
+  .add-work-row{display:flex;gap:8px;margin-top:14px}
+  .add-work-row input{flex:1}
+  @media(max-width:520px){.add-work-row{flex-direction:column}}
+
+  /* ===== Quran ===== */
+  .quran-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:7px;margin-top:14px}
+  @media(max-width:720px){.quran-grid{grid-template-columns:repeat(6,1fr)}}
+  @media(max-width:480px){.quran-grid{grid-template-columns:repeat(5,1fr)}}
+  .qpart{aspect-ratio:1;background:#fff;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;cursor:pointer;font-weight:800;color:var(--ink-soft);transition:all .22s var(--ease);font-size:13px;animation:fade-up .3s var(--ease) both}
+  .qpart:hover{border-color:var(--gold);transform:translateY(-2px) scale(1.04);box-shadow:var(--shadow-sm)}
+  .qpart.taken{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink);border-color:var(--gold)}
+  .qpart.done{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#fff;border-color:var(--green)}
+  .legend-row{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft)}
+  .legend-row .lg{display:inline-flex;align-items:center;gap:6px}
+  .legend-row .swatch{width:14px;height:14px;border-radius:4px;border:1px solid var(--line)}
+
+  /* ===== Upload ===== */
+  .upload-zone{border:2px dashed var(--gold-soft);border-radius:14px;padding:26px 16px;text-align:center;cursor:pointer;background:linear-gradient(180deg,#fffaef,#fdf3da);color:var(--ink-soft);transition:all .25s var(--ease)}
+  .upload-zone:hover{border-color:var(--gold);background:#fff5dc;transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+  .upload-zone .ico{font-size:32px;color:var(--gold-deep);margin-bottom:8px}
+  .upload-preview-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+  .upload-preview-row img{width:74px;height:74px;object-fit:cover;border-radius:10px;border:2px solid var(--gold);animation:fade-up .3s var(--ease) both}
+
+  .gallery-display{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:14px}
+  @media(max-width:480px){.gallery-display{grid-template-columns:repeat(3,1fr)}}
+  .gallery-display .item{aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--line);position:relative;background:var(--bg-soft);transition:all .3s var(--ease);animation:fade-up .35s var(--ease) both}
+  .gallery-display .item:hover{transform:translateY(-3px) scale(1.02);box-shadow:var(--shadow-md);border-color:var(--gold)}
+  .gallery-display .item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+  .gallery-display .item:hover img{transform:scale(1.06)}
+  .gallery-display .item .del{position:absolute;top:6px;left:6px;background:rgba(255,255,255,.92);color:var(--danger);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;font-weight:800;display:grid;place-items:center;transition:all .2s ease;backdrop-filter:blur(4px)}
+  .gallery-display .item .del:hover{background:var(--danger);color:#fff;transform:scale(1.1)}
+
+  /* ===== Toasts ===== */
+  .toasts{position:fixed;top:18px;left:18px;z-index:1000;display:flex;flex-direction:column;gap:10px;max-width:340px;pointer-events:none}
+  .toast{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);padding:13px 16px;border-radius:12px;box-shadow:var(--shadow-md);font-weight:600;font-size:14px;animation:toastIn .35s var(--ease);pointer-events:auto}
+  .toast.success{border-right-color:var(--green)}
+  .toast.error{border-right-color:var(--danger)}
+  @keyframes toastIn{from{opacity:0;transform:translateX(-30px) scale(.95)}to{opacity:1;transform:translateX(0) scale(1)}}
+  @media(max-width:480px){.toasts{top:12px;left:12px;right:12px;max-width:none}}
+
+  .empty-mini{padding:18px;text-align:center;color:var(--muted);font-size:13px;font-style:italic}
+
+  /* ===== Info fields ===== */
+  .info-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.info-fields{grid-template-columns:1fr}}
+  .info-fields .field label{display:block;margin-bottom:8px;font-weight:700;font-size:13px;color:var(--ink-soft)}
+  .info-fields .field.full{grid-column:1/-1}
+
+  /* ===== QR modal ===== */
+  .qr-modal-overlay{position:fixed;inset:0;background:rgba(31,24,16,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:999;padding:20px;animation:fadeIn .25s ease}
+  .qr-modal-overlay.open{display:flex}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .qr-modal{background:var(--card);border-radius:24px;max-width:440px;width:100%;padding:26px 22px;box-shadow:var(--shadow-xl);position:relative;animation:modalIn .4s var(--ease-out)}
+  @keyframes modalIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:none}}
+  .qr-modal .close-x{position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:50%;background:var(--bg-soft);border:1px solid var(--line);cursor:pointer;font-size:18px;color:var(--ink-soft);display:grid;place-items:center;transition:all .2s ease}
+  .qr-modal .close-x:hover{background:var(--danger);color:#fff;border-color:var(--danger);transform:rotate(90deg)}
+  .qr-modal h3{font-family:"Amiri",serif;color:var(--maroon-deep);font-size:22px;text-align:center;margin-bottom:6px;font-weight:700}
+  .qr-modal .qr-sub{text-align:center;color:var(--ink-soft);font-size:13px;margin-bottom:18px;line-height:1.7}
+  .qr-modal .qr-box{width:280px;height:280px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;place-items:center;margin:0 auto 16px;box-shadow:var(--shadow-sm);max-width:100%;aspect-ratio:1}
+  .qr-modal .qr-box img{max-width:100%;max-height:100%;display:block}
+  .qr-modal .qr-link{display:block;background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:11.5px;color:var(--maroon-deep);word-break:break-all;direction:ltr;text-align:left;font-family:monospace;margin-bottom:14px}
+  .qr-modal .qr-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .qr-modal .qr-actions .btn{font-size:12.5px;padding:10px 8px;border-radius:12px}
+  @media(max-width:420px){.qr-modal .qr-actions{grid-template-columns:1fr}.qr-modal .qr-box{width:240px;height:240px}}
+
+  /* ===== Note box ===== */
+  .note-box{background:#fff7df;border:1px solid var(--gold-soft);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--ink-soft);line-height:1.7;display:flex;gap:10px;align-items:flex-start}
+  .note-box .nb-ico{font-size:18px;flex-shrink:0;line-height:1.3}
+  .note-box b{color:var(--gold-deep)}
+
+  /* ===== Custom add subhead ===== */
+  .add-head{font-family:'Amiri',serif;color:var(--maroon-deep);font-size:16px;margin:18px 0 8px;font-weight:700;display:flex;align-items:center;gap:6px}
+
+  /* ===== Cover image (uploaded) ===== */
+  .cover.has-photo{background-color:#1a0509}
+  .cover .cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block}
+  .cover.has-photo::before{background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 60%,rgba(0,0,0,.28) 100%);z-index:1;pointer-events:none}
+  .cover.has-photo::after{display:none}
+  .cover.has-photo .top-actions{z-index:3}
+  .cover .top-actions, .cover .change-cover-btn{z-index:3}
+  .cover .change-cover-btn{position:absolute;bottom:12px;left:14px;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);color:#fff;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;z-index:3;transition:all .2s ease}
+  .cover .change-cover-btn:hover{background:rgba(0,0,0,.65);transform:translateY(-1px)}
+  .cover .change-cover-btn svg{width:14px;height:14px}
+
+  /* ===== Avatar edit button ===== */
+  .avatar{cursor:default}
+  .avatar-edit-btn{position:absolute;bottom:4px;left:4px;width:34px;height:34px;border-radius:50%;background:linear-gradient(180deg,var(--gold),#a8852f);border:3px solid var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm);transition:all .2s ease;z-index:3}
+  .avatar-edit-btn:hover{transform:scale(1.1) rotate(-6deg)}
+  .avatar-edit-btn svg{width:14px;height:14px}
+  @media(max-width:520px){.avatar-edit-btn{width:30px;height:30px;border-width:2px}.avatar-edit-btn svg{width:12px;height:12px}}
+
+  /* ===== Crop modal ===== */
+  .crop-overlay{position:fixed;inset:0;background:rgba(15,8,4,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:140;padding:18px;animation:fade .25s ease}
+  .crop-overlay.open{display:flex}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .crop-modal{background:var(--card);border-radius:22px;max-width:460px;width:100%;padding:20px;box-shadow:var(--shadow-md);max-height:94vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .crop-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+  .crop-head h3{font-family:'Amiri',serif;color:var(--maroon-deep);font-size:18px;margin:0;font-weight:700}
+  .crop-close{width:32px;height:32px;border-radius:50%;background:var(--bg-soft);border:1px solid var(--line);cursor:pointer;font-size:14px;color:var(--ink-soft);display:grid;place-items:center;transition:all .2s ease}
+  .crop-close:hover{background:var(--maroon);color:#fff;border-color:var(--maroon);transform:rotate(90deg)}
+  .crop-stage{position:relative;width:100%;background:#1a0e08;border-radius:14px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+  .crop-stage.circle{aspect-ratio:1}
+  .crop-stage.cover{aspect-ratio:16/5}
+  .crop-stage canvas{display:block;width:100%;height:100%}
+  .crop-stage .crop-mask{position:absolute;inset:0;pointer-events:none;box-shadow:0 0 0 9999px rgba(0,0,0,.55) inset}
+  .crop-stage.circle .crop-mask{border-radius:50%;margin:8%}
+  .crop-stage.cover .crop-mask{border:2px dashed rgba(255,255,255,.35)}
+  .crop-controls{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .crop-zoom-row{display:flex;align-items:center;gap:10px;background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .crop-zoom-row .lbl{font-size:12px;color:var(--ink-soft);font-weight:700;flex-shrink:0}
+  .crop-zoom-row input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:5px;border-radius:5px;background:linear-gradient(90deg,var(--gold-soft),var(--gold));outline:none;direction:ltr}
+  .crop-zoom-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--maroon);border:2px solid #fff;cursor:pointer;box-shadow:var(--shadow-sm)}
+  .crop-zoom-row input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--maroon);border:2px solid #fff;cursor:pointer;box-shadow:var(--shadow-sm)}
+  .crop-zoom-row .val{font-family:'Amiri',serif;font-weight:800;color:var(--maroon-deep);min-width:40px;text-align:left}
+  .crop-hint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:2px}
+  .crop-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+  .crop-actions .btn{width:100%}
+  @media(max-width:480px){.crop-modal{padding:16px;border-radius:18px}.crop-actions{grid-template-columns:1fr}}
+
+  /* ===== Mobile section nav (horizontal scroll, snap, indicator) ===== */
+  .tabs{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scroll-padding-right:14px;scroll-padding-left:14px;position:relative}
+  .tab{scroll-snap-align:start;flex-shrink:0}
+  @media(max-width:720px){
+    .tabs{margin:0 -14px 14px;padding:0 14px;gap:4px;background:linear-gradient(to left,var(--bg) 0%,var(--bg) 92%,rgba(250,246,236,0) 100%),linear-gradient(to right,var(--bg) 0%,var(--bg) 92%,rgba(250,246,236,0) 100%);background-position:right center,left center;background-size:32px 100%,32px 100%;background-repeat:no-repeat;background-color:var(--bg)}
+    .tab{padding:12px 14px;font-size:13.5px;border-radius:10px 10px 0 0;background:rgba(255,255,255,.5);border:1px solid var(--line);border-bottom:none;margin-bottom:-1px}
+    .tab.active{background:var(--card);color:var(--maroon-deep);border-color:var(--gold-soft)}
+    .tab.active::after{right:8px;left:8px;height:3px;border-radius:3px 3px 0 0}
+  }
+  @media(max-width:480px){.tab{font-size:12.5px;padding:10px 12px;gap:4px}}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  </style>
+  </head>
+  <body>
+  <div class="container">
+
+    <!-- ============ Profile Header ============ -->
+    <div class="profile-shell">
+      <div class="cover" id="profileCover">
+        <div class="top-actions">
+          <a class="icon-btn" href="standalone.html" title="خروج">↩</a>
+          <a class="icon-btn" href="standalone.html" target="_blank" title="عرض الصفحة العامة">👁</a>
+        </div>
+        <button class="change-cover-btn" id="changeCoverBtn" title="تغيير صورة الغلاف">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          تغيير الغلاف
+        </button>
+        <input type="file" id="coverFileInput" accept="image/*" hidden/>
+      </div>
+
+      <div class="profile-body">
+        <div class="avatar-wrap">
+          <div class="avatar" id="profileAvatar">🕊
+            <button class="avatar-edit-btn" id="changeAvatarBtn" title="تغيير الصورة الشخصية" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </button>
+          </div>
+          <input type="file" id="avatarFileInput" accept="image/*" hidden/>
+          <div class="profile-actions">
+            <button class="icon-tile" id="openQrBtn" data-tip="رمز QR" title="رمز QR لصفحة الشهيد" aria-label="رمز QR"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M20 14v3"/><path d="M14 20h3"/><path d="M20 20h1"/><path d="M6 6h1v1H6z"/><path d="M17 6h1v1h-1z"/><path d="M6 17h1v1H6z"/></svg></button>
+            <button class="icon-tile" id="copyLinkBtn" data-tip="نسخ الرابط" title="نسخ رابط الصفحة">🔗</button>
+            <button class="icon-tile" id="shareBtn" data-tip="مشاركة" title="مشاركة">↗</button>
+          </div>
+        </div>
+
+        <div class="profile-meta">
+          <h1><span id="martyrTitle">🕊 لوحة الشهيد</span></h1>
+          <div class="handle">لوحة إدارة <span class="dot"></span> الأعمال · المعرض · الختمة</div>
+          <div class="tag">⚙️ صلاحية المشرف</div>
+
+          <div class="profile-stats" id="profileStats">
+            <div class="ps"><b id="psWorks">0</b><span>عمل مهدى</span></div>
+            <div class="ps"><b id="psQuran">0/30</b><span>أجزاء القرآن</span></div>
+            <div class="ps"><b id="psPhotos">0</b><span>صورة في المعرض</span></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div style="display:flex;gap:10px">
-      <a class="btn btn-gold" href="standalone.html" target="_blank">👁 عرض الصفحة</a>
-      <a class="btn btn-ghost" href="standalone.html">↩ خروج</a>
-    </div>
+
+    <!-- ============ Tabs ============ -->
+    <nav class="tabs" id="tabsNav">
+      <button class="tab active" data-tab="bio">📜 السيرة والمعلومات</button>
+      <button class="tab" data-tab="works">🛠 الأعمال</button>
+      <button class="tab" data-tab="quran">📚 الختمة</button>
+      <button class="tab" data-tab="gallery">📷 المعرض</button>
+    </nav>
+
+    <!-- ============ Bio panel ============ -->
+    <section class="tab-panel active" data-panel="bio">
+      <div class="card">
+        <h2 class="section-h">📜 سيرة الشهيد <span class="sub">تظهر للزوار في صفحة الشهيد</span></h2>
+        <textarea id="descInput" rows="5" placeholder="اكتب سيرة الشهيد هنا..."></textarea>
+        <button class="btn btn-primary btn-block" id="saveDescBtn" style="margin-top:12px">💾 حفظ السيرة</button>
+      </div>
+
+      <div class="card">
+        <h2 class="section-h">🕊 معلومات الشهيد <span class="sub">تواريخ ومكان الاستشهاد</span></h2>
+        <div class="info-fields">
+          <div class="field">
+            <label>تاريخ الميلاد</label>
+            <input type="text" id="birthDateInput" placeholder="مثال: ١٥ رجب ١٤٠٠ هـ / ١٩٨٠م" />
+          </div>
+          <div class="field">
+            <label>تاريخ الاستشهاد</label>
+            <input type="text" id="deathDateInput" placeholder="مثال: ٣ شعبان ١٤٤٥ هـ" />
+          </div>
+          <div class="field full">
+            <label>مكان الاستشهاد / مثوى الجسد الطاهر</label>
+            <input type="text" id="deathPlaceInput" placeholder="مثال: قرية كذا — مدفون في مقبرة كذا" />
+          </div>
+          <div class="field full">
+            <label>تفاصيل إضافية عن الشهيد</label>
+            <textarea id="detailsInput" rows="4" placeholder="ظروف الاستشهاد، مشاركاته، عائلته، أو أي تفاصيل تليق بذكراه..."></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block" id="saveInfoBtn" style="margin-top:14px">💾 حفظ معلومات الشهيد</button>
+      </div>
+    </section>
+
+    <!-- ============ Works panel ============ -->
+    <section class="tab-panel" data-panel="works">
+      <div class="card">
+        <h2 class="section-h">📊 إحصائيات الأعمال <span class="sub">عدد الأعمال المُهداة (للعرض فقط)</span></h2>
+        <div class="stats-grid" id="statsContainer"></div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-h">🛠 إدارة الأعمال <span class="sub">فعّل/عطّل أو غيّر اسم أي عمل</span></h2>
+        <div class="note-box">
+          <div class="nb-ico">ℹ️</div>
+          <div><b>ملاحظة:</b> الأعمال المُعطّلة لن تظهر للزوار في صفحة الشهيد. تغيير الاسم يحدّث ما يظهر للزوار. التعديلات تُحفظ تلقائياً.</div>
+        </div>
+        <div class="works-list" id="worksList"></div>
+
+        <div class="add-head">➕ إضافة عمل مخصّص جديد</div>
+        <div class="add-work-row">
+          <input type="text" id="newWorkName" placeholder="مثال: تسبيح، استغفار، صدقة..." />
+          <button class="btn btn-primary" id="addCustomWorkBtn">➕ إضافة</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Quran panel ============ -->
+    <section class="tab-panel" data-panel="quran">
+      <div class="card">
+        <h2 class="section-h">📚 ختمة القرآن الكريم <span class="sub">٣٠ جزءاً</span></h2>
+        <div class="legend-row">
+          <span class="lg"><span class="swatch"></span> متاح</span>
+          <span class="lg"><span class="swatch" style="background:var(--gold);border-color:var(--gold)"></span> تم أخذه</span>
+          <span class="lg"><span class="swatch" style="background:var(--green);border-color:var(--green)"></span> مكتمل</span>
+        </div>
+        <div class="quran-grid" id="quranStatus"></div>
+        <button class="btn btn-danger btn-block" id="resetKhatmaBtn" style="margin-top:16px">♻️ إعادة تعيين الختمة</button>
+      </div>
+    </section>
+
+    <!-- ============ Gallery panel ============ -->
+    <section class="tab-panel" data-panel="gallery">
+      <div class="card">
+        <h2 class="section-h">📷 معرض الصور <span class="sub">حد أقصى 6 صور</span></h2>
+        <div class="upload-zone" id="imgUploadArea">
+          <div class="ico">⬆</div>
+          <div>اضغط لاختيار صور من جهازك (يمكن اختيار عدة صور)</div>
+          <small style="color:var(--muted);font-size:12px;display:block;margin-top:4px">JPG / PNG حتى 32 ميجابايت لكل صورة</small>
+          <input type="file" id="imgFile" accept="image/*" multiple style="display:none" />
+          <div class="upload-preview-row" id="imgPreview"></div>
+        </div>
+        <button class="btn btn-primary btn-block" id="uploadImagesBtn" style="margin-top:14px">📤 رفع الصور إلى المعرض</button>
+        <div class="gallery-display" id="galleryDisplay"></div>
+      </div>
+    </section>
   </div>
 
-  <!-- Bio -->
-  <div class="card">
-    <h2 class="section-h">📜 سيرة الشهيد <span class="sub">تظهر للزوار في صفحة الشهيد</span></h2>
-    <textarea id="descInput" rows="5" placeholder="اكتب سيرة الشهيد هنا..."></textarea>
-    <button class="btn btn-primary" id="saveDescBtn" style="margin-top:12px">💾 حفظ السيرة</button>
-  </div>
-
-  <!-- Stats display -->
-  <div class="card">
-    <h2 class="section-h">📊 إحصائيات الأعمال <span class="sub">عدد الأعمال المُهداة من الزوار (للعرض فقط)</span></h2>
-    <div class="stats-grid" id="statsContainer"></div>
-  </div>
-
-  <!-- Works management: enable/disable + rename -->
-  <div class="card">
-    <h2 class="section-h">🛠 إدارة الأعمال <span class="sub">فعّل/عطّل أو غيّر اسم أي عمل يظهر في صفحة الشهيد</span></h2>
-    <div style="background:#fff7df;border:1px solid var(--gold-soft);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13.5px;color:var(--ink-soft);line-height:1.7">
-      <b style="color:var(--gold-deep)">ℹ️ ملاحظة:</b> الأعمال المُعطّلة لن تظهر للزوار في صفحة الشهيد. تغيير الاسم يحدّث ما يظهر للزوار. التعديلات تُحفظ تلقائياً.
-    </div>
-    <div class="works-list" id="worksList"></div>
-
-    <div style="margin-top:22px">
-      <h3 style="font-family:'Amiri',serif;color:var(--maroon-deep);font-size:17px;margin-bottom:10px">➕ إضافة عمل مخصّص جديد</h3>
-      <div class="add-work-row">
-        <input type="text" id="newWorkName" placeholder="مثال: تسبيح، استغفار، صدقة..." />
-        <button class="btn btn-primary" id="addCustomWorkBtn">➕ إضافة</button>
+  <!-- ============ Crop Modal ============ -->
+  <div class="crop-overlay" id="cropOverlay">
+    <div class="crop-modal" role="dialog" aria-modal="true">
+      <div class="crop-head">
+        <h3 id="cropTitle">قص الصورة</h3>
+        <button class="crop-close" id="cropCloseBtn" type="button" title="إغلاق">✕</button>
+      </div>
+      <div class="crop-stage circle" id="cropStage">
+        <canvas id="cropCanvas"></canvas>
+        <div class="crop-mask"></div>
+      </div>
+      <div class="crop-controls">
+        <div class="crop-zoom-row">
+          <span class="lbl">🔍 التكبير</span>
+          <input type="range" id="cropZoom" min="100" max="400" value="100" step="1"/>
+          <span class="val" id="cropZoomVal">1.0×</span>
+        </div>
+        <div class="crop-hint">اسحب الصورة لتحريكها واستخدم الشريط للتكبير/التصغير</div>
+        <div class="crop-actions">
+          <button class="btn btn-gold" id="cropConfirmBtn" type="button">✓ حفظ الصورة</button>
+          <button class="btn btn-ghost" id="cropCancelBtn" type="button">إلغاء</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Quran -->
-  <div class="card">
-    <h2 class="section-h">📚 ختمة القرآن الكريم <span class="sub">٣٠ جزءاً · يُكمل الزوار الأجزاء</span></h2>
-    <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-bottom:8px">
-      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#fff;border:1px solid var(--line);border-radius:4px"></span> متاح</span>
-      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:var(--gold);border-radius:4px"></span> تم أخذه</span>
-      <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:var(--green);border-radius:4px"></span> مكتمل</span>
+  <!-- ============ QR Modal ============ -->
+  <div class="qr-modal-overlay" id="qrModal" onclick="if(event.target===this)closeQrModal()">
+    <div class="qr-modal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+      <button class="close-x" onclick="closeQrModal()" title="إغلاق">✕</button>
+      <h3 id="qrModalTitle" style="display:flex;align-items:center;justify-content:center;gap:8px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3z"/><path d="M20 14v3"/><path d="M14 20h3"/><path d="M20 20h1"/><path d="M6 6h1v1H6z"/><path d="M17 6h1v1h-1z"/><path d="M6 17h1v1h-1z"/></svg><span>رمز QR لصفحة الشهيد</span></h3>
+      <div class="qr-sub">امسح هذا الرمز بكاميرا الهاتف لفتح صفحة الشهيد العامة مباشرة</div>
+      <div class="qr-box" id="qrBox">
+        <span style="color:var(--muted);font-size:12px">جاري التوليد...</span>
+      </div>
+      <a class="qr-link" id="qrLink" href="#" target="_blank">...</a>
+      <div class="qr-actions">
+        <button class="btn btn-gold" id="qrDownloadBtn">⬇ تحميل</button>
+        <button class="btn btn-ghost" id="qrCopyBtn">📋 نسخ الرابط</button>
+        <button class="btn btn-ghost" id="qrOpenBtn">↗ فتح</button>
+      </div>
     </div>
-    <div class="quran-grid" id="quranStatus"></div>
-    <button class="btn btn-danger" id="resetKhatmaBtn" style="margin-top:14px">♻️ إعادة تعيين الختمة</button>
   </div>
 
-  <!-- Photo gallery -->
-  <div class="card">
-    <h2 class="section-h">📷 معرض صور الشهيد <span class="sub">الصور التي تظهر في "معرض الصور" داخل صفحة الشهيد</span></h2>
-    <div class="upload-zone" id="imgUploadArea">
-      <div class="ico">⬆</div>
-      <div>اضغط لاختيار صور من جهازك (يمكن اختيار عدة صور)</div>
-    <small style="color:var(--muted);font-size:12px;display:block;margin-top:4px">JPG / PNG حتى 32 ميجابايت لكل صورة</small>
+  <div class="toasts" id="toasts"></div>
 
-      <input type="file" id="imgFile" accept="image/*" multiple style="display:none" />
-      <div class="upload-preview-row" id="imgPreview"></div>
-    </div>
-    <button class="btn btn-primary" id="uploadImagesBtn" style="margin-top:14px">📤 رفع الصور إلى المعرض</button>
-    <div class="gallery-display" id="galleryDisplay"></div>
-  </div>
-</div>
+  <script>
+  /* ===== Tab navigation (with horizontal scroll-into-view on mobile) ===== */
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('.tab[data-tab]');
+    if (!t) return;
+    const name = t.dataset.tab;
+    document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === t));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === name));
+    /* Smooth-scroll the active tab into view inside the horizontal nav */
+    try { t.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); } catch(_){}
+  });
 
-<div class="toasts" id="toasts"></div>
+  /* ===== QR modal open/close + extra header buttons ===== */
+  window.openQrModal = function(){
+    document.getElementById('qrModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeQrModal = function(){
+    document.getElementById('qrModal').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  document.getElementById('openQrBtn').addEventListener('click', openQrModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeQrModal();
+  });
 
-<script type="module">
+  /* Copy / Share buttons in profile header — wired after the script module has defined buildMartyrPublicURL */
+  document.getElementById('copyLinkBtn').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(window.__publicURL || location.href); window.__toast && window.__toast('✅ تم نسخ الرابط'); }
+    catch { window.__toast && window.__toast('تعذر النسخ','error'); }
+  });
+  document.getElementById('shareBtn').addEventListener('click', async () => {
+    const url = window.__publicURL || location.href;
+    if (navigator.share){
+      try { await navigator.share({ title:'صفحة الشهيد', url }); } catch(_){}
+    } else {
+      try { await navigator.clipboard.writeText(url); window.__toast && window.__toast('✅ تم نسخ الرابط (المشاركة غير متاحة)'); }
+      catch { window.__toast && window.__toast('تعذر المشاركة','error'); }
+    }
+  });
+  </script>
+
+  <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import {
   getFirestore, doc, getDoc, updateDoc, deleteField, arrayUnion, arrayRemove
@@ -236,6 +573,8 @@ function toast(msg, type="success"){
   $("toasts").appendChild(t);
   setTimeout(()=>t.remove(), 2800);
 }
+/* Expose for the small inline script that handles the profile-header copy/share buttons */
+window.__toast = toast;
 
 function escapeHtml(s){return String(s||"").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
 
@@ -529,6 +868,64 @@ $("saveDescBtn").addEventListener("click", async () => {
   } catch(e){ toast("فشل الحفظ","error"); }
 });
 
+/* ========== Save Martyr information (birth/death/place/details) ========== */
+$("saveInfoBtn").addEventListener("click", async () => {
+  const btn = $("saveInfoBtn");
+  btn.disabled = true; btn.textContent = "جاري الحفظ...";
+  try {
+    await updateDoc(doc(db,"martyrs",martyrId), {
+      birthDate:  $("birthDateInput").value.trim(),
+      deathDate:  $("deathDateInput").value.trim(),
+      deathPlace: $("deathPlaceInput").value.trim(),
+      details:    $("detailsInput").value.trim()
+    });
+    toast("✅ تم حفظ معلومات الشهيد");
+  } catch(e){ toast("فشل الحفظ","error"); }
+  finally { btn.disabled = false; btn.textContent = "💾 حفظ معلومات الشهيد"; }
+});
+
+/* ========== QR code for martyr public page ========== */
+function buildMartyrPublicURL(){
+  /* Public page is standalone.html in the same directory, with ?martyr=ID */
+  const here = location.href.split("?")[0].split("#")[0];
+  const base = here.substring(0, here.lastIndexOf("/")+1);
+  return `${base}standalone.html?martyr=${encodeURIComponent(martyrId)}`;
+}
+function renderQR(){
+  const url = buildMartyrPublicURL();
+  /* Expose for header buttons (copy link / share) */
+  window.__publicURL = url;
+  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=10&data=${encodeURIComponent(url)}`;
+  const box = $("qrBox");
+  box.innerHTML = `<img id="qrImg" src="${qrSrc}" alt="QR" crossorigin="anonymous"/>`;
+  $("qrLink").href = url;
+  $("qrLink").textContent = url;
+}
+$("qrDownloadBtn").addEventListener("click", async () => {
+  const btn = $("qrDownloadBtn");
+  btn.disabled = true;
+  try {
+    const url = buildMartyrPublicURL();
+    const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=15&data=${encodeURIComponent(url)}`;
+    const res = await fetch(qrSrc);
+    const blob = await res.blob();
+    const dl = document.createElement("a");
+    dl.href = URL.createObjectURL(blob);
+    dl.download = `martyr-qr-${martyrId}.png`;
+    document.body.appendChild(dl);
+    dl.click();
+    setTimeout(()=>{ URL.revokeObjectURL(dl.href); dl.remove(); }, 1500);
+    toast("✅ تم تنزيل رمز QR");
+  } catch(e){ toast("تعذر التنزيل","error"); }
+  finally { btn.disabled = false; }
+});
+$("qrCopyBtn").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(buildMartyrPublicURL()); toast("✅ تم نسخ الرابط"); }
+  catch { toast("تعذر النسخ","error"); }
+});
+$("qrOpenBtn").addEventListener("click", () => { window.open(buildMartyrPublicURL(), "_blank"); });
+renderQR();
+
 $("resetKhatmaBtn").addEventListener("click", async () => {
   if (!confirm("⚠️ إعادة تعيين الختمة بالكامل؟ سيُمحى تقدّم جميع الأجزاء.")) return;
   const reset = { quran: 0 };
@@ -549,9 +946,63 @@ async function loadData(){
     martyrData = m;
 
     $("martyrTitle").textContent = `🕊 الشهيد: ${m.name || ""}`;
+
+    /* ===== Profile header: avatar (m.photo > first gallery image) + cover + stats ===== */
+    const editBtnHtml = `<button class="avatar-edit-btn" id="changeAvatarBtn" title="تغيير الصورة الشخصية" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></button>`;
+    const photo = m.photo || (Array.isArray(m.gallery) && m.gallery.length ? m.gallery[0] : null);
+    const av = $("profileAvatar");
+    if (photo) {
+      av.innerHTML = `<img src="${photo}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>${editBtnHtml}`;
+    } else {
+      const initial = (m.name || "🕊").trim().charAt(0) || "🕊";
+      av.innerHTML = `<span>${escapeHtml(initial)}</span>${editBtnHtml}`;
+    }
+    /* Avatar edit button click is wired via document-level delegation below */
+
+    /* Cover photo */
+    const cover = $("profileCover");
+    let coverImgEl = cover.querySelector(".cover-img");
+    if (m.coverPhoto) {
+      cover.classList.add("has-photo");
+      if (!coverImgEl){
+        coverImgEl = document.createElement("img");
+        coverImgEl.className = "cover-img";
+        coverImgEl.alt = "";
+        cover.insertBefore(coverImgEl, cover.firstChild);
+      }
+      if (coverImgEl.src !== m.coverPhoto) coverImgEl.src = m.coverPhoto;
+    } else {
+      cover.classList.remove("has-photo");
+      if (coverImgEl) coverImgEl.remove();
+    }
+    /* Stats in the profile header */
+    const cfgPS = m.worksConfig || {};
+    const cwPS  = m.customWorks || {};
+    let totalWorks = 0;
+    for (const s of DEFAULT_WORKS){
+      const en = (cfgPS[s.key]?.enabled !== false);
+      if (en) totalWorks += (m[s.key]||0);
+    }
+    for (const [k,v] of Object.entries(cwPS)){
+      const en = (cfgPS["custom_"+k]?.enabled !== false);
+      if (en) totalWorks += (v||0);
+    }
+    const partsPS = m.quranParts || {};
+    let qDone = 0;
+    for (let i=1;i<=30;i++) if (partsPS[i] === true) qDone++;
+    const photoCount = Array.isArray(m.gallery) ? m.gallery.length : 0;
+    $("psWorks").textContent  = totalWorks;
+    $("psQuran").textContent  = `${qDone}/30`;
+    $("psPhotos").textContent = photoCount;
+
     if (document.activeElement !== $("descInput")) {
       $("descInput").value = m.description || "";
     }
+    /* New martyr-info fields — only refill when not currently editing */
+    if (document.activeElement !== $("birthDateInput"))  $("birthDateInput").value  = m.birthDate  || "";
+    if (document.activeElement !== $("deathDateInput"))  $("deathDateInput").value  = m.deathDate  || "";
+    if (document.activeElement !== $("deathPlaceInput")) $("deathPlaceInput").value = m.deathPlace || "";
+    if (document.activeElement !== $("detailsInput"))    $("detailsInput").value    = m.details    || "";
 
     const cfg = m.worksConfig || {};
     const cw = m.customWorks || {};
@@ -670,7 +1121,178 @@ $("galleryDisplay").innerHTML = gallery.length === 0
   }
 }
 
+/* ===================== Avatar / Cover image cropper & uploader ===================== */
+const cropState = {
+  img:null, mode:"avatar", scale:1, baseScale:1, minScale:1, maxScale:4,
+  offsetX:0, offsetY:0, dragging:false, startX:0, startY:0, startOX:0, startOY:0
+};
+const cropCanvas = document.getElementById("cropCanvas");
+const cropCtx    = cropCanvas.getContext("2d");
+const cropStage  = document.getElementById("cropStage");
+const cropOverlay= document.getElementById("cropOverlay");
+
+function openCropper(file, mode){
+  cropState.mode = mode;
+  cropStage.classList.toggle("circle", mode === "avatar");
+  cropStage.classList.toggle("cover", mode === "cover");
+  document.getElementById("cropTitle").textContent = mode === "avatar" ? "قص الصورة الشخصية" : "قص صورة الغلاف";
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      cropState.img = img;
+      cropOverlay.classList.add("open");
+      document.body.style.overflow = "hidden";
+      requestAnimationFrame(initCrop);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function initCrop(){
+  const rect = cropStage.getBoundingClientRect();
+  cropCanvas.width  = Math.round(rect.width);
+  cropCanvas.height = Math.round(rect.height);
+  const img = cropState.img;
+  const cw = cropCanvas.width, ch = cropCanvas.height;
+  cropState.baseScale = Math.max(cw / img.width, ch / img.height);
+  cropState.minScale  = cropState.baseScale;
+  cropState.maxScale  = cropState.baseScale * 4;
+  cropState.scale     = cropState.baseScale;
+  cropState.offsetX   = (cw - img.width  * cropState.scale) / 2;
+  cropState.offsetY   = (ch - img.height * cropState.scale) / 2;
+  document.getElementById("cropZoom").value = 100;
+  document.getElementById("cropZoomVal").textContent = "1.0×";
+  drawCrop();
+}
+function clampOffset(){
+  const cw = cropCanvas.width, ch = cropCanvas.height;
+  const w = cropState.img.width * cropState.scale;
+  const h = cropState.img.height * cropState.scale;
+  if (w <= cw) cropState.offsetX = (cw - w) / 2;
+  else cropState.offsetX = Math.min(0, Math.max(cw - w, cropState.offsetX));
+  if (h <= ch) cropState.offsetY = (ch - h) / 2;
+  else cropState.offsetY = Math.min(0, Math.max(ch - h, cropState.offsetY));
+}
+function drawCrop(){
+  const cw = cropCanvas.width, ch = cropCanvas.height;
+  cropCtx.clearRect(0,0,cw,ch);
+  cropCtx.fillStyle = "#1a0e08";
+  cropCtx.fillRect(0,0,cw,ch);
+  clampOffset();
+  cropCtx.drawImage(cropState.img, cropState.offsetX, cropState.offsetY,
+    cropState.img.width * cropState.scale, cropState.img.height * cropState.scale);
+}
+/* Drag */
+function pointerDown(ev){
+  cropState.dragging = true;
+  const p = ev.touches ? ev.touches[0] : ev;
+  cropState.startX = p.clientX; cropState.startY = p.clientY;
+  cropState.startOX = cropState.offsetX; cropState.startOY = cropState.offsetY;
+  ev.preventDefault();
+}
+function pointerMove(ev){
+  if (!cropState.dragging) return;
+  const p = ev.touches ? ev.touches[0] : ev;
+  cropState.offsetX = cropState.startOX + (p.clientX - cropState.startX);
+  cropState.offsetY = cropState.startOY + (p.clientY - cropState.startY);
+  drawCrop();
+  ev.preventDefault();
+}
+function pointerUp(){ cropState.dragging = false; }
+cropCanvas.addEventListener("mousedown", pointerDown);
+cropCanvas.addEventListener("touchstart", pointerDown, {passive:false});
+window.addEventListener("mousemove", pointerMove);
+window.addEventListener("touchmove", pointerMove, {passive:false});
+window.addEventListener("mouseup", pointerUp);
+window.addEventListener("touchend", pointerUp);
+/* Zoom */
+document.getElementById("cropZoom").addEventListener("input", (e)=>{
+  const pct = +e.target.value;
+  const factor = pct / 100;
+  document.getElementById("cropZoomVal").textContent = factor.toFixed(1) + "×";
+  const cw = cropCanvas.width, ch = cropCanvas.height;
+  const cx = cw/2, cy = ch/2;
+  const oldScale = cropState.scale;
+  const newScale = cropState.minScale * factor;
+  const k = newScale / oldScale;
+  cropState.offsetX = cx - (cx - cropState.offsetX) * k;
+  cropState.offsetY = cy - (cy - cropState.offsetY) * k;
+  cropState.scale = newScale;
+  drawCrop();
+});
+function closeCropper(){
+  cropOverlay.classList.remove("open");
+  document.body.style.overflow = "";
+  cropState.img = null;
+  document.getElementById("avatarFileInput").value = "";
+  document.getElementById("coverFileInput").value = "";
+}
+document.getElementById("cropCloseBtn").addEventListener("click", closeCropper);
+document.getElementById("cropCancelBtn").addEventListener("click", closeCropper);
+cropOverlay.addEventListener("click", (e)=>{ if (e.target === cropOverlay) closeCropper(); });
+
+document.getElementById("cropConfirmBtn").addEventListener("click", async () => {
+  if (!cropState.img) return;
+  const btn = document.getElementById("cropConfirmBtn");
+  btn.disabled = true; btn.textContent = "جاري الرفع...";
+  try {
+    /* Render at high resolution */
+    const targetW = cropState.mode === "avatar" ? 600 : 1600;
+    const targetH = cropState.mode === "avatar" ? 600 : 500; /* 16:5 */
+    const out = document.createElement("canvas");
+    out.width = targetW; out.height = targetH;
+    const octx = out.getContext("2d");
+    octx.fillStyle = "#1a0e08";
+    octx.fillRect(0,0,targetW,targetH);
+    /* Map current canvas (cw x ch) → target (targetW x targetH) keeping the same crop window */
+    const sx = targetW / cropCanvas.width;
+    const sy = targetH / cropCanvas.height;
+    octx.drawImage(cropState.img,
+      cropState.offsetX * sx,
+      cropState.offsetY * sy,
+      cropState.img.width  * cropState.scale * sx,
+      cropState.img.height * cropState.scale * sy
+    );
+    /* Always save as a full square/rectangle JPEG so the same image works
+       in both the circular avatar slot and the rectangular feed cards.
+       The circular look is purely a CSS mask via border-radius:50%. */
+    const blob = await new Promise(res => out.toBlob(res, "image/jpeg", 0.92));
+    const file = new File([blob], (cropState.mode === "avatar" ? "avatar" : "cover") + "_" + Date.now() + ".jpg", {type:"image/jpeg"});
+    const folder = `martyrs/${martyrId}/${cropState.mode === "avatar" ? "photo" : "cover"}`;
+    const url = await uploadFile(file, folder);
+    const field = cropState.mode === "avatar" ? "photo" : "coverPhoto";
+    await updateDoc(doc(db,"martyrs",martyrId), { [field]: url });
+    toast(cropState.mode === "avatar" ? "✅ تم تحديث الصورة الشخصية" : "✅ تم تحديث صورة الغلاف");
+    closeCropper();
+    loadData();
+  } catch(e){
+    console.error(e);
+    toast("فشل رفع الصورة: " + (e.message||"خطأ"), "error");
+  } finally {
+    btn.disabled = false; btn.textContent = "✓ حفظ الصورة";
+  }
+});
+
+/* Wire file inputs + buttons (delegated for re-rendered avatar button) */
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#changeAvatarBtn")){
+    e.stopPropagation();
+    document.getElementById("avatarFileInput").click();
+  }
+});
+document.getElementById("changeCoverBtn").addEventListener("click", () => document.getElementById("coverFileInput").click());
+document.getElementById("avatarFileInput").addEventListener("change", (e) => {
+  const f = e.target.files && e.target.files[0]; if (f) openCropper(f, "avatar");
+});
+document.getElementById("coverFileInput").addEventListener("change", (e) => {
+  const f = e.target.files && e.target.files[0]; if (f) openCropper(f, "cover");
+});
+/* Re-init crop on resize while open */
+window.addEventListener("resize", () => { if (cropOverlay.classList.contains("open") && cropState.img) initCrop(); });
+
 loadData();
 </script>
-</body>
-</html>
+  </body>
+  </html>
+  
