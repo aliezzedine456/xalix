@@ -275,8 +275,8 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 
   /* ===== Donation drawer / Whish ===== */
   .side-link.donate{background:linear-gradient(180deg,#fff7df,#fdf3da);border-color:var(--gold);color:var(--maroon-deep)}
-  .side-link.donate .ico{background:linear-gradient(135deg,#ec4899,#a855f7);color:#fff}
-  .donate-hero{background:linear-gradient(135deg,#ec4899,#a855f7);color:#fff;padding:22px 18px;border-radius:18px;text-align:center;margin-bottom:18px;box-shadow:0 10px 30px -8px rgba(168,85,247,.45)}
+  .side-link.donate .ico{background:linear-gradient(135deg,#ff0606,#ec1414);color:#fff}
+  .donate-hero{background:linear-gradient(135deg,#ec1414,#ec1414);color:#fff;padding:22px 18px;border-radius:18px;text-align:center;margin-bottom:18px;box-shadow:0 10px 30px -8px rgba(168,85,247,.45)}
   .donate-hero .whish-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px}
   .donate-hero .whish-mark{width:46px;height:46px;background:#fff;border-radius:14px;display:grid;place-items:center;color:#a855f7;font-family:'Amiri',serif;font-size:28px;font-weight:900;box-shadow:0 4px 12px rgba(0,0,0,.18)}
   .donate-hero .whish-name{font-family:'Amiri',serif;font-size:24px;font-weight:800;letter-spacing:1px}
@@ -796,7 +796,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
     <section class="featured-wrap">
       <div class="featured-head">
         <h2>أحدث الشهداء المكرّمين</h2>
-        <span class="sub">يتبدّل كل ٤ ثوانٍ · رحمهم الله</span>
+        <span class="sub"></span>
       </div>
       <div class="featured-stage" id="featuredStage">
         <button class="featured-arrow prev" onclick="goFeatured(featuredIndex-1)" aria-label="السابق">›</button>
@@ -1170,7 +1170,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import {
-  getFirestore, collection, query, orderBy, getDocs, doc, getDoc, updateDoc,
+  getFirestore, collection, query, orderBy, getDocs, doc, getDoc, updateDoc, setDoc,
   addDoc, serverTimestamp, increment, where, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
@@ -1451,6 +1451,7 @@ async function loadFeed(){
   }
 }
 
+let visitorCount = 0;
 function renderStats(){
   const totalDeeds = allMartyrs.reduce((a,m)=>{
     let sum = (m.fatiha||0)+(m.salawat||0)+(m.quran||0)+(m.prayers||0)+(m.dua||0)+(m.ziyara||0);
@@ -1459,13 +1460,45 @@ function renderStats(){
     }
     return a + sum;
   },0);
-  const totalPhotos = allAlbums.reduce((a,al)=>a + (al.photos?.length||0), 0);
   $("statsRow").innerHTML = `
     <div class="stat"><div class="stat-value">${arabicNum(allMartyrs.length)}</div><div class="stat-label">شهيد مكرّم</div></div>
     <div class="stat"><div class="stat-value">${arabicNum(allAlbums.length)}</div><div class="stat-label">ألبوم مهدى</div></div>
-    <div class="stat"><div class="stat-value">${arabicNum(totalPhotos)}</div><div class="stat-label">صورة تذكارية</div></div>
+    <div class="stat" id="visitorsStat"><div class="stat-value">${arabicNum(visitorCount)}</div><div class="stat-label">عدد الزوار</div></div>
     <div class="stat"><div class="stat-value">${arabicNum(totalDeeds)}</div><div class="stat-label">عمل مهدى</div></div>`;
 }
+
+/* ===== Visitor counter (Firestore) =====
+   Increments a single shared counter at stats/visitors once per
+   browser per 12 hours so the number reflects real visits without
+   exploding when the user refreshes. */
+async function trackVisitor(){
+  const ref = doc(db, "stats", "visitors");
+  const VISIT_KEY  = "visited_at";
+  const COOLDOWN_MS = 12 * 60 * 60 * 1000; /* 12h */
+  let shouldIncrement = true;
+  try {
+    const last = parseInt(localStorage.getItem(VISIT_KEY) || "0", 10);
+    if (last && (Date.now() - last) < COOLDOWN_MS) shouldIncrement = false;
+  } catch(_){}
+
+  try {
+    if (shouldIncrement){
+      await setDoc(ref, { count: increment(1), updatedAt: serverTimestamp() }, { merge: true });
+      try { localStorage.setItem(VISIT_KEY, String(Date.now())); } catch(_){}
+    }
+    const snap = await getDoc(ref);
+    visitorCount = (snap.exists() && typeof snap.data().count === "number") ? snap.data().count : 0;
+  } catch(e){
+    console.warn("visitor counter failed", e);
+  }
+  /* Refresh just the visitors stat tile if it's already on screen */
+  const tile = document.getElementById("visitorsStat");
+  if (tile){
+    const v = tile.querySelector(".stat-value");
+    if (v) v.textContent = arabicNum(visitorCount);
+  }
+}
+trackVisitor();
 
 function getCurrentList(){
   const s = ($("searchInput").value || "").trim().toLowerCase();
@@ -1891,9 +1924,11 @@ window.openPhotos = function(){
 };
 
 /* ===== Album drawer ===== */
+window._currentAlbumId = null;
 window.openAlbum = function(id){
   const album = allAlbums.find(a=>a.id===id);
   if (!album){ toast("لم يتم العثور على الألبوم","error"); return; }
+  window._currentAlbumId = id;
   $("albumTitle").textContent = album.name ? `ألبوم: ${album.name}` : "ألبوم الصور";
   const photos = album.photos || [];
   const gridHtml = photos.map((url, idx)=>`
@@ -1909,10 +1944,46 @@ window.openAlbum = function(id){
         <div class="d">${arabicNum(photos.length)} صورة تذكارية مهداة لروحه الطاهرة · رحمه الله</div>
       </div>
     </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="btn btn-gold" style="flex:1;min-width:160px" onclick="shareAlbum('${id}')">🔗 مشاركة الألبوم</button>
+      <button class="btn" style="flex:1;min-width:160px;background:var(--card);color:var(--ink);border:1px solid var(--line)" onclick="copyAlbumLink('${id}')">⧉ نسخ الرابط</button>
+    </div>
     <div class="album-gallery">${gridHtml}</div>
     <div style="text-align:center;margin-top:18px;color:var(--muted);font-family:'Amiri',serif;font-size:14px">﴿وَلَا تَحْسَبَنَّ الَّذِينَ قُتِلُوا فِي سَبِيلِ اللَّهِ أَمْوَاتًا﴾</div>
   `;
   openDrawer("album");
+  /* Reflect the album in the URL so the page can be shared / refreshed
+     and land back on this exact album. */
+  try {
+    const u = new URL(window.location.href);
+    u.searchParams.set("album", id);
+    window.history.replaceState({}, "", u.toString());
+  } catch(_){}
+};
+
+/* Build a canonical share URL for an album */
+window.albumShareUrl = function(id){
+  return `${location.origin}${location.pathname}?album=${encodeURIComponent(id)}`;
+};
+
+/* Native share sheet when available, otherwise fallback to clipboard */
+window.shareAlbum = async function(id){
+  const album = allAlbums.find(a=>a.id===id);
+  const url = window.albumShareUrl(id);
+  const title = album && album.name ? `ألبوم الشهيد ${album.name}` : "ألبوم تذكاري لشهيد";
+  const text = `شاهد ${album && album.photos ? arabicNum(album.photos.length) + " صور" : "الألبوم"} مهداة لروح الشهيد · منصة الشهداء`;
+  if (navigator.share){
+    try { await navigator.share({ title, text, url }); return; }
+    catch(_){ /* user cancelled — silent */ }
+  }
+  try { await navigator.clipboard.writeText(url); toast("✅ تم نسخ رابط الألبوم"); }
+  catch { toast("تعذر المشاركة","error"); }
+};
+
+window.copyAlbumLink = async function(id){
+  const url = window.albumShareUrl(id);
+  try { await navigator.clipboard.writeText(url); toast("✅ تم نسخ رابط الألبوم"); }
+  catch { toast("تعذر النسخ","error"); }
 };
 
 /* ====== Work guide content (Shia du'as & salah instructions) ====== */
@@ -2216,6 +2287,14 @@ async function loadAlbums(){
     });
     allAlbums = albums;
     if (allMartyrs.length) render();
+    /* Deep-link: open shared album from ?album=ID */
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const wanted = params.get("album");
+      if (wanted && allAlbums.some(a=>a.id===wanted)){
+        setTimeout(()=>{ try { window.openAlbum(wanted); } catch(_){} }, 250);
+      }
+    } catch(_){}
   }catch(e){ console.error(e); }
 }
 
@@ -2308,6 +2387,39 @@ function highlightWord(verseKey, wordIdx){
   }
 }
 
+/* Fetch ALL audio files for a juz, paginating until done. The Quran.com
+   default per_page is 10 — without explicit pagination we lose every
+   verse past the 10th, which is why playback used to halt mid-juz. */
+async function _fetchAllAudioForJuz(reciterId, juz){
+  const map = {};
+  const buildEntry = (a)=>{
+    let url = a.url || "", urlAlt = "";
+    if (!url) return null;
+    if (url.startsWith("http")){ urlAlt = url; }
+    else {
+      url    = `https://audio.qurancdn.com/${url}`;
+      urlAlt = `https://verses.quran.com/${a.url}`;
+    }
+    return { url, urlAlt, segments: a.segments || [] };
+  };
+  let page = 1;
+  for (let safety = 0; safety < 20; safety++){
+    const res = await fetch(`https://api.quran.com/api/v4/recitations/${reciterId}/by_juz/${juz}?segments=true&per_page=300&page=${page}`);
+    if (!res.ok) break;
+    const data = await res.json();
+    const files = data.audio_files || [];
+    files.forEach(a=>{
+      if (!a.verse_key) return;
+      const entry = buildEntry(a);
+      if (entry) map[a.verse_key] = entry;
+    });
+    const pag = data.pagination || {};
+    if (!pag.next_page || files.length === 0) break;
+    page = pag.next_page;
+  }
+  return map;
+}
+
 function playVerseAt(idx){
   if (idx < 0 || idx >= qSegments.length){ stopQuranAudio(); updatePlayBtn(false); return; }
   qVerseIndex = idx;
@@ -2338,12 +2450,26 @@ function playVerseAt(idx){
   const myAudio = qAudio;
   let triedFallback = false;
 
+  /* If a verse cannot be loaded/played for ANY reason (404, CORS, the
+     reciter dropped that verse, network glitch, decode error), auto-skip
+     to the next verse instead of stopping the whole reading session.
+     This was the root cause of the "stops in the middle of a juz" bug. */
+  const skipForward = ()=>{
+    if (myAudio !== qAudio) return;
+    if (qAutoNext && idx + 1 < qSegments.length){
+      playVerseAt(idx + 1);
+    } else {
+      stopQuranAudio();
+      updatePlayBtn(false);
+    }
+  };
+
   myAudio.onerror = ()=>{
     if (myAudio !== qAudio) return;
     if (!triedFallback && v.audioUrlAlt){
       triedFallback = true;
-      try{ myAudio.src = v.audioUrlAlt; myAudio.play().catch(()=>{ updatePlayBtn(false); toast("تعذر تشغيل الصوت","error"); }); }catch(_){ updatePlayBtn(false); }
-    } else { updatePlayBtn(false); }
+      try{ myAudio.src = v.audioUrlAlt; myAudio.play().catch(()=>{ skipForward(); }); }catch(_){ skipForward(); }
+    } else { skipForward(); }
   };
 
   /* Kick off playback immediately. Because the next verse is already
@@ -2354,31 +2480,44 @@ function playVerseAt(idx){
     if (myAudio !== qAudio) return;
     if (!triedFallback && v.audioUrlAlt){
       triedFallback = true;
-      try{ myAudio.src = v.audioUrlAlt; myAudio.play().then(()=>{ if (myAudio===qAudio) updatePlayBtn(true); }).catch(()=>{ updatePlayBtn(false); toast("تعذر تشغيل الصوت","error"); }); }catch(_){ updatePlayBtn(false); toast("تعذر تشغيل الصوت","error"); }
-    } else { updatePlayBtn(false); toast("تعذر تشغيل الصوت","error"); }
+      try{ myAudio.src = v.audioUrlAlt; myAudio.play().then(()=>{ if (myAudio===qAudio) updatePlayBtn(true); }).catch(()=>{ skipForward(); }); }catch(_){ skipForward(); }
+    } else { skipForward(); }
   });
+
+  /* Safety net: if the verse hasn't actually started playing within 8s
+     (audio stalled, server slow, file missing), auto-skip so reading
+     never appears stuck on a single ayah. */
+  const stallGuard = setTimeout(()=>{
+    if (myAudio !== qAudio) return;
+    if (myAudio.paused || !myAudio.currentTime){ skipForward(); }
+  }, 8000);
+  myAudio.addEventListener("playing", ()=>{ clearTimeout(stallGuard); }, { once:true });
 
   /* Start fetching the NEXT verse right away so the gap is invisible */
   preloadNextVerse(idx);
 
+  /* Lightly highlight the active verse (whole-ayah, no per-word tracking).
+     The user only wants smooth audio playback through the entire juz —
+     per-word tracking was causing more confusion than it added. */
   if (qWordTimer) clearInterval(qWordTimer);
   qWordTimer = setInterval(()=>{
     if (!qAudio || qAudio !== myAudio) return;
-    const t = qAudio.currentTime * 1000;
-    const segs = v.segments || [];
-    let left = 0, right = segs.length - 1, bestMatch = 0;
-    while (left <= right) {
-      const mid = (left + right) >> 1;
-      const [w,_,s,e] = segs[mid];
-      if (t >= s && t <= e) { bestMatch = w; break; }
-      else if (t < s) right = mid - 1;
-      else { bestMatch = w; left = mid + 1; }
+    const cont = document.querySelector(`[data-verse="${v.verseKey}"]`);
+    if (cont && !cont.classList.contains("active")){
+      document.querySelectorAll(".qr-ayah.active,.qr-word.active").forEach(el=>el.classList.remove("active"));
+      cont.classList.add("active");
+      try {
+        const box = cont.closest(".qr-text");
+        if (box){
+          const cr = cont.getBoundingClientRect();
+          const br = box.getBoundingClientRect();
+          if (cr.bottom > br.bottom - 60 || cr.top < br.top + 30){
+            cont.scrollIntoView({behavior:"smooth", block:"center"});
+          }
+        }
+      } catch(_){}
     }
-    if (bestMatch !== lastHighlightedWord) {
-      highlightWord(v.verseKey, bestMatch);
-      lastHighlightedWord = bestMatch;
-    }
-  }, 20);
+  }, 200);
 
   /* Re-entry guard so onended cannot trigger playVerseAt twice */
   let _advanced = false;
@@ -2432,23 +2571,11 @@ window.openJuz = async function(n){
     const versesData = await versesRes.json();
     const verses = versesData.verses || [];
 
-    const audioRes = await fetch(`https://api.quran.com/api/v4/recitations/${qReciterId}/by_juz/${n}?segments=true`);
-    const audioData = await audioRes.json();
-    const audioFiles = audioData.audio_files || [];
-    const audioMap = {};
-    audioFiles.forEach(a=>{
-      let url = a.url || "";
-      let urlAlt = "";
-      if (url.startsWith("http")){
-        urlAlt = url;
-      } else {
-        /* Canonical CDN that hosts every reciter (including Minshawi),
-           with the older verses.quran.com mirror as a fallback. */
-        url    = `https://audio.qurancdn.com/${url}`;
-        urlAlt = `https://verses.quran.com/${a.url}`;
-      }
-      audioMap[a.verse_key] = { url, urlAlt, segments: a.segments || [] };
-    });
+    /* IMPORTANT: Quran.com paginates with default per_page=10. Without
+       this query, we only got audio for the first 10 verses of the juz —
+       which is exactly why playback "stopped after some ayat". A juz
+       can contain ~150+ verses so we ask for the full set. */
+    const audioMap = await _fetchAllAudioForJuz(qReciterId, n);
 
     qSegments = verses.map(v=>({
       verseKey: v.verse_key,
@@ -2578,16 +2705,7 @@ async function _loadJuzInto(n, targetId){
     const versesData = await versesRes.json();
     const verses = versesData.verses || [];
 
-    const audioRes = await fetch(`https://api.quran.com/api/v4/recitations/${qReciterId}/by_juz/${n}?segments=true`);
-    const audioData = await audioRes.json();
-    const audioFiles = audioData.audio_files || [];
-    const audioMap = {};
-    audioFiles.forEach(a=>{
-      let url = a.url || "", urlAlt = "";
-      if (url.startsWith("http")){ urlAlt = url; }
-      else { url = `https://audio.qurancdn.com/${url}`; urlAlt = `https://verses.quran.com/${a.url}`; }
-      audioMap[a.verse_key] = { url, urlAlt, segments: a.segments || [] };
-    });
+    const audioMap = await _fetchAllAudioForJuz(qReciterId, n);
 
     qSegments = verses.map(v=>({
       verseKey: v.verse_key,
@@ -3118,7 +3236,7 @@ window.openDua = function(slug){
           <svg viewBox="0 0 24 24"><path d="M4 13c0 4.4 3.6 8 8 8s8-3.6 8-8h-2c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6v4l5-5-5-5v4c-4.4 0-8 3.6-8 8zm6.91 3H10v-3.29l-1.01.3v-.69l1.79-.64h.13V16zm4.32-1.43q0 .77-.32 1.16-.32.39-.93.39-.61 0-.93-.39-.32-.39-.34-1.14v-.97q0-.77.32-1.16.32-.39.93-.39.61 0 .93.38.32.38.34 1.15v.97zm-.86-1.11q0-.46-.12-.66-.12-.21-.32-.21-.2 0-.31.19-.11.19-.11.59v1.31q0 .45.12.66.12.21.32.21.19 0 .31-.2.12-.2.12-.64v-1.26z"/></svg>
         </button>
       </div>
-      <audio id="dPlayer" class="ac-native" preload="metadata" src="${d.audio}"></audio>
+      <audio id="dPlayer" class="ac-native" preload="auto" src="${d.audio}"></audio>
       <div class="ac-fallback">
         <a href="${d.audio}" target="_blank" rel="noopener">↗ فتح في تبويب جديد</a>
         <a href="${d.audio}" download>⬇ تنزيل</a>
@@ -3130,6 +3248,9 @@ window.openDua = function(slug){
   `;
   window.currentDuaLines = d.lines;
   bindDuaPlayer("dPlayer", d.lines);
+  /* Force the browser to start downloading the file immediately so
+     pressing play feels instant — preload="auto" alone is only a hint. */
+  try { const _a = document.getElementById("dPlayer"); if (_a){ _a.load(); } } catch(_){}
 };
 
 /* ---- Adhan / Iqama UI ---- */
@@ -3165,7 +3286,7 @@ function renderAdhanTab(){
           <svg viewBox="0 0 24 24"><path d="M4 13c0 4.4 3.6 8 8 8s8-3.6 8-8h-2c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6v4l5-5-5-5v4c-4.4 0-8 3.6-8 8zm6.91 3H10v-3.29l-1.01.3v-.69l1.79-.64h.13V16zm4.32-1.43q0 .77-.32 1.16-.32.39-.93.39-.61 0-.93-.39-.32-.39-.34-1.14v-.97q0-.77.32-1.16.32-.39.93-.39.61 0 .93.38.32.38.34 1.15v.97zm-.86-1.11q0-.46-.12-.66-.12-.21-.32-.21-.2 0-.31.19-.11.19-.11.59v1.31q0 .45.12.66.12.21.32.21.19 0 .31-.2.12-.2.12-.64v-1.26z"/></svg>
         </button>
       </div>
-      <audio id="dPlayer" class="ac-native" preload="metadata" src="${item.audio}"></audio>
+      <audio id="dPlayer" class="ac-native" preload="auto" src="${item.audio}"></audio>
       <div class="ac-fallback">
         <a href="${item.audio}" target="_blank" rel="noopener">↗ فتح في تبويب جديد</a>
         <a href="${item.audio}" download>⬇ تنزيل</a>
@@ -3185,7 +3306,11 @@ function renderAdhanTab(){
     </div>
   `;
   window.currentDuaLines = item.lines;
-  if (showPlayer) bindDuaPlayer("dPlayer", item.lines);
+  if (showPlayer){
+    bindDuaPlayer("dPlayer", item.lines);
+    /* Force-buffer right away so play feels instant */
+    try { const _a = document.getElementById("dPlayer"); if (_a){ _a.load(); } } catch(_){}
+  }
 }
 window.switchAdhan = function(mode){ adhanMode = mode; stopDuaAudio(); renderAdhanTab(); };
 
@@ -3201,6 +3326,17 @@ const _origCloseAll = window.closeAllDrawers;
 window.closeAllDrawers = function(){
   stopQuranAudio();
   stopDuaAudio();
+  /* Strip the ?album= param so closing the album returns to a clean URL */
+  if (window._currentAlbumId){
+    try {
+      const u = new URL(window.location.href);
+      if (u.searchParams.has("album")){
+        u.searchParams.delete("album");
+        window.history.replaceState({}, "", u.pathname + (u.search || "") + (u.hash || ""));
+      }
+    } catch(_){}
+    window._currentAlbumId = null;
+  }
   _origCloseAll();
 };
 
