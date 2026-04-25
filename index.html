@@ -44,6 +44,15 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .icon-btn{width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:all .25s var(--ease)}
 .icon-btn:hover{border-color:var(--gold);color:var(--maroon);transform:translateY(-1px) rotate(-2deg);box-shadow:var(--shadow-sm)}
 .icon-btn:active{transform:scale(.94)}
+.header-actions{display:flex;align-items:center;gap:10px}
+.donate-nav-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:10px;background:linear-gradient(135deg,#dc2626 0%,#b91c1c 55%,#7f1d1d 100%);color:#fff8e1;font-family:inherit;font-weight:800;font-size:13.5px;border:1px solid rgba(255,200,150,.25);cursor:pointer;text-decoration:none;box-shadow:0 6px 16px rgba(185,28,28,.42);transition:all .25s var(--ease);white-space:nowrap;position:relative;overflow:hidden}
+.donate-nav-btn::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transform:translateX(-100%);transition:transform .6s ease}
+.donate-nav-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(185,28,28,.6)}
+.donate-nav-btn:hover::before{transform:translateX(100%)}
+.donate-nav-btn:active{transform:scale(.96)}
+.donate-nav-btn svg{flex-shrink:0}
+@media(max-width:480px){.donate-nav-btn{padding:8px 12px;font-size:12.5px;gap:5px}.donate-nav-btn svg{width:14px;height:14px}}
+@media(max-width:360px){.donate-nav-btn .lbl{display:none}.donate-nav-btn{padding:9px 11px}}
 
 /* ========== Hero text ========== */
 .hero{padding:36px 0 18px;text-align:center;animation:fadeUp .8s var(--ease) both}
@@ -77,8 +86,8 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .featured-head h2{font-family:"Amiri",serif;font-size:21px;color:var(--maroon-deep);margin:0;display:flex;align-items:center;gap:10px}
 .featured-head h2::before{content:"";width:6px;height:24px;background:linear-gradient(180deg,var(--gold),var(--maroon));border-radius:3px}
 .featured-head .sub{font-size:12px;color:var(--muted)}
-.featured-stage{position:relative;border-radius:22px;overflow:hidden;background:#1a0509;border:1px solid var(--line);box-shadow:var(--shadow-lg);height:480px}
-@media(max-width:720px){.featured-stage{height:340px;border-radius:18px}}
+.featured-stage{position:relative;border-radius:22px;overflow:hidden;background:#1a0509;border:1px solid var(--line);box-shadow:var(--shadow-lg);height:400px;max-width:980px;margin:0 auto}
+@media(max-width:720px){.featured-stage{height:320px;border-radius:18px}}
 @media(max-width:480px){.featured-stage{height:300px}}
 @media(max-width:380px){.featured-stage{height:280px}}
 .featured-track{position:relative;width:100%;height:100%}
@@ -90,23 +99,23 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .featured-blur{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(34px) brightness(.5) saturate(140%);transform:scale(1.18);opacity:.7}
 .featured-glass{position:absolute;inset:0;background:linear-gradient(180deg,rgba(74,10,19,.15) 0%,rgba(74,10,19,.5) 50%,rgba(15,5,8,.95) 100%)}
 @media(min-width:720px){.featured-glass{background:linear-gradient(90deg,rgba(15,5,8,.95) 0%,rgba(74,10,19,.7) 45%,rgba(74,10,19,.18) 75%,rgba(74,10,19,.05) 100%)}}
-.featured-inner{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;justify-content:flex-start;padding:18px 18px 60px;color:#fff8e1}
-@media(max-width:480px){.featured-inner{padding:14px 14px 56px}}
-@media(min-width:720px){.featured-inner{display:grid;flex-direction:row;grid-template-columns:1.2fr 1fr;align-items:center;justify-content:initial;gap:30px;padding:36px 38px}}
+.featured-inner{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:18px 18px 56px;color:#fff8e1}
+@media(max-width:480px){.featured-inner{padding:14px 14px 52px}}
+@media(min-width:720px){.featured-inner{display:grid;flex-direction:row;grid-template-columns:1.2fr 1fr;align-items:end;justify-content:initial;gap:30px;padding:36px 38px 50px}}
 .featured-text{max-width:100%}
 .featured-text .tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border:1px solid rgba(230,200,120,.5);color:var(--gold-soft);padding:4px 10px;border-radius:99px;font-size:10px;font-weight:800;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);margin-bottom:8px;animation:tagSlide .7s var(--ease) both;letter-spacing:.04em}
 @media(min-width:720px){.featured-text .tag{padding:6px 14px;font-size:11.5px;margin-bottom:14px;gap:8px}}
 @keyframes tagSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-.featured-text h3{font-family:"Amiri",serif;font-size:20px;margin:0 0 8px;line-height:1.25;font-weight:700;text-shadow:0 4px 24px rgba(0,0,0,.55);animation:textIn .8s var(--ease) both;animation-delay:.1s;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-@media(min-width:480px){.featured-text h3{font-size:24px;margin-bottom:10px}}
-@media(min-width:720px){.featured-text h3{font-size:clamp(28px,4vw,46px);margin-bottom:12px;-webkit-line-clamp:none;display:block;overflow:visible}}
+.featured-text h3{font-family:"Amiri",serif;font-size:16px;margin:0 0 8px;line-height:1.25;font-weight:700;text-shadow:0 4px 24px rgba(0,0,0,.55);animation:textIn .8s var(--ease) both;animation-delay:.1s;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+@media(min-width:480px){.featured-text h3{font-size:18px;margin-bottom:8px}}
+@media(min-width:720px){.featured-text h3{font-size:clamp(20px,2.6vw,30px);margin-bottom:10px;-webkit-line-clamp:none;display:block;overflow:visible}}
 @keyframes textIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .featured-text .meta{display:flex;gap:5px;flex-wrap:wrap;font-size:10.5px;color:#e9d9a8;margin-bottom:10px;animation:textIn .8s var(--ease) both;animation-delay:.2s}
 @media(min-width:720px){.featured-text .meta{font-size:12.5px;gap:8px;margin-bottom:18px}}
 .featured-text .meta span{display:inline-flex;align-items:center;gap:4px;background:rgba(0,0,0,.32);padding:3px 7px;border-radius:6px;border:1px solid rgba(230,200,120,.22);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 @media(min-width:720px){.featured-text .meta span{padding:6px 11px;border-radius:8px;gap:6px}}
-.featured-text .cta{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink);padding:9px 16px;border-radius:8px;font-weight:800;font-size:12.5px;font-family:inherit;border:none;cursor:pointer;transition:all .25s var(--ease);box-shadow:0 8px 24px rgba(0,0,0,.3);animation:textIn .8s var(--ease) both;animation-delay:.3s}
-@media(min-width:720px){.featured-text .cta{padding:14px 26px;border-radius:10px;font-size:14.5px;gap:8px}}
+.featured-text .cta{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink);padding:7px 13px;border-radius:7px;font-weight:800;font-size:11.5px;font-family:inherit;border:none;cursor:pointer;transition:all .25s var(--ease);box-shadow:0 8px 24px rgba(0,0,0,.3);animation:textIn .8s var(--ease) both;animation-delay:.3s}
+@media(min-width:720px){.featured-text .cta{padding:9px 18px;border-radius:8px;font-size:12.5px;gap:6px}}
 .featured-text .cta:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 14px 32px rgba(0,0,0,.4)}
 .featured-text .cta:active{transform:scale(.97)}
 .featured-photo{display:none}
@@ -328,6 +337,33 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 .chip:hover{border-color:var(--gold);color:var(--maroon);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
 .chip:hover::after{opacity:1}
 .chip.selected{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;border-color:var(--maroon-deep);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+
+/* ===== Work guide panel (du'a / salat instructions) ===== */
+.work-guide{margin-top:14px;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#fffdf6,#fff8e7);border:1px solid var(--gold-soft);box-shadow:var(--shadow-sm);animation:wgIn .35s var(--ease) both}
+@keyframes wgIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.work-guide[hidden]{display:none!important}
+.wg-head{display:flex;align-items:center;gap:10px;padding:11px 13px;background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;border-bottom:1px solid rgba(201,164,71,.4)}
+.wg-head .ico{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:16px;flex-shrink:0;border:1px solid rgba(201,164,71,.45)}
+.wg-head .txt{flex:1;min-width:0}
+.wg-head .ttl{font-family:'Amiri',serif;font-size:15.5px;font-weight:700;line-height:1.25}
+.wg-head .sub{font-size:11px;color:var(--gold-soft);margin-top:2px;font-weight:600}
+.wg-body{max-height:440px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--gold) transparent}
+.wg-body::-webkit-scrollbar{width:6px}
+.wg-body::-webkit-scrollbar-thumb{background:var(--gold-soft);border-radius:3px}
+.wg-card{background:#fff;border:1px solid var(--line);border-right:3px solid var(--gold);border-radius:10px;padding:11px 13px;position:relative;transition:all .2s ease}
+.wg-card:hover{border-right-color:var(--maroon);box-shadow:var(--shadow-sm);transform:translateX(2px)}
+.wg-card .lbl{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:var(--maroon-deep);background:#f6ecc8;padding:2px 9px;border-radius:99px;margin-bottom:7px;border:1px solid var(--gold-soft);letter-spacing:.02em}
+.wg-card .txt{font-family:'Amiri',serif;font-size:15.5px;line-height:1.85;color:var(--ink);font-weight:600}
+.wg-card .txt .name{color:var(--maroon-deep);font-weight:800;background:linear-gradient(transparent 65%,rgba(201,164,71,.32) 65%);padding:0 3px}
+.wg-card .copy{position:absolute;top:9px;left:9px;width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--maroon-deep);cursor:pointer;display:grid;place-items:center;font-size:13px;transition:all .2s ease;font-family:inherit}
+.wg-card .copy:hover{background:var(--maroon);color:#fff8e1;border-color:var(--maroon);transform:scale(1.06)}
+.wg-card .copy:active{transform:scale(.94)}
+.wg-steps{counter-reset:wgs;display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.wg-steps li{counter-increment:wgs;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;font-family:'Amiri',serif;font-size:14.5px;line-height:1.75;color:var(--ink);font-weight:600}
+.wg-steps li::before{content:counter(wgs,arabic-indic);grid-column:1;width:26px;height:26px;border-radius:50%;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--maroon-deep);display:grid;place-items:center;font-family:inherit;font-size:13px;font-weight:800;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.12);margin-top:1px}
+.wg-quote{background:linear-gradient(135deg,#fff8e7,#fdf3da);border:1px dashed var(--gold);border-radius:10px;padding:10px 13px;font-family:'Amiri',serif;font-size:14.5px;line-height:1.8;color:var(--maroon-deep);font-weight:700;text-align:center}
+.wg-foot{padding:10px 13px;background:#fdf3da;border-top:1px solid var(--gold-soft);font-size:11.5px;color:var(--gold-deep);text-align:center;font-weight:700}
+@media(max-width:480px){.wg-card .txt{font-size:14.5px;line-height:1.8}.wg-steps li{font-size:13.5px}.wg-quote{font-size:13.5px}.wg-body{max-height:380px;padding:10px}}
 .chip.selected::after{opacity:0}
 @media(max-width:480px){.chips{grid-template-columns:repeat(2,1fr);gap:7px}.chip{font-size:12.5px;padding:10px 8px}}
 
@@ -414,15 +450,20 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 /* ===== Martyr profile (Twitter-style) inside detail drawer ===== */
 .mp-shell{position:relative;border-radius:20px;overflow:hidden;background:var(--card);box-shadow:var(--shadow-md);border:1px solid var(--line);margin:0 0 18px;animation:mp-in .6s var(--ease) both}
 @keyframes mp-in{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
-.mp-cover{position:relative;height:230px;background:linear-gradient(135deg,var(--maroon-deep) 0%,var(--maroon) 50%,#8a1d2a 100%);overflow:hidden}
+.mp-cover{position:relative;height:200px;background:linear-gradient(135deg,var(--maroon-deep) 0%,var(--maroon) 50%,#8a1d2a 100%);overflow:hidden}
 .mp-cover::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(201,164,71,.35),transparent 60%),radial-gradient(ellipse at 80% 90%,rgba(255,255,255,.08),transparent 50%);z-index:1;pointer-events:none}
 .mp-cover::after{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent 0 12px,rgba(255,255,255,.04) 12px 13px);z-index:1;pointer-events:none}
 .mp-cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block}
+.mp-cover .verse{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px 22px;font-family:"Amiri",serif;font-size:17px;font-weight:700;color:#fff8e1;line-height:1.7;text-shadow:0 2px 12px rgba(0,0,0,.55);letter-spacing:.01em;pointer-events:none}
+.mp-cover .verse span{max-width:720px;display:block}
+@media(max-width:720px){.mp-cover .verse{font-size:15px;padding:12px 18px}}
+@media(max-width:480px){.mp-cover .verse{font-size:13.5px;padding:10px 14px;line-height:1.6}}
 .mp-cover.has-photo{background-color:#1a0509}
 .mp-cover.has-photo::before{background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 55%,rgba(0,0,0,.35) 100%)}
 .mp-cover.has-photo::after{display:none}
-@media(max-width:720px){.mp-cover{height:200px}}
-@media(max-width:480px){.mp-cover{height:170px}}
+.mp-cover.has-photo .verse{display:none}
+@media(max-width:720px){.mp-cover{height:175px}}
+@media(max-width:480px){.mp-cover{height:155px}}
 .mp-body{position:relative;padding:0 18px 18px}
 .mp-avatar-row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:-58px;gap:10px}
 .mp-avatar{width:114px;height:114px;border-radius:50%;background:linear-gradient(135deg,var(--gold-soft),var(--gold));border:4px solid var(--card);display:grid;place-items:center;font-family:"Amiri",serif;font-size:44px;color:var(--maroon-deep);font-weight:800;box-shadow:0 8px 22px rgba(0,0,0,.22),0 2px 6px rgba(0,0,0,.1);position:relative;overflow:hidden;flex-shrink:0;animation:mp-pop .55s .15s var(--ease) both;z-index:4;isolation:isolate}
@@ -484,9 +525,15 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 <div class="app">
   <header class="header">
     <div class="container header-inner">
-      <button class="icon-btn" onclick="openDrawer('sidebar')" aria-label="القائمة">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="openDrawer('sidebar')" aria-label="القائمة">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <button class="donate-nav-btn" onclick="openDrawer('donate')" aria-label="تبرّع لدعم المنصة">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="lbl">تبرّع</span>
+        </button>
+      </div>
       <div class="brand">
         <div>
           <div class="brand-title">منصة الشهداء</div>
@@ -1009,12 +1056,7 @@ function buildFeatured(){
         <div class="featured-glass"></div>
         <div class="featured-inner">
           <div class="featured-text">
-            <span class="tag">✦ شهيد مكرّم</span>
             <h3>${escapeHtml(m.name||"")}</h3>
-            <div class="meta">
-              <span>♥ ${arabicNum(grand)} عمل مهدى</span>
-              <span>📚 ${arabicNum(m.quran||0)} جزء قرآن</span>
-            </div>
             <button class="cta" onclick="openDetail('${m.id}')">افتح صفحة الشهيد ←</button>
           </div>
           <div class="featured-photo">
@@ -1412,6 +1454,7 @@ window.openDetail = async function(id){
     <div class="mp-shell">
       <div class="mp-cover${m.coverPhoto ? ' has-photo' : ''}">
         ${m.coverPhoto ? `<img class="mp-cover-img" src="${escapeAttr(m.coverPhoto)}" alt=""/>` : ''}
+        <div class="verse"><span>﴿وَلَا تَحْسَبَنَّ الَّذِينَ قُتِلُوا فِي سَبِيلِ اللَّهِ أَمْوَاتًا﴾</span></div>
       </div>
       <div class="mp-body">
         <div class="mp-avatar-row">
@@ -1424,7 +1467,7 @@ window.openDetail = async function(id){
         </div>
         <div class="mp-meta">
           <h2>${escapeHtml(m.name||"")} <span class="verified">🕊</span></h2>
-          <div class="mp-handle">شهيد المنصة <span class="dot"></span> ${arabicNum(overallTotal)} عمل مُهدى لروحه الطاهرة</div>
+          <div class="mp-handle"><span class="dot"></span> ${arabicNum(overallTotal)} عمل مُهدى لروحه الطاهرة</div>
           <div class="mp-tag">🌹 رحمه الله</div>
         </div>
         <div class="mp-stats">
@@ -1441,7 +1484,7 @@ window.openDetail = async function(id){
       <div class="bio-info">
         ${m.birthDate  ? `<div class="bi"><div class="lbl">🌱 تاريخ الميلاد</div><div class="val">${escapeHtml(m.birthDate)}</div></div>` : ""}
         ${m.deathDate  ? `<div class="bi"><div class="lbl">🕊 تاريخ الاستشهاد</div><div class="val">${escapeHtml(m.deathDate)}</div></div>` : ""}
-        ${m.deathPlace ? `<div class="bi full"><div class="lbl">📍 مكان الاستشهاد / مثوى الجسد الطاهر</div><div class="val">${escapeHtml(m.deathPlace)}</div></div>` : ""}
+        ${m.deathPlace ? `<div class="bi full"><div class="lbl">📍 مثوى الجسد الطاهر</div><div class="val">${escapeHtml(m.deathPlace)}</div></div>` : ""}
       </div>
     ` : ""}
     ${m.details ? `
@@ -1463,6 +1506,7 @@ window.openDetail = async function(id){
         ${works.map(w=>`<span class="chip" data-key="${w.key}" onclick="selectChip('${w.key}')">${w.isCustom?'✨ ':''}${escapeHtml(w.label)}</span>`).join("")}
       </div>
       ${works.length===0 ? `<div class="empty" style="padding:14px;margin-top:10px"><div>لم يُفعّل أي عمل بعد لهذا الشهيد</div></div>` : ""}
+      <div id="workGuide" class="work-guide" hidden></div>
     </div>
     <button class="btn btn-gold btn-block" onclick="confirmAction()">♥ تأكيد وإهداء الثواب</button>
   `;
@@ -1563,11 +1607,111 @@ window.openAlbum = function(id){
   openDrawer("album");
 };
 
+/* ====== Work guide content (Shia du'as & salah instructions) ====== */
+function getMartyrNameSpan(){
+  const n = (currentMartyr && currentMartyr.name) ? currentMartyr.name : "الشهيد";
+  return `<span class="name">${escapeHtml(n)}</span>`;
+}
+function buildDuaGuide(){
+  const N = getMartyrNameSpan();
+  const duas = [
+    { lbl:"دعاء المغفرة والرحمة", t:`اللهم اغفر له وارحمه، وارفع درجته في المهديين، واجعل قبره روضةً من رياض الجنة، ولا تجعله حفرةً من حفر النيران.` },
+    { lbl:"تقبّله في الشهداء", t:`اللهم تقبّل ${N} في الشهداء، واجعل مثواه الجنة مع النبيين والصدّيقين والشهداء والصالحين، وحَسُن أولئك رفيقاً.` },
+    { lbl:"تنوير القبر", t:`اللهم نوّر قبره، واغسله بالماء والثلج والبَرَد، ونقّه من الذنوب كما يُنقّى الثوب الأبيض من الدّنس.` },
+    { lbl:"بحقّ محمدٍ وآل محمد", t:`اللهم صلِّ على محمدٍ وآلِ محمد، وألحقه بمن يتولّاه من الأئمة الطاهرين، واجعله في زمرتهم يوم القيامة.` },
+    { lbl:"صلواتُ شيعةِ عليّ", t:`اللهم اجعله من شيعة أمير المؤمنين عليّ بن أبي طالب صلوات الله عليه، وممّن يُسقى من حوض النبيّ يوم العطش الأكبر.` },
+    { lbl:"بحقّ فاطمة الزهراء", t:`اللهم بحقّ فاطمة وأبيها وبعلها وبنيها، والسرّ المستودَع فيها، اغفر له وارحمه، وأكرم نُزُله، ووسّع مدخله.` },
+    { lbl:"تثبيت الحجّة", t:`اللهم لقّنه حجّته، وثبّته بالقول الثابت، وآنس وحشته، واملأ قبره نوراً ورحمةً ورضواناً.` },
+    { lbl:"دعاء الزائر", t:`السلام عليك يا ${N}، أشهد أنك جاهدتَ في الله حقّ جهاده، ونصرتَ دين الله وأهل بيت نبيّه. اللهم تقبّل منه واغفر له، واحشره مع الحسين وأصحاب الحسين عليهم السلام.` },
+    { lbl:"ثبات الإيمان", t:`اللهم ثبّت قلبه على ولاية محمدٍ وآل محمد، واجعله ممّن مات على حبّهم وموالاتهم ومعاداة أعدائهم.` },
+    { lbl:"الجبر والعِوَض", t:`اللهم اجبر مصيبتَنا فيه، واخلف علينا بخير، ولا تحرمنا أجره ولا تفتنّا بعده، واغفر لنا وله يا ربّ العالمين.` },
+    { lbl:"اللحوق بالأئمة", t:`اللهم احشره مع الإمام الحسين عليه السلام وشهداء كربلاء، واسقِه من حوض جدّه المصطفى صلى الله عليه وآله شربةً لا يظمأ بعدها أبداً.` },
+    { lbl:"دعاء الفرج للميت", t:`اللهم بحقّ صاحب الزمان عجّل الله فرجه، تقبّل شهادته، واجعله ممّن يحشر تحت لوائه يوم خروجه.` },
+    { lbl:"خاتمة الدعاء", t:`اللهم اجعل أفضل عمره آخره، وأفضل عمله خواتمه، وأفضل أيامه يوم تلقاه فيه راضياً عنه. وصلّى الله على محمدٍ وآله الطاهرين.` }
+  ];
+  const cards = duas.map(d=>`
+    <div class="wg-card">
+      <button class="copy" title="نسخ" onclick="copyWG(this)">⧉</button>
+      <div class="lbl">✦ ${d.lbl}</div>
+      <div class="txt">${d.t}</div>
+    </div>`).join("");
+  return `
+    <div class="wg-head">
+      <div class="ico">🤲</div>
+      <div class="txt">
+        <div class="ttl">أدعية مختارة لروح الشهيد</div>
+        <div class="sub">من أدعية أهل البيت عليهم السلام · اقرأها بنيّة إهداء الثواب</div>
+      </div>
+    </div>
+    <div class="wg-body">
+      <div class="wg-quote">«إذا مات ابنُ آدم انقطع عمله إلا من ثلاث... أو ولدٍ صالح يدعو له»</div>
+      ${cards}
+      <div class="wg-quote">اقرأ ما تيسّر، ثم اضغط زرّ «تأكيد وإهداء الثواب» في الأسفل لتسجيل عملك</div>
+    </div>
+    <div class="wg-foot">جميع الأدعية مأثورة من تراث أهل البيت عليهم السلام</div>
+  `;
+}
+function buildSalahGuide(){
+  const N = getMartyrNameSpan();
+  const sections = [
+    { lbl:"صلاة الهديّة (ركعتان)", t:`صلِّ ركعتين بنيّة إهداء ثوابهما لروح ${N}، ثم قل بعد التسليم:\nاللهم صلِّ على محمدٍ وآلِ محمد، واجعل ثوابَ هذه الصلاة هديةً منّي إلى روح ${N}، اللهم بلِّغه إيّاها، وضاعف الأجر، واجعلها سبباً لعفوك ورضاك عنه.` },
+    { lbl:"صلاة الوحشة (ليلة الدفن)", t:`ركعتان تُهديان للميت ليلة دفنه:\n• الركعة الأولى: الفاتحة + آية الكرسي مرّةً واحدة.\n• الركعة الثانية: الفاتحة + سورة القدر (إنا أنزلناه) عشرَ مرّات.\nثم قل بعد التسليم:\nاللهم صلِّ على محمدٍ وآلِ محمد، وابعث ثوابها إلى قبر ${N}.` },
+    { lbl:"صلاة جعفر الطيار (مهداة)", t:`أربع ركعات بتسبيحات معروفة (سبحان الله والحمد لله ولا إله إلا الله والله أكبر) في كلّ موضع من مواضعها، تُهدى ثوابها للشهيد. وهي من أعظم ما يُتقرّب به ويُهدى ثوابه إلى الموتى.` },
+    { lbl:"دعاء بعد كلّ صلاة", t:`اللهم اجعل ثواب هذه الصلاة في صحيفة ${N}، وارفع بها درجتَه، واغفر بها ذنبَه، واجمع بيننا وبينه في مستقرّ رحمتك مع محمدٍ وآلِ محمدٍ الطاهرين.` },
+    { lbl:"إهداء النوافل اليومية", t:`يستحب إهداء ثواب النوافل اليومية (صلاة الليل، الرواتب، نافلة الظهرين) إلى أرواح الشهداء؛ فإنّ ثوابها يصل إليهم ويُسرّون به في قبورهم.` }
+  ];
+  const cards = sections.map(s=>`
+    <div class="wg-card">
+      <button class="copy" title="نسخ" onclick="copyWG(this)">⧉</button>
+      <div class="lbl">⛤ ${s.lbl}</div>
+      <div class="txt">${s.t.replace(/\n/g,'<br/>')}</div>
+    </div>`).join("");
+  return `
+    <div class="wg-head">
+      <div class="ico">🕌</div>
+      <div class="txt">
+        <div class="ttl">صلواتٌ مستحبّة وإهداء ثوابها</div>
+        <div class="sub">من فقه أهل البيت عليهم السلام · صلِّ بنيّة الإهداء ثم أكّد</div>
+      </div>
+    </div>
+    <div class="wg-body">
+      <div class="wg-quote">«ما من أحدٍ يموت من المؤمنين والمؤمنات فيُتصدَّق عنه أو يُصلَّى عنه إلا أدخل الله عليه ذلك في قبره»</div>
+      ${cards}
+      <div class="wg-quote">بعد أداء الصلاة، اضغط زرّ «تأكيد وإهداء الثواب» لتسجيل العمل</div>
+    </div>
+    <div class="wg-foot">المصدر: مفاتيح الجنان وكتب الأدعية المعتبرة</div>
+  `;
+}
+window.copyWG = async function(btn){
+  try {
+    const card = btn.closest('.wg-card');
+    const txt = card.querySelector('.txt').innerText;
+    await navigator.clipboard.writeText(txt);
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓';
+    btn.style.background = 'var(--maroon)';
+    btn.style.color = '#fff8e1';
+    setTimeout(()=>{ btn.innerHTML = orig; btn.style.background=''; btn.style.color=''; }, 1200);
+    toast("✅ تم نسخ الدعاء");
+  } catch(_) { toast("تعذر النسخ","error"); }
+};
 window.selectChip = function(key){
   currentSelected = key;
   document.querySelectorAll("#chipsRow .chip").forEach(c=>{
     c.classList.toggle("selected", c.getAttribute("data-key") === key);
   });
+  const guide = document.getElementById("workGuide");
+  if (!guide) return;
+  if (key === "dua"){
+    guide.innerHTML = buildDuaGuide();
+    guide.hidden = false;
+  } else if (key === "prayers"){
+    guide.innerHTML = buildSalahGuide();
+    guide.hidden = false;
+  } else {
+    guide.hidden = true;
+    guide.innerHTML = "";
+  }
 };
 window.copyShare = async function(){
   const url = currentMartyrId ? `${location.origin}${location.pathname}?martyr=${currentMartyrId}` : location.href;
