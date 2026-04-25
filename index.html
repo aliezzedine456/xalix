@@ -513,12 +513,242 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 @media(max-width:480px){.mqr-overlay{padding:12px}.mqr-modal{padding:18px 14px;border-radius:18px}.mqr-title{font-size:17px}.mqr-sub{font-size:12px;margin-bottom:12px}.mqr-box{width:220px;height:220px;padding:10px;border-radius:12px}.mqr-link{font-size:10px;padding:8px 10px}.mqr-actions{grid-template-columns:1fr;gap:6px}.mqr-close{top:8px;left:8px;width:30px;height:30px;font-size:14px}}
 @media(max-width:360px){.mqr-box{width:190px;height:190px}}
 
+/* Martyr Juz Reader modal — full-screen reader with sticky finish-work bar */
+.mjuz-overlay{position:fixed;inset:0;background:rgba(31,24,16,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:stretch;justify-content:center;z-index:130;padding:0;animation:mqr-fade .25s ease}
+.mjuz-overlay.open{display:flex}
+.mjuz-modal{background:var(--card);width:100%;max-width:760px;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);max-height:100vh;height:100vh;overflow:hidden;animation:mqr-in .35s var(--ease)}
+.mjuz-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fffdf6,#fff8e7);position:sticky;top:0;z-index:5}
+.mjuz-close{width:36px;height:36px;border-radius:50%;background:var(--bg-soft);border:1px solid var(--line);cursor:pointer;font-size:16px;color:var(--ink-soft);display:grid;place-items:center;transition:all .2s ease;flex-shrink:0}
+.mjuz-close:hover{background:var(--maroon);color:#fff;border-color:var(--maroon);transform:rotate(90deg)}
+.mjuz-title{flex:1;font-family:"Amiri",serif;color:var(--maroon-deep);font-size:18px;font-weight:700;text-align:center}
+.mjuz-finish{background:linear-gradient(180deg,#2a7a4b,var(--green));color:#f0fff4;border:none;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;font-family:inherit;font-size:13px;box-shadow:0 4px 10px rgba(31,90,52,.25);transition:all .2s ease;flex-shrink:0;white-space:nowrap}
+.mjuz-finish:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 14px rgba(31,90,52,.35)}
+.mjuz-finish:disabled{opacity:.55;cursor:not-allowed;background:var(--bg-soft);color:var(--ink-soft);box-shadow:none;border:1px solid var(--line)}
+.mjuz-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px}
+@media(max-width:480px){.mjuz-title{font-size:16px}.mjuz-finish{padding:9px 10px;font-size:12px}.mjuz-head{padding:10px 10px}}
+
 /* Album drawer header decoration */
 .album-info{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px}
 .album-info .ico{width:44px;height:44px;border-radius:12px;background:linear-gradient(180deg,var(--gold-soft),var(--gold));display:grid;place-items:center;color:var(--ink);font-size:20px;flex-shrink:0}
 .album-info .text{flex:1;min-width:0}
 .album-info .text .t{font-family:"Amiri",serif;font-weight:700;color:var(--maroon-deep);font-size:17px;line-height:1.3}
 .album-info .text .d{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ============================================================
+   ADDED MODULE — Quran (الجزء + قارئ), Du'as, Adhan/Iqama, Support
+   ============================================================ */
+.qr-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.qr-toolbar .grow{flex:1;min-width:140px}
+.qr-toolbar select,.qr-toolbar button{font-family:inherit;font-size:13px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 12px;cursor:pointer;transition:all .2s var(--ease)}
+.qr-toolbar select:hover,.qr-toolbar button:hover{border-color:var(--gold)}
+.qr-toolbar .play{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;border-color:var(--maroon-deep);font-weight:800;display:inline-flex;align-items:center;gap:6px;min-width:96px;justify-content:center}
+.qr-toolbar .play:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.qr-toolbar .ic{width:38px;height:38px;padding:0;display:grid;place-items:center;font-size:16px;color:var(--maroon-deep)}
+.qr-juz-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media(max-width:540px){.qr-juz-grid{grid-template-columns:repeat(4,1fr)}}
+.qr-juz{aspect-ratio:1;border-radius:14px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;color:var(--ink-soft);cursor:pointer;transition:all .22s var(--ease);padding:6px;text-align:center;gap:4px}
+.qr-juz:hover{border-color:var(--gold);background:#fff7df;color:var(--gold-deep);transform:translateY(-2px)}
+.qr-juz .num{font-family:"Amiri",serif;font-size:22px;color:var(--maroon-deep)}
+.qr-juz .lbl{font-size:11px;color:var(--muted);font-weight:700}
+.qr-text{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;font-family:"Amiri",serif;font-size:24px;line-height:2.4;color:var(--ink);text-align:right;direction:rtl;box-shadow:var(--shadow-sm);max-height:65vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--gold-soft) transparent}
+.qr-text::-webkit-scrollbar{width:6px}
+.qr-text::-webkit-scrollbar-thumb{background:var(--gold-soft);border-radius:3px}
+@media(max-width:480px){.qr-text{font-size:21px;line-height:2.2;padding:18px 14px}}
+.qr-ayah{display:inline;padding:0 2px;border-radius:6px;transition:background .25s ease}
+.qr-ayah.active{background:linear-gradient(180deg,#fff7df,#fdf3da);box-shadow:0 0 0 2px rgba(201,164,71,.35) inset}
+.qr-word{display:inline-block;padding:0 1px;border-radius:5px;transition:all .18s ease;cursor:pointer}
+.qr-word:hover{background:rgba(201,164,71,.18)}
+.qr-word.active{background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--maroon-deep);transform:translateY(-1px);box-shadow:0 2px 8px rgba(201,164,71,.45)}
+.qr-ayah-num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:linear-gradient(180deg,#fff7df,#fdf3da);border:1.5px solid var(--gold);color:var(--maroon-deep);font-family:"Amiri",serif;font-size:14px;font-weight:800;margin:0 4px;vertical-align:middle}
+.qr-surah-head{display:flex;align-items:center;gap:10px;background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;padding:12px 16px;border-radius:14px;margin:18px 0 12px;font-family:"Amiri",serif;font-weight:800;box-shadow:var(--shadow-sm)}
+.qr-surah-head:first-child{margin-top:0}
+.qr-surah-head .nm{flex:1;font-size:18px}
+.qr-surah-head .info{font-size:12px;color:var(--gold-soft);font-weight:700}
+.qr-bismillah{text-align:center;font-family:"Amiri",serif;font-size:22px;color:var(--maroon-deep);margin:8px 0 14px;padding:8px 0;border-top:1px dashed var(--gold-soft);border-bottom:1px dashed var(--gold-soft)}
+.qr-loader{display:flex;justify-content:center;padding:40px}
+.qr-loader .sp{width:34px;height:34px;border:3px solid var(--gold-soft);border-top-color:var(--maroon);border-radius:50%;animation:spin 1s linear infinite}
+.qr-empty{text-align:center;padding:30px;color:var(--muted);font-size:13.5px}
+
+.dua-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.dua-list{grid-template-columns:1fr}}
+.dua-card{background:var(--card);border:1px solid var(--line);border-right:4px solid var(--gold);border-radius:14px;padding:14px 16px;cursor:pointer;transition:all .25s var(--ease);box-shadow:var(--shadow-sm)}
+.dua-card:hover{transform:translateY(-3px);border-right-color:var(--maroon);box-shadow:var(--shadow-md)}
+.dua-card .nm{font-family:"Amiri",serif;font-size:18px;color:var(--maroon-deep);font-weight:700;margin-bottom:4px}
+.dua-card .when{font-size:12px;color:var(--gold-deep);font-weight:700}
+.dua-card .desc{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.6}
+.dua-text{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;font-family:"Amiri",serif;font-size:20px;line-height:2.3;color:var(--ink);text-align:right;direction:rtl;box-shadow:var(--shadow-sm)}
+.dua-line{display:block;padding:6px 8px;border-radius:8px;margin-bottom:4px}
+
+/* ===== Professional custom audio player (du'as / adhan / iqama) ===== */
+.audio-card{
+  position:relative;
+  background:
+    radial-gradient(ellipse at top right,rgba(201,164,71,.18),transparent 60%),
+    radial-gradient(ellipse at bottom left,rgba(201,164,71,.10),transparent 55%),
+    linear-gradient(160deg,#3a0810 0%,#4a0a13 45%,#5a1019 100%);
+  border:1px solid rgba(201,164,71,.35);
+  border-radius:20px;
+  padding:22px 22px 18px;
+  margin:18px 0 20px;
+  box-shadow:
+    0 20px 50px rgba(74,10,19,.45),
+    0 8px 16px rgba(0,0,0,.20),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  overflow:hidden;
+  isolation:isolate;
+}
+.audio-card::before{
+  content:"";position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(115deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 1px,transparent 14px);
+  pointer-events:none;z-index:-1;
+}
+.audio-card .ac-head{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:18px;
+}
+.audio-card .ac-cover{
+  width:62px;height:62px;border-radius:18px;flex-shrink:0;
+  background:
+    conic-gradient(from 220deg at 50% 50%,#c9a447,#e6c878,#8a6b1e,#c9a447);
+  display:grid;place-items:center;
+  position:relative;
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.40),
+    inset 0 0 0 1px rgba(255,255,255,.20),
+    inset 0 -4px 10px rgba(0,0,0,.25);
+}
+.audio-card .ac-cover::after{
+  content:"";position:absolute;inset:6px;border-radius:14px;
+  background:radial-gradient(circle at 30% 30%,#5a1019,#3a0810 70%);
+  display:grid;place-items:center;
+}
+.audio-card .ac-cover .ac-glyph{
+  position:absolute;inset:0;display:grid;place-items:center;z-index:2;
+  color:var(--gold-soft);font-size:24px;font-weight:700;
+  text-shadow:0 2px 6px rgba(0,0,0,.5);
+  font-family:"Amiri",serif;
+}
+.audio-card .ac-meta{flex:1;min-width:0}
+.audio-card .ac-title{
+  font-family:"Amiri",serif;font-size:19px;font-weight:700;
+  color:#fff8e1;line-height:1.25;margin:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.audio-card .ac-sub{
+  font-size:12px;color:rgba(230,200,120,.85);font-weight:600;
+  margin-top:4px;letter-spacing:.02em;
+}
+.audio-card .ac-progress{
+  position:relative;margin:6px 0 4px;direction:ltr;
+}
+.audio-card .ac-bar{
+  position:relative;height:6px;border-radius:99px;cursor:pointer;
+  background:rgba(255,248,225,.12);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.35);
+}
+.audio-card .ac-bar:hover{height:8px}
+.audio-card .ac-bar,.audio-card .ac-bar *{transition:height .18s ease,width .12s linear,left .12s linear}
+.audio-card .ac-fill{
+  position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:99px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-soft));
+  box-shadow:0 0 12px rgba(230,200,120,.55);
+}
+.audio-card .ac-handle{
+  position:absolute;top:50%;left:0%;transform:translate(-50%,-50%);
+  width:14px;height:14px;border-radius:50%;
+  background:linear-gradient(180deg,#fff,#fdf3da);
+  border:2px solid var(--gold);
+  box-shadow:0 2px 8px rgba(0,0,0,.45);
+  opacity:0;pointer-events:none;
+}
+.audio-card .ac-bar:hover .ac-handle,
+.audio-card.is-playing .ac-handle{opacity:1}
+.audio-card .ac-times{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:8px;
+  font-size:11.5px;font-weight:700;color:rgba(255,248,225,.75);
+  font-variant-numeric:tabular-nums;letter-spacing:.04em;
+}
+.audio-card .ac-controls{
+  display:flex;align-items:center;justify-content:center;gap:22px;
+  margin:18px 0 6px;
+  /* Force LTR so back-button always lands on left, forward on right */
+  direction:ltr;
+}
+.audio-card .ac-btn{
+  position:relative;
+  width:48px;height:48px;border-radius:50%;
+  background:rgba(255,248,225,.05);
+  border:1px solid rgba(201,164,71,.30);
+  cursor:pointer;
+  color:rgba(255,248,225,.85);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:inherit;font-weight:800;
+  transition:all .2s var(--ease);
+}
+.audio-card .ac-btn:hover{
+  color:#fff8e1;
+  background:rgba(201,164,71,.18);
+  border-color:var(--gold-soft);
+  transform:translateY(-1px);
+}
+.audio-card .ac-btn:active{transform:scale(.94)}
+.audio-card .ac-btn svg{width:26px;height:26px;display:block;fill:currentColor}
+.audio-card .ac-play{
+  width:64px;height:64px;border-radius:50%;
+  border:none;cursor:pointer;
+  background:
+    radial-gradient(circle at 30% 25%,#f4d98b 0%,var(--gold) 45%,#8a6b1e 100%);
+  color:var(--maroon-deep);
+  display:inline-flex;align-items:center;justify-content:center;
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.40),
+    0 0 0 4px rgba(201,164,71,.18),
+    inset 0 -3px 8px rgba(0,0,0,.20),
+    inset 0 2px 4px rgba(255,255,255,.45);
+  transition:transform .15s var(--ease),box-shadow .2s var(--ease);
+}
+.audio-card .ac-play svg{width:26px;height:26px;display:block;margin-left:2px}
+.audio-card .ac-play.is-playing svg{margin-left:0}
+.audio-card .ac-play:hover{
+  transform:scale(1.06);
+  background:radial-gradient(circle at 30% 25%,#fde8a8 0%,var(--gold-soft) 45%,var(--gold) 100%);
+  box-shadow:
+    0 14px 30px rgba(0,0,0,.50),
+    0 0 0 6px rgba(201,164,71,.28),
+    inset 0 -3px 8px rgba(0,0,0,.20),
+    inset 0 2px 4px rgba(255,255,255,.55);
+}
+.audio-card .ac-play:active{transform:scale(.96)}
+.audio-card .ac-fallback{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  margin-top:14px;padding-top:12px;
+  border-top:1px solid rgba(201,164,71,.18);
+  font-size:12px;
+}
+.audio-card .ac-fallback a{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 12px;border-radius:99px;
+  background:rgba(255,248,225,.06);
+  border:1px solid rgba(201,164,71,.30);
+  color:rgba(255,248,225,.85);
+  text-decoration:none;font-weight:700;
+  transition:all .2s var(--ease);
+}
+.audio-card .ac-fallback a:hover{
+  background:rgba(201,164,71,.18);
+  border-color:var(--gold-soft);
+  color:#fff8e1;
+}
+@keyframes acSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.audio-card.is-playing .ac-cover{animation:acSpin 8s linear infinite}
+.audio-card .ac-native{display:none}
+.dua-note{background:linear-gradient(180deg,#fffaef,#fdf3da);border:1px dashed var(--gold);border-radius:12px;padding:10px 14px;color:var(--maroon-deep);font-size:13px;margin-bottom:12px;text-align:center;font-family:"Amiri",serif}
+.dua-tabs{display:flex;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:14px;gap:4px;box-shadow:var(--shadow-sm)}
+.dua-tabs button{flex:1;padding:10px;border:none;background:transparent;border-radius:9px;font-family:inherit;font-weight:800;font-size:14px;color:var(--ink-soft);cursor:pointer;transition:all .22s var(--ease)}
+.dua-tabs button.active{background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:#fff8e1;box-shadow:var(--shadow-sm)}
 </style>
 </head>
 <body>
@@ -677,6 +907,12 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
       <button class="icon-btn" onclick="closeAllDrawers()">×</button>
     </div>
     <div class="drawer-body">
+      <div style="margin-bottom:8px;font-weight:700;font-size:13px;color:var(--muted)">القرآن والأدعية</div>
+      <div class="side-link" onclick="openDrawer('quranSection')"><span class="ico" style="background:linear-gradient(180deg,#2a7a4b,var(--green));color:#f0fff4">۩</span>القرآن الكريم · ٣٠ جزء</div>
+      <div class="side-link" onclick="openDrawer('duas')"><span class="ico" style="background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)">☾</span>أدعية</div>
+      <div class="side-link" onclick="openDrawer('adhan')"><span class="ico" style="background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:var(--gold-soft)">🕌</span>الأذان والإقامة</div>
+      <div class="side-link" onclick="openDrawer('support')"><span class="ico">✉</span>الدعم والتواصل</div>
+      <div style="margin-top:18px;margin-bottom:8px;font-weight:700;font-size:13px;color:var(--muted)">المنصة</div>
       <div class="side-link" onclick="openDrawer('request')"><span class="ico">＋</span>طلب إضافة شهيد جديد</div>
       <div class="side-link" onclick="openDrawer('photoRequest')"><span class="ico" style="background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)">📸</span>اطلب ألبوم ٦ صور · مجاناً</div>
       <div class="side-link" onclick="openDrawer('login')"><span class="ico">🛡</span>لوحة مشرف الشهيد</div>
@@ -855,6 +1091,78 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
       <a class="lightbox-download" id="lightboxDownload" onclick="event.stopPropagation()" title="تحميل الصورة" download href="#">⬇</a>
     <div class="lightbox-content" id="lightboxContent"></div>
   </div>
+
+  <!-- ===== Martyr Juz Reader (audio + text + finish-work button) ===== -->
+  <div class="mjuz-overlay" id="mjuzReader" onclick="if(event.target===this)closeMartyrJuzReader()">
+    <div class="mjuz-modal" role="dialog" aria-modal="true" aria-labelledby="mjuzTitle">
+      <div class="mjuz-head">
+        <button class="mjuz-close" onclick="closeMartyrJuzReader()" title="إغلاق">✕</button>
+        <div class="mjuz-title" id="mjuzTitle">قارئ الجزء</div>
+        <button class="mjuz-finish" id="mjuzFinishBtn" onclick="mjuzFinishWork()">✓ أنهيت العمل</button>
+      </div>
+      <div class="mjuz-body" id="mjuzBody"></div>
+    </div>
+  </div>
+
+  <!-- ===== Added: Quran section ===== -->
+  <aside class="drawer" id="drawer-quranSection">
+    <div class="drawer-head">
+      <div class="drawer-title"><span id="quranSectionTitle">القرآن الكريم · الأجزاء</span></div>
+      <button class="icon-btn" onclick="closeAllDrawers()">×</button>
+    </div>
+    <div class="drawer-body" id="quranSectionBody"></div>
+  </aside>
+
+  <!-- ===== Added: Du'as ===== -->
+  <aside class="drawer" id="drawer-duas">
+    <div class="drawer-head">
+      <div class="drawer-title"><span id="duasTitle">أدعية</span></div>
+      <button class="icon-btn" onclick="closeAllDrawers()">×</button>
+    </div>
+    <div class="drawer-body" id="duasBody"></div>
+  </aside>
+
+  <!-- ===== Added: Adhan & Iqama ===== -->
+  <aside class="drawer" id="drawer-adhan">
+    <div class="drawer-head">
+      <div class="drawer-title"><span>الأذان والإقامة</span></div>
+      <button class="icon-btn" onclick="closeAllDrawers()">×</button>
+    </div>
+    <div class="drawer-body" id="adhanBody"></div>
+  </aside>
+
+  <!-- ===== Added: Support form ===== -->
+  <aside class="drawer" id="drawer-support">
+    <div class="drawer-head">
+      <div class="drawer-title"><span>الدعم والتواصل</span></div>
+      <button class="icon-btn" onclick="closeAllDrawers()">×</button>
+    </div>
+    <div class="drawer-body">
+      <div class="dua-note">نسعد بسماعك. اكتب رسالتك وسنرد عليك في أقرب وقت إن شاء الله.</div>
+      <div class="field">
+        <label>الاسم</label>
+        <input id="spName" placeholder="اسمك الكريم" />
+      </div>
+      <div class="field">
+        <label>وسيلة التواصل (هاتف أو بريد)</label>
+        <input id="spContact" placeholder="رقم هاتف أو بريد إلكتروني" />
+      </div>
+      <div class="field">
+        <label>نوع الرسالة</label>
+        <select id="spCategory" style="width:100%;padding:13px 14px;border-radius:11px;border:1px solid var(--line);background:var(--card);font-family:inherit;font-size:15px;color:var(--ink);outline:none">
+          <option value="problem">مشكلة فنية</option>
+          <option value="suggestion">اقتراح</option>
+          <option value="upgrade">طلب ترقية / إضافة ميزة</option>
+          <option value="other">أخرى</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>الرسالة</label>
+        <textarea id="spMessage" rows="5" placeholder="اكتب رسالتك هنا..."></textarea>
+      </div>
+      <button class="btn btn-primary btn-block" id="spSubmit" onclick="submitSupport()">إرسال الرسالة</button>
+    </div>
+  </aside>
 
   <div class="toasts" id="toasts"></div>
 </div>
@@ -1762,18 +2070,22 @@ async function renderQuran(){
     const status = parts[n] === true ? "done" : parts[n] === "taken" ? "taken" : "available";
     let action = "";
     if (status === "available") {
-      action = `<button class="mini" onclick="takePart(${n})">📖 اختر</button>`;
+      /* The cell itself is also clickable (opens reader); stopPropagation
+         keeps "اختر" from triggering the cell handler twice. */
+      action = `<button class="mini" onclick="event.stopPropagation();takePart(${n})">📖 اختر</button>`;
     } else if (status === "taken") {
       /* Only the same browser/person who took the part can mark it complete */
       if (hasQuranLock(currentMartyrId, n)) {
-        action = `<button class="mini" id="qbtn-${n}" onclick="finishPart(${n})">✓ أنهيت</button>`;
+        action = `<button class="mini" id="qbtn-${n}" onclick="event.stopPropagation();finishPart(${n})">✓ أنهيت</button>`;
       } else {
         action = `<span class="mini" title="هذا الجزء أخذه شخص آخر — في انتظار إكماله">⏳ قيد الإنجاز</span>`;
       }
     } else {
       action = `<span class="mini">✓ مكتمل</span>`;
     }
-    return `<div class="qpart ${status}"><div class="num">جزء ${arabicNum(n)}</div>${action}</div>`;
+    /* Whole cell opens the reader so the volunteer can read & listen
+       to the juz they have selected. */
+    return `<div class="qpart ${status}" onclick="openMartyrJuzReader(${n})" title="اضغط لفتح قارئ الجزء"><div class="num">جزء ${arabicNum(n)}</div>${action}</div>`;
   }).join("");
   $("quranBody").innerHTML = `
     <div class="note">
@@ -1781,6 +2093,7 @@ async function renderQuran(){
       <span class="legend"><span class="dot" style="background:var(--gold)"></span> تم أخذه</span>
       <span class="legend"><span class="dot" style="background:var(--green)"></span> مكتمل</span>
     </div>
+    <div class="dua-note" style="margin-bottom:8px">اضغط على الجزء لفتح صفحة القراءة مع الصوت والنص</div>
     <div class="quran-grid">${cells}</div>`;
 }
 
@@ -1911,6 +2224,1009 @@ loadFeed();
 loadAlbums();
 setupInfiniteScroll();
 observeReveals();
+
+/* ============================================================
+   ADDED MODULE — Quran reader (Quran.com API), Du'as, Adhan/Iqama, Support
+   ============================================================ */
+
+/* ---- Reciters (Quran.com recitation IDs that ship word-by-word timing data)
+   IDs are aligned with /api/v4/resources/recitations on quran.com:
+     2 = AbdulBaset AbdulSamad (Murattal)
+     5 = Hani ar-Rifai
+     6 = Mahmoud Khalil Al-Husary
+     7 = Mishari Rashid al-`Afasy
+     8 = Mohamed Siddiq al-Minshawi  (the previous mapping had the
+                                      wrong id for Minshawi which is why
+                                      his audio could never load)
+     9 = Sa`ud ash-Shuraim
+   ---- */
+const RECITERS = [
+  { id: 7, name: "مشاري راشد العفاسي" },
+  { id: 6, name: "محمود خليل الحصري" },
+  { id: 8, name: "محمد صديق المنشاوي" },
+  { id: 2, name: "عبد الباسط عبد الصمد" },
+  { id: 9, name: "سعود الشريم" },
+  { id: 5, name: "هاني الرفاعي" }
+];
+
+/* ---- Audio + highlight engine ---- */
+let qAudio = null;          // current HTMLAudioElement
+let qNextAudio = null;      // pre-fetched next-verse audio (warms the cache)
+let qNextIdx   = -1;        // which verse qNextAudio holds
+let qSegments = [];         // [{verseKey, audioUrl, segments:[[wordIdx,_,start,end], ...]}]
+let qVerseIndex = 0;        // index into qSegments currently playing
+let qWordTimer = null;
+let qReciterId = 7;
+let qAutoNext = true;
+let lastHighlightedWord = -1;
+
+function stopQuranAudio(){
+  if (qAudio){ try{ qAudio.pause(); }catch{} qAudio.src=""; qAudio=null; }
+  if (qNextAudio){ try{ qNextAudio.pause(); }catch{} qNextAudio.src=""; qNextAudio=null; qNextIdx=-1; }
+  if (qWordTimer){ clearInterval(qWordTimer); qWordTimer=null; }
+  lastHighlightedWord = -1;
+  document.querySelectorAll(".qr-word.active,.qr-ayah.active").forEach(el=>el.classList.remove("active"));
+}
+
+/* Pre-fetch the next verse's audio so the gap between verses is near-zero.
+   We just create an Audio element and set src; the browser starts buffering
+   immediately. When playVerseAt(idx+1) runs, the file is already in cache. */
+function preloadNextVerse(currentIdx){
+  const nextIdx = currentIdx + 1;
+  if (nextIdx >= qSegments.length) { qNextAudio = null; qNextIdx = -1; return; }
+  const v = qSegments[nextIdx];
+  if (!v || !v.audioUrl) { qNextAudio = null; qNextIdx = -1; return; }
+  if (qNextIdx === nextIdx && qNextAudio) return; // already preloaded
+  try {
+    if (qNextAudio){ try{ qNextAudio.pause(); }catch(_){} qNextAudio.src=""; }
+    qNextAudio = new Audio();
+    qNextAudio.preload = "auto";
+    qNextAudio.src = v.audioUrl;
+    qNextAudio.load();
+    qNextIdx = nextIdx;
+  } catch(_) { qNextAudio = null; qNextIdx = -1; }
+}
+
+function highlightWord(verseKey, wordIdx){
+  const cont = document.querySelector(`[data-verse="${verseKey}"]`);
+  if (!cont) return;
+  cont.querySelectorAll(".qr-word.active").forEach(el=>el.classList.remove("active"));
+  document.querySelectorAll(".qr-ayah.active").forEach(el=>el.classList.remove("active"));
+  cont.classList.add("active");
+  const w = cont.querySelector(`[data-w="${wordIdx}"]`);
+  if (w){
+    w.classList.add("active");
+    /* keep current word in view */
+    const box = cont.closest(".qr-text");
+    if (box){
+      const wr = w.getBoundingClientRect();
+      const br = box.getBoundingClientRect();
+      if (wr.bottom > br.bottom - 60 || wr.top < br.top + 30){
+        w.scrollIntoView({behavior:"smooth", block:"center"});
+      }
+    }
+  }
+}
+
+function playVerseAt(idx){
+  if (idx < 0 || idx >= qSegments.length){ stopQuranAudio(); updatePlayBtn(false); return; }
+  qVerseIndex = idx;
+  const v = qSegments[idx];
+  if (!v || !v.audioUrl){ playVerseAt(idx+1); return; }
+
+  /* Detach listeners on the old element BEFORE we mutate it; otherwise the
+     `src=""` we set below fires an "error" event whose handler still sees
+     the (now-replaced) global qAudio and the OLD verse's `v`, which would
+     restart playback of the previous verse — that was the source of the
+     "الحمد لله رب العالمين" double-reading bug. */
+  if (qAudio){
+    try{ qAudio.onended = null; qAudio.onerror = null; qAudio.pause(); }catch(_){}
+    try{ qAudio.removeAttribute("src"); qAudio.load(); }catch(_){}
+    qAudio = null;
+  }
+  if (qNextAudio && qNextIdx === idx){
+    qAudio = qNextAudio;
+    qNextAudio = null; qNextIdx = -1;
+  } else {
+    qAudio = new Audio();
+    qAudio.preload = "auto";
+    qAudio.src = v.audioUrl;
+  }
+
+  /* Local reference: every callback below ignores itself if the global
+     qAudio has already moved on to a different element. */
+  const myAudio = qAudio;
+  let triedFallback = false;
+
+  myAudio.onerror = ()=>{
+    if (myAudio !== qAudio) return;
+    if (!triedFallback && v.audioUrlAlt){
+      triedFallback = true;
+      try{ myAudio.src = v.audioUrlAlt; myAudio.play().catch(()=>{ updatePlayBtn(false); toast("تعذر تشغيل الصوت","error"); }); }catch(_){ updatePlayBtn(false); }
+    } else { updatePlayBtn(false); }
+  };
+
+  /* Kick off playback immediately. Because the next verse is already
+     buffered in the browser cache (see preloadNextVerse below), the
+     hand-off between verses is near-instant. */
+  lastHighlightedWord = -1;
+  myAudio.play().then(()=>{ if (myAudio===qAudio) updatePlayBtn(true); }).catch(()=>{
+    if (myAudio !== qAudio) return;
+    if (!triedFallback && v.audioUrlAlt){
+      triedFallback = true;
+      try{ myAudio.src = v.audioUrlAlt; myAudio.play().then(()=>{ if (myAudio===qAudio) updatePlayBtn(true); }).catch(()=>{ updatePlayBtn(false); toast("تعذر تشغيل الصوت","error"); }); }catch(_){ updatePlayBtn(false); toast("تعذر تشغيل الصوت","error"); }
+    } else { updatePlayBtn(false); toast("تعذر تشغيل الصوت","error"); }
+  });
+
+  /* Start fetching the NEXT verse right away so the gap is invisible */
+  preloadNextVerse(idx);
+
+  if (qWordTimer) clearInterval(qWordTimer);
+  qWordTimer = setInterval(()=>{
+    if (!qAudio || qAudio !== myAudio) return;
+    const t = qAudio.currentTime * 1000;
+    const segs = v.segments || [];
+    let left = 0, right = segs.length - 1, bestMatch = 0;
+    while (left <= right) {
+      const mid = (left + right) >> 1;
+      const [w,_,s,e] = segs[mid];
+      if (t >= s && t <= e) { bestMatch = w; break; }
+      else if (t < s) right = mid - 1;
+      else { bestMatch = w; left = mid + 1; }
+    }
+    if (bestMatch !== lastHighlightedWord) {
+      highlightWord(v.verseKey, bestMatch);
+      lastHighlightedWord = bestMatch;
+    }
+  }, 20);
+
+  /* Re-entry guard so onended cannot trigger playVerseAt twice */
+  let _advanced = false;
+  myAudio.onended = ()=>{
+    if (_advanced) return;
+    _advanced = true;
+    if (myAudio !== qAudio) return;
+    if (qAutoNext) playVerseAt(idx+1);
+    else { stopQuranAudio(); updatePlayBtn(false); }
+  };
+}
+
+function updatePlayBtn(playing){
+  const b = $("qPlayBtn"); if (!b) return;
+  b.innerHTML = playing ? "⏸ إيقاف" : "▶ تشغيل";
+}
+
+/* ---- Quran section UI ---- */
+let qCurrentJuz = null;
+
+window.openDrawer_quranSection = function(){};
+
+function renderQuranJuzList(){
+  $("quranSectionTitle").textContent = "القرآن الكريم · اختر جزءاً";
+  let html = `<div class="dua-note">اختر جزءاً من أجزاء القرآن الثلاثين لقراءته والاستماع إليه</div><div class="qr-juz-grid">`;
+  for (let i=1;i<=30;i++){
+    html += `<div class="qr-juz" onclick="openJuz(${i})"><div class="num">${arabicNum(i)}</div><div class="lbl">الجزء</div></div>`;
+  }
+  html += `</div>`;
+  $("quranSectionBody").innerHTML = html;
+}
+
+window.openJuz = async function(n){
+  qCurrentJuz = n;
+  stopQuranAudio();
+  $("quranSectionTitle").textContent = `الجزء ${arabicNum(n)}`;
+  const reciterOpts = RECITERS.map(r=>`<option value="${r.id}" ${r.id===qReciterId?'selected':''}>${r.name}</option>`).join("");
+  $("quranSectionBody").innerHTML = `
+    <div class="qr-toolbar">
+      <button class="ic" onclick="renderQuranJuzList()" title="رجوع للأجزاء">→</button>
+      <select id="qReciter" class="grow" onchange="onReciterChange(this.value)">${reciterOpts}</select>
+      <button class="ic" onclick="prevVerse()" title="السابق">⏮</button>
+      <button class="play" id="qPlayBtn" onclick="togglePlay()">▶ تشغيل</button>
+      <button class="ic" onclick="nextVerse()" title="التالي">⏭</button>
+      <button class="ic" id="qAutoBtn" onclick="toggleAuto()" title="تشغيل تلقائي" style="${qAutoNext?'background:var(--gold-soft);color:var(--maroon-deep)':''}">↻</button>
+    </div>
+    <div id="qContent"><div class="qr-loader"><div class="sp"></div></div></div>
+  `;
+  try{
+    const versesRes = await fetch(`https://api.quran.com/api/v4/verses/by_juz/${n}?words=true&word_fields=text_uthmani&fields=text_uthmani,verse_key,chapter_id&per_page=300`);
+    const versesData = await versesRes.json();
+    const verses = versesData.verses || [];
+
+    const audioRes = await fetch(`https://api.quran.com/api/v4/recitations/${qReciterId}/by_juz/${n}?segments=true`);
+    const audioData = await audioRes.json();
+    const audioFiles = audioData.audio_files || [];
+    const audioMap = {};
+    audioFiles.forEach(a=>{
+      let url = a.url || "";
+      let urlAlt = "";
+      if (url.startsWith("http")){
+        urlAlt = url;
+      } else {
+        /* Canonical CDN that hosts every reciter (including Minshawi),
+           with the older verses.quran.com mirror as a fallback. */
+        url    = `https://audio.qurancdn.com/${url}`;
+        urlAlt = `https://verses.quran.com/${a.url}`;
+      }
+      audioMap[a.verse_key] = { url, urlAlt, segments: a.segments || [] };
+    });
+
+    qSegments = verses.map(v=>({
+      verseKey: v.verse_key,
+      chapter: v.chapter_id,
+      words: v.words || [],
+      audioUrl:    audioMap[v.verse_key]?.url    || null,
+      audioUrlAlt: audioMap[v.verse_key]?.urlAlt || null,
+      segments:    audioMap[v.verse_key]?.segments || []
+    }));
+
+    /* Group by surah for display */
+    const chaptersRes = await fetch("https://api.quran.com/api/v4/chapters?language=ar");
+    const chaptersData = await chaptersRes.json();
+    const chapters = {};
+    (chaptersData.chapters || []).forEach(c=>{ chapters[c.id] = c; });
+
+    let html = `<div class="qr-text" id="qText">`;
+    let lastSurah = null;
+    qSegments.forEach((v, i)=>{
+      if (v.chapter !== lastSurah){
+        const c = chapters[v.chapter];
+        html += `<div class="qr-surah-head"><span class="nm">${c?escapeHtml(c.name_arabic):'سورة '+v.chapter}</span><span class="info">${c?arabicNum(c.verses_count)+' آية':''}</span></div>`;
+        if (v.chapter !== 1 && v.chapter !== 9 && v.verseKey.endsWith(":1")){
+          html += `<div class="qr-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>`;
+        }
+        lastSurah = v.chapter;
+      }
+      const ayahNum = v.verseKey.split(":")[1];
+      const wordsHtml = v.words.filter(w=>w.text_uthmani).map((w,wi)=>`<span class="qr-word" data-w="${w.position||wi+1}" onclick="jumpToVerse(${i})">${escapeHtml(w.text_uthmani)}</span>`).join(" ");
+      html += `<span class="qr-ayah" data-verse="${v.verseKey}">${wordsHtml}<span class="qr-ayah-num">${arabicNum(ayahNum)}</span></span> `;
+    });
+    html += `</div>`;
+    $("qContent").innerHTML = html;
+  }catch(e){
+    console.error(e);
+    $("qContent").innerHTML = `<div class="qr-empty">تعذر تحميل الجزء. تحقق من الاتصال بالإنترنت ثم أعد المحاولة.</div>`;
+  }
+};
+
+window.onReciterChange = function(v){
+  qReciterId = parseInt(v,10);
+  if (qCurrentJuz) openJuz(qCurrentJuz);
+};
+
+/* ===== Martyr-page Juz Reader =====
+   Opens a full-screen reading panel for a single juz with audio + text
+   and a sticky "أنهيت العمل" (finish work) button at the top.
+   Reuses the same Quran data pipeline (`openJuz`) and renders into the
+   modal body. The finish button is enabled only when the current device
+   holds the lock for that juz on this martyr (= the volunteer who took it). */
+let _mjuzPart = null;
+window.openMartyrJuzReader = async function(n){
+  _mjuzPart = n;
+  const reader = document.getElementById("mjuzReader");
+  const body   = document.getElementById("mjuzBody");
+  const titleEl= document.getElementById("mjuzTitle");
+  const finBtn = document.getElementById("mjuzFinishBtn");
+  if (!reader || !body) return;
+
+  /* Show modal first so the user sees something happen immediately */
+  reader.classList.add("open");
+  document.body.style.overflow = "hidden";
+  titleEl.textContent = `الجزء ${arabicNum(n)} — قراءة واستماع`;
+  body.innerHTML = `<div class="qr-loader"><div class="sp"></div></div>`;
+
+  /* Decide what the finish button can do based on Firestore state + lock */
+  let canFinish = false, statusLabel = "";
+  try{
+    const snap = await getDoc(doc(db,"martyrs",currentMartyrId));
+    const cur  = (snap.data()?.quranParts || {})[n];
+    if (cur === true){
+      statusLabel = "✓ مكتمل";
+      finBtn.disabled = true;
+      finBtn.textContent = "✓ مكتمل";
+    } else if (cur === "taken"){
+      if (hasQuranLock(currentMartyrId, n)){
+        canFinish = true;
+        finBtn.disabled = false;
+        finBtn.textContent = "✓ أنهيت العمل";
+      } else {
+        finBtn.disabled = true;
+        finBtn.textContent = "⏳ مأخوذ من شخص آخر";
+      }
+    } else {
+      /* Available — let them take it from the reader directly */
+      finBtn.disabled = false;
+      finBtn.textContent = "📖 خذ هذا الجزء";
+    }
+  }catch(_){
+    finBtn.disabled = true;
+    finBtn.textContent = "✓ أنهيت العمل";
+  }
+
+  /* Render the reader UI inside the modal body. We re-implement the
+     small toolbar + content area locally so the reader can live inside
+     the modal without colliding with the global Quran section. */
+  qCurrentJuz = n;
+  stopQuranAudio();
+  const reciterOpts = RECITERS.map(r=>`<option value="${r.id}" ${r.id===qReciterId?'selected':''}>${r.name}</option>`).join("");
+  body.innerHTML = `
+    <div class="qr-toolbar">
+      <select id="qReciter" class="grow" onchange="onReciterChangeMartyr(this.value)">${reciterOpts}</select>
+      <button class="ic" onclick="prevVerse()" title="السابق">⏮</button>
+      <button class="play" id="qPlayBtn" onclick="togglePlay()">▶ تشغيل</button>
+      <button class="ic" onclick="nextVerse()" title="التالي">⏭</button>
+      <button class="ic" id="qAutoBtn" onclick="toggleAuto()" title="تشغيل تلقائي" style="${qAutoNext?'background:var(--gold-soft);color:var(--maroon-deep)':''}">↻</button>
+    </div>
+    <div id="qContent"><div class="qr-loader"><div class="sp"></div></div></div>
+  `;
+
+  await _loadJuzInto(n, "qContent");
+};
+
+/* Reciter change while inside the martyr reader: reload audio without
+   leaving the modal. */
+window.onReciterChangeMartyr = function(v){
+  qReciterId = parseInt(v,10);
+  if (_mjuzPart) _loadJuzInto(_mjuzPart, "qContent");
+};
+
+/* Shared loader: fetches verses + audio for one juz and renders into a
+   given target element. Identical pipeline to openJuz so the audio
+   highlight engine works the same way. */
+async function _loadJuzInto(n, targetId){
+  try{
+    const versesRes = await fetch(`https://api.quran.com/api/v4/verses/by_juz/${n}?words=true&word_fields=text_uthmani&fields=text_uthmani,verse_key,chapter_id&per_page=300`);
+    const versesData = await versesRes.json();
+    const verses = versesData.verses || [];
+
+    const audioRes = await fetch(`https://api.quran.com/api/v4/recitations/${qReciterId}/by_juz/${n}?segments=true`);
+    const audioData = await audioRes.json();
+    const audioFiles = audioData.audio_files || [];
+    const audioMap = {};
+    audioFiles.forEach(a=>{
+      let url = a.url || "", urlAlt = "";
+      if (url.startsWith("http")){ urlAlt = url; }
+      else { url = `https://audio.qurancdn.com/${url}`; urlAlt = `https://verses.quran.com/${a.url}`; }
+      audioMap[a.verse_key] = { url, urlAlt, segments: a.segments || [] };
+    });
+
+    qSegments = verses.map(v=>({
+      verseKey: v.verse_key,
+      chapter:  v.chapter_id,
+      words:    v.words || [],
+      audioUrl:    audioMap[v.verse_key]?.url    || null,
+      audioUrlAlt: audioMap[v.verse_key]?.urlAlt || null,
+      segments:    audioMap[v.verse_key]?.segments || []
+    }));
+
+    const chaptersRes = await fetch("https://api.quran.com/api/v4/chapters?language=ar");
+    const chaptersData = await chaptersRes.json();
+    const chapters = {};
+    (chaptersData.chapters || []).forEach(c=>{ chapters[c.id] = c; });
+
+    let html = `<div class="qr-text" id="qText">`;
+    let lastSurah = null;
+    qSegments.forEach((v, i)=>{
+      if (v.chapter !== lastSurah){
+        const c = chapters[v.chapter];
+        html += `<div class="qr-surah-head"><span class="nm">${c?escapeHtml(c.name_arabic):'سورة '+v.chapter}</span><span class="info">${c?arabicNum(c.verses_count)+' آية':''}</span></div>`;
+        if (v.chapter !== 1 && v.chapter !== 9 && v.verseKey.endsWith(":1")){
+          html += `<div class="qr-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>`;
+        }
+        lastSurah = v.chapter;
+      }
+      const ayahNum = v.verseKey.split(":")[1];
+      const wordsHtml = v.words.filter(w=>w.text_uthmani).map((w,wi)=>`<span class="qr-word" data-w="${w.position||wi+1}" onclick="jumpToVerse(${i})">${escapeHtml(w.text_uthmani)}</span>`).join(" ");
+      html += `<span class="qr-ayah" data-verse="${v.verseKey}">${wordsHtml}<span class="qr-ayah-num">${arabicNum(ayahNum)}</span></span> `;
+    });
+    html += `</div>`;
+    const tgt = document.getElementById(targetId);
+    if (tgt) tgt.innerHTML = html;
+  }catch(e){
+    console.error(e);
+    const tgt = document.getElementById(targetId);
+    if (tgt) tgt.innerHTML = `<div class="qr-empty">تعذر تحميل الجزء. تحقق من الاتصال بالإنترنت ثم أعد المحاولة.</div>`;
+  }
+}
+
+window.closeMartyrJuzReader = function(){
+  stopQuranAudio();
+  const reader = document.getElementById("mjuzReader");
+  if (reader) reader.classList.remove("open");
+  document.body.style.overflow = "";
+  _mjuzPart = null;
+  /* Refresh the parts grid in case state changed (took / finished). */
+  if (typeof renderQuran === "function") { try { renderQuran(); } catch(_){} }
+};
+
+/* Routes the top "finish work" button to the right action based on the
+   current state of the part. */
+window.mjuzFinishWork = async function(){
+  if (!_mjuzPart || !currentMartyrId) return;
+  const n = _mjuzPart;
+  const btn = document.getElementById("mjuzFinishBtn");
+  try{
+    const snap = await getDoc(doc(db,"martyrs",currentMartyrId));
+    const cur  = (snap.data()?.quranParts || {})[n];
+    if (cur === true){
+      toast("هذا الجزء مكتمل مسبقاً","");
+      return;
+    }
+    if (cur === "taken"){
+      if (!hasQuranLock(currentMartyrId, n)){
+        toast("لا يمكنك إكمال جزء أخذه شخص آخر","error");
+        return;
+      }
+      if (btn){ btn.disabled = true; btn.textContent = "...جاري الحفظ"; }
+      await window.finishPart(n);
+      window.closeMartyrJuzReader();
+      return;
+    }
+    /* Available -> take it */
+    if (btn){ btn.disabled = true; btn.textContent = "...جاري الأخذ"; }
+    await window.takePart(n);
+    /* Re-open with refreshed state */
+    window.openMartyrJuzReader(n);
+  }catch(e){
+    toast(e.message || "خطأ","error");
+    if (btn){ btn.disabled = false; btn.textContent = "✓ أنهيت العمل"; }
+  }
+};
+window.togglePlay = function(){
+  if (qAudio && !qAudio.paused){ qAudio.pause(); updatePlayBtn(false); }
+  else if (qAudio){ qAudio.play(); updatePlayBtn(true); }
+  else if (qSegments.length){ playVerseAt(qVerseIndex||0); }
+};
+window.prevVerse = function(){ if (qSegments.length) playVerseAt(Math.max(0,qVerseIndex-1)); };
+window.nextVerse = function(){ if (qSegments.length) playVerseAt(Math.min(qSegments.length-1,qVerseIndex+1)); };
+window.jumpToVerse = function(i){ playVerseAt(i); };
+window.toggleAuto = function(){
+  qAutoNext = !qAutoNext;
+  const b = $("qAutoBtn");
+  if (b) b.style.cssText = qAutoNext?'background:var(--gold-soft);color:var(--maroon-deep)':'';
+};
+
+/* ---- Du'as data ---- */
+const DUAS = [
+  {
+    slug:"kumayl", name:"دعاء كميل", when:"ليلة الجمعة (ليلة الخميس)",
+    desc:"من أجلّ الأدعية المروية عن أمير المؤمنين عليّ بن أبي طالب عليه السلام، علّمه كميل بن زياد النخعي.",
+    audio:"music/كميل.mp3",
+    lines:[
+      "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      "اللَّهُمَّ إِنِّي أَسْأَلُكَ بِرَحْمَتِكَ الَّتِي وَسِعَتْ كُلَّ شَيْءٍ",
+      "وَبِقُوَّتِكَ الَّتِي قَهَرْتَ بِهَا كُلَّ شَيْءٍ، وَخَضَعَ لَهَا كُلُّ شَيْءٍ، وَذَلَّ لَهَا كُلُّ شَيْءٍ",
+      "وَبِجَبَرُوتِكَ الَّتِي غَلَبْتَ بِهَا كُلَّ شَيْءٍ",
+      "وَبِعِزَّتِكَ الَّتِي لَا يَقُومُ لَهَا شَيْءٌ",
+      "وَبِعَظَمَتِكَ الَّتِي مَلَأَتْ كُلَّ شَيْءٍ",
+      "وَبِسُلْطَانِكَ الَّذِي عَلَا كُلَّ شَيْءٍ",
+      "وَبِوَجْهِكَ الْبَاقِي بَعْدَ فَنَاءِ كُلِّ شَيْءٍ",
+      "وَبِأَسْمَائِكَ الَّتِي مَلَأَتْ أَرْكَانَ كُلِّ شَيْءٍ",
+      "وَبِعِلْمِكَ الَّذِي أَحَاطَ بِكُلِّ شَيْءٍ",
+      "وَبِنُورِ وَجْهِكَ الَّذِي أَضَاءَ لَهُ كُلُّ شَيْءٍ",
+      "يَا نُورُ يَا قُدُّوسُ، يَا أَوَّلَ الْأَوَّلِينَ، وَيَا آخِرَ الْآخِرِينَ",
+      "اللَّهُمَّ اغْفِرْ لِيَ الذُّنُوبَ الَّتِي تَهْتِكُ الْعِصَمَ",
+      "اللَّهُمَّ اغْفِرْ لِيَ الذُّنُوبَ الَّتِي تُنْزِلُ النِّقَمَ",
+      "اللَّهُمَّ اغْفِرْ لِيَ الذُّنُوبَ الَّتِي تُغَيِّرُ النِّعَمَ",
+      "اللَّهُمَّ اغْفِرْ لِيَ الذُّنُوبَ الَّتِي تَحْبِسُ الدُّعَاءَ",
+      "اللَّهُمَّ اغْفِرْ لِيَ الذُّنُوبَ الَّتِي تُنْزِلُ الْبَلاءَ",
+      "اللَّهُمَّ اغْفِرْ لِي كُلَّ ذَنْبٍ أَذْنَبْتُهُ، وَكُلَّ خَطِيئَةٍ أَخْطَأْتُهَا",
+      "اللَّهُمَّ إِنِّي أَتَقَرَّبُ إِلَيْكَ بِذِكْرِكَ، وَأَسْتَشْفِعُ بِكَ إِلَى نَفْسِكَ",
+      "وَأَسْأَلُكَ بِجُودِكَ أَنْ تُدْنِيَنِي مِنْ قُرْبِكَ، وَأَنْ تُوزِعَنِي شُكْرَكَ، وَأَنْ تُلْهِمَنِي ذِكْرَكَ",
+      "اللَّهُمَّ إِنِّي أَسْأَلُكَ سُؤَالَ خَاضِعٍ مُتَذَلِّلٍ خَاشِعٍ، أَنْ تُسَامِحَنِي وَتَرْحَمَنِي، وَتَجْعَلَنِي بِقَسَمِكَ رَاضِياً قَانِعاً، وَفِي جَمِيعِ الْأَحْوَالِ مُتَوَاضِعاً",
+      "اللَّهُمَّ وَأَسْأَلُكَ سُؤَالَ مَنِ اشْتَدَّتْ فَاقَتُهُ، وَأَنْزَلَ بِكَ عِنْدَ الشَّدَائِدِ حَاجَتَهُ، وَعَظُمَ فِيمَا عِنْدَكَ رَغْبَتُهُ",
+      "اللَّهُمَّ عَظُمَ سُلْطَانُكَ، وَعَلَا مَكَانُكَ، وَخَفِيَ مَكْرُكَ، وَظَهَرَ أَمْرُكَ، وَغَلَبَ قَهْرُكَ، وَجَرَتْ قُدْرَتُكَ، وَلَا يُمْكِنُ الْفِرَارُ مِنْ حُكُومَتِكَ",
+      "اللَّهُمَّ لَا أَجِدُ لِذُنُوبِي غَافِراً، وَلَا لِقَبَائِحِي سَاتِراً، وَلَا لِشَيْءٍ مِنْ عَمَلِيَ الْقَبِيحِ بِالْحَسَنِ مُبَدِّلاً غَيْرَكَ",
+      "لَا إِلَٰهَ إِلَّا أَنْتَ، سُبْحَانَكَ وَبِحَمْدِكَ، ظَلَمْتُ نَفْسِي، وَتَجَرَّأْتُ بِجَهْلِي",
+      "وَسَكَنْتُ إِلَى قَدِيمِ ذِكْرِكَ لِي، وَمَنِّكَ عَلَيَّ",
+      "اللَّهُمَّ مَوْلَايَ، كَمْ مِنْ قَبِيحٍ سَتَرْتَهُ، وَكَمْ مِنْ فَادِحٍ مِنَ الْبَلَاءِ أَقَلْتَهُ",
+      "وَكَمْ مِنْ عِثَارٍ وَقَيْتَهُ، وَكَمْ مِنْ مَكْرُوهٍ دَفَعْتَهُ، وَكَمْ مِنْ ثَنَاءٍ جَمِيلٍ لَسْتُ أَهْلاً لَهُ نَشَرْتَهُ",
+      "اللَّهُمَّ عَظُمَ بَلَائِي، وَأَفْرَطَ بِي سُوءُ حَالِي، وَقَصُرَتْ بِي أَعْمَالِي، وَقَعَدَتْ بِي أَغْلَالِي، وَحَبَسَنِي عَنْ نَفْعِي بُعْدُ آمَالِي",
+      "وَخَدَعَتْنِي الدُّنْيَا بِغُرُورِهَا، وَنَفْسِي بِجِنَايَتِهَا وَمِطَالِي",
+      "يَا سَيِّدِي، فَأَسْأَلُكَ بِعِزَّتِكَ أَنْ لَا يَحْجُبَ عَنْكَ دُعَائِي سُوءُ عَمَلِي وَفِعَالِي",
+      "وَلَا تَفْضَحْنِي بِخَفِيِّ مَا اطَّلَعْتَ عَلَيْهِ مِنْ سِرِّي",
+      "وَلَا تُعَاجِلْنِي بِالْعُقُوبَةِ عَلَى مَا عَمِلْتُهُ فِي خَلَوَاتِي مِنْ سُوءِ فِعْلِي وَإِسَاءَتِي، وَدَوَامِ تَفْرِيطِي وَجَهَالَتِي، وَكَثْرَةِ شَهَوَاتِي وَغَفْلَتِي",
+      "وَكُنِ اللَّهُمَّ بِعِزَّتِكَ لِي فِي كُلِّ الْأَحْوَالِ رَؤُوفاً، وَعَلَيَّ فِي جَمِيعِ الْأُمُورِ عَطُوفاً",
+      "إِلَهِي وَرَبِّي، مَنْ لِي غَيْرُكَ أَسْأَلُهُ كَشْفَ ضُرِّي وَالنَّظَرَ فِي أَمْرِي",
+      "إِلَهِي وَمَوْلَايَ، أَجْرَيْتَ عَلَيَّ حُكْماً اتَّبَعْتُ فِيهِ هَوَى نَفْسِي، وَلَمْ أَحْتَرِسْ فِيهِ مِنْ تَزْيِينِ عَدُوِّي، فَغَرَّنِي بِمَا أَهْوَى، وَأَسْعَدَهُ عَلَى ذَلِكَ الْقَضَاءُ",
+      "فَتَجَاوَزْتُ بِمَا جَرَى عَلَيَّ مِنْ ذَلِكَ بَعْضَ حُدُودِكَ، وَخَالَفْتُ بَعْضَ أَوَامِرِكَ",
+      "فَلَكَ الْحَمْدُ عَلَيَّ فِي جَمِيعِ ذَلِكَ، وَلَا حُجَّةَ لِي فِيمَا جَرَى عَلَيَّ فِيهِ قَضَاؤُكَ، وَأَلْزَمَنِي حُكْمُكَ وَبَلَاؤُكَ",
+      "وَقَدْ أَتَيْتُكَ يَا إِلَهِي بَعْدَ تَقْصِيرِي وَإِسْرَافِي عَلَى نَفْسِي، مُعْتَذِراً نَادِماً مُنْكَسِراً مُسْتَقِيلاً مُسْتَغْفِراً مُنِيباً مُقِرّاً مُذْعِناً مُعْتَرِفاً",
+      "لَا أَجِدُ مَفَرّاً مِمَّا كَانَ مِنِّي، وَلَا مَفْزَعاً أَتَوَجَّهُ إِلَيْهِ فِي أَمْرِي، غَيْرَ قَبُولِكَ عُذْرِي، وَإِدْخَالِكَ إِيَّايَ فِي سَعَةٍ مِنْ رَحْمَتِكَ",
+      "اللَّهُمَّ فَاقْبَلْ عُذْرِي، وَارْحَمْ شِدَّةَ ضُرِّي، وَفُكَّنِي مِنْ شَدِّ وَثَاقِي",
+      "يَا رَبِّ ارْحَمْ ضَعْفَ بَدَنِي، وَرِقَّةَ جِلْدِي، وَدِقَّةَ عَظْمِي",
+      "يَا مَنْ بَدَأَ خَلْقِي وَذِكْرِي وَتَرْبِيَتِي وَبِرِّي وَتَغْذِيَتِي، هَبْنِي لِابْتِدَاءِ كَرَمِكَ، وَسَالِفِ بِرِّكَ بِي",
+      "يَا إِلَهِي وَسَيِّدِي وَرَبِّي، أَتُرَاكَ مُعَذِّبِي بِنَارِكَ بَعْدَ تَوْحِيدِكَ، وَبَعْدَ مَا انْطَوَى عَلَيْهِ قَلْبِي مِنْ مَعْرِفَتِكَ، وَلَهِجَ بِهِ لِسَانِي مِنْ ذِكْرِكَ، وَاعْتَقَدَهُ ضَمِيرِي مِنْ حُبِّكَ، وَبَعْدَ صِدْقِ اعْتِرَافِي وَدُعَائِي خَاضِعاً لِرُبُوبِيَّتِكَ",
+      "هَيْهَاتَ، أَنْتَ أَكْرَمُ مِنْ أَنْ تُضَيِّعَ مَنْ رَبَّيْتَهُ، أَوْ تُبَعِّدَ مَنْ أَدْنَيْتَهُ، أَوْ تُشَرِّدَ مَنْ آوَيْتَهُ، أَوْ تُسَلِّمَ إِلَى الْبَلَاءِ مَنْ كَفَيْتَهُ وَرَحِمْتَهُ",
+      "وَلَيْتَ شِعْرِي يَا سَيِّدِي وَإِلَهِي وَمَوْلَايَ، أَتُسَلِّطُ النَّارَ عَلَى وُجُوهٍ خَرَّتْ لِعَظَمَتِكَ سَاجِدَةً، وَعَلَى أَلْسُنٍ نَطَقَتْ بِتَوْحِيدِكَ صَادِقَةً وَبِشُكْرِكَ مَادِحَةً",
+      "وَعَلَى قُلُوبٍ اعْتَرَفَتْ بِإِلَهِيَّتِكَ مُحَقِّقَةً، وَعَلَى ضَمَائِرَ حَوَتْ مِنَ الْعِلْمِ بِكَ حَتَّى صَارَتْ خَاشِعَةً، وَعَلَى جَوَارِحَ سَعَتْ إِلَى أَوْطَانِ تَعَبُّدِكَ طَائِعَةً، وَأَشَارَتْ بِاسْتِغْفَارِكَ مُذْعِنَةً",
+      "مَا هَكَذَا الظَّنُّ بِكَ، وَلَا أُخْبِرْنَا بِفَضْلِكَ عَنْكَ يَا كَرِيمُ يَا رَبِّ، وَأَنْتَ تَعْلَمُ ضَعْفِي عَنْ قَلِيلٍ مِنْ بَلَاءِ الدُّنْيَا وَعُقُوبَاتِهَا، وَمَا يَجْرِي فِيهَا مِنَ الْمَكَارِهِ عَلَى أَهْلِهَا",
+      "عَلَى أَنَّ ذَلِكَ بَلَاءٌ وَمَكْرُوهٌ، قَلِيلٌ مَكْثُهُ، يَسِيرٌ بَقَاؤُهُ، قَصِيرٌ مُدَّتُهُ، فَكَيْفَ احْتِمَالِي لِبَلَاءِ الْآخِرَةِ وَجَلِيلِ وُقُوعِ الْمَكَارِهِ فِيهَا",
+      "وَهُوَ بَلَاءٌ تَطُولُ مُدَّتُهُ، وَيَدُومُ مَقَامُهُ، وَلَا يُخَفَّفُ عَنْ أَهْلِهِ، لِأَنَّهُ لَا يَكُونُ إِلَّا عَنْ غَضَبِكَ وَانْتِقَامِكَ وَسَخَطِكَ، وَهَذَا مَا لَا تَقُومُ لَهُ السَّمَاوَاتُ وَالْأَرْضُ",
+      "يَا سَيِّدِي فَكَيْفَ لِي وَأَنَا عَبْدُكَ الضَّعِيفُ الذَّلِيلُ الْحَقِيرُ الْمِسْكِينُ الْمُسْتَكِينُ",
+      "يَا إِلَهِي وَرَبِّي وَسَيِّدِي وَمَوْلَايَ، لِأَيِّ الْأُمُورِ إِلَيْكَ أَشْكُو، وَلِمَا مِنْهَا أَضِجُّ وَأَبْكِي",
+      "لِأَلِيمِ الْعَذَابِ وَشِدَّتِهِ، أَمْ لِطُولِ الْبَلَاءِ وَمُدَّتِهِ",
+      "فَلَئِنْ صَيَّرْتَنِي لِلْعُقُوبَاتِ مَعَ أَعْدَائِكَ، وَجَمَعْتَ بَيْنِي وَبَيْنَ أَهْلِ بَلَائِكَ، وَفَرَّقْتَ بَيْنِي وَبَيْنَ أَحِبَّائِكَ وَأَوْلِيَائِكَ، فَهَبْنِي يَا إِلَهِي وَسَيِّدِي وَمَوْلَايَ وَرَبِّي صَبَرْتُ عَلَى عَذَابِكَ، فَكَيْفَ أَصْبِرُ عَلَى فِرَاقِكَ",
+      "وَهَبْنِي صَبَرْتُ عَلَى حَرِّ نَارِكَ، فَكَيْفَ أَصْبِرُ عَنِ النَّظَرِ إِلَى كَرَامَتِكَ، أَمْ كَيْفَ أَسْكُنُ فِي النَّارِ وَرَجَائِي عَفْوُكَ",
+      "فَبِعِزَّتِكَ يَا سَيِّدِي وَمَوْلَايَ أُقْسِمُ صَادِقاً، لَئِنْ تَرَكْتَنِي نَاطِقاً لَأَضِجَّنَّ إِلَيْكَ بَيْنَ أَهْلِهَا ضَجِيجَ الْآمِلِينَ",
+      "وَلَأَصْرُخَنَّ إِلَيْكَ صُرَاخَ الْمَسْتَصْرِخِينَ، وَلَأَبْكِيَنَّ عَلَيْكَ بُكَاءَ الْفَاقِدِينَ، وَلَأُنَادِيَنَّكَ أَيْنَ كُنْتَ يَا وَلِيَّ الْمُؤْمِنِينَ",
+      "يَا غَايَةَ آمَالِ الْعَارِفِينَ، يَا غِيَاثَ الْمَسْتَغِيثِينَ، يَا حَبِيبَ قُلُوبِ الصَّادِقِينَ، وَيَا إِلَهَ الْعَالَمِينَ",
+      "أَفَتُرَاكَ سُبْحَانَكَ يَا إِلَهِي وَبِحَمْدِكَ تَسْمَعُ فِيهَا صَوْتَ عَبْدٍ مُسْلِمٍ سُجِنَ فِيهَا بِمُخَالَفَتِهِ، وَذَاقَ طَعْمَ عَذَابِهَا بِمَعْصِيَتِهِ، وَحُبِسَ بَيْنَ أَطْبَاقِهَا بِجُرْمِهِ وَجَرِيرَتِهِ، وَهُوَ يَضِجُّ إِلَيْكَ ضَجِيجَ مُؤَمِّلٍ لِرَحْمَتِكَ، وَيُنَادِيكَ بِلِسَانِ أَهْلِ تَوْحِيدِكَ، وَيَتَوَسَّلُ إِلَيْكَ بِرُبُوبِيَّتِكَ",
+      "يَا مَوْلَايَ، فَكَيْفَ يَبْقَى فِي الْعَذَابِ وَهُوَ يَرْجُو مَا سَلَفَ مِنْ حِلْمِكَ",
+      "أَمْ كَيْفَ تُؤْلِمُهُ النَّارُ وَهُوَ يَأْمُلُ فَضْلَكَ وَرَحْمَتَكَ، أَمْ كَيْفَ يُحْرِقُهُ لَهِيبُهَا وَأَنْتَ تَسْمَعُ صَوْتَهُ وَتَرَى مَكَانَهُ",
+      "أَمْ كَيْفَ يَشْتَمِلُ عَلَيْهِ زَفِيرُهَا وَأَنْتَ تَعْلَمُ ضَعْفَهُ، أَمْ كَيْفَ يَتَقَلْقَلُ بَيْنَ أَطْبَاقِهَا وَأَنْتَ تَعْلَمُ صِدْقَهُ",
+      "أَمْ كَيْفَ تَزْجُرُهُ زَبَانِيَتُهَا وَهُوَ يُنَادِيكَ يَا رَبَّهُ، أَمْ كَيْفَ يَرْجُو فَضْلَكَ فِي عِتْقِهِ مِنْهَا فَتَتْرُكُهُ فِيهَا، هَيْهَاتَ مَا ذَلِكَ الظَّنُّ بِكَ، وَلَا الْمَعْرُوفُ مِنْ فَضْلِكَ، وَلَا مُشْبِهٌ لِمَا عَامَلْتَ بِهِ الْمُوَحِّدِينَ مِنْ بِرِّكَ وَإِحْسَانِكَ",
+      "فَبِالْيَقِينِ أَقْطَعُ، لَوْلَا مَا حَكَمْتَ بِهِ مِنْ تَعْذِيبِ جَاحِدِيكَ، وَقَضَيْتَ بِهِ مِنْ إِخْلَادِ مُعَانِدِيكَ، لَجَعَلْتَ النَّارَ كُلَّهَا بَرْداً وَسَلَاماً، وَمَا كَانَ لِأَحَدٍ فِيهَا مَقَرّاً وَلَا مُقَاماً",
+      "لَكِنَّكَ تَقَدَّسَتْ أَسْمَاؤُكَ أَقْسَمْتَ أَنْ تَمْلَأَهَا مِنَ الْكَافِرِينَ، مِنَ الْجِنَّةِ وَالنَّاسِ أَجْمَعِينَ، وَأَنْ تُخَلِّدَ فِيهَا الْمُعَانِدِينَ، وَأَنْتَ جَلَّ ثَنَاؤُكَ قُلْتَ مُبْتَدِئاً، وَتَطَوَّلْتَ بِالْإِنْعَامِ مُتَكَرِّماً: «أَفَمَنْ كَانَ مُؤْمِناً كَمَنْ كَانَ فَاسِقاً لَا يَسْتَوُونَ»",
+      "إِلَهِي وَسَيِّدِي، فَأَسْأَلُكَ بِالْقُدْرَةِ الَّتِي قَدَّرْتَهَا، وَبِالْقَضِيَّةِ الَّتِي حَتَمْتَهَا وَحَكَمْتَهَا، وَغَلَبْتَ مَنْ عَلَيْهِ أَجْرَيْتَهَا، أَنْ تَهَبَ لِي فِي هَذِهِ اللَّيْلَةِ وَفِي هَذِهِ السَّاعَةِ، كُلَّ جُرْمٍ أَجْرَمْتُهُ، وَكُلَّ ذَنْبٍ أَذْنَبْتُهُ، وَكُلَّ قَبِيحٍ أَسْرَرْتُهُ، وَكُلَّ جَهْلٍ عَمِلْتُهُ، كَتَمْتُهُ أَوْ أَعْلَنْتُهُ، أَخْفَيْتُهُ أَوْ أَظْهَرْتُهُ",
+      "وَكُلَّ سَيِّئَةٍ أَمَرْتَ بِإِثْبَاتِهَا الْكِرَامَ الْكَاتِبِينَ، الَّذِينَ وَكَّلْتَهُمْ بِحِفْظِ مَا يَكُونُ مِنِّي، وَجَعَلْتَهُمْ شُهُوداً عَلَيَّ مَعَ جَوَارِحِي، وَكُنْتَ أَنْتَ الرَّقِيبَ عَلَيَّ مِنْ وَرَائِهِمْ، وَالشَّاهِدَ لِمَا خَفِيَ عَنْهُمْ، وَبِرَحْمَتِكَ أَخْفَيْتَهُ، وَبِفَضْلِكَ سَتَرْتَهُ",
+      "وَأَنْ تُوَفِّرَ حَظِّي مِنْ كُلِّ خَيْرٍ تُنْزِلُهُ، أَوْ إِحْسَانٍ تَفْضُلُهُ، أَوْ بِرٍّ تَنْشُرُهُ، أَوْ رِزْقٍ تَبْسُطُهُ، أَوْ ذَنْبٍ تَغْفِرُهُ، أَوْ خَطَأٍ تَسْتُرُهُ",
+      "يَا رَبِّ يَا رَبِّ يَا رَبِّ، يَا إِلَهِي وَسَيِّدِي وَمَوْلَايَ وَمَالِكَ رِقِّي",
+      "يَا مَنْ بِيَدِهِ نَاصِيَتِي، يَا عَلِيماً بِضُرِّي وَمَسْكَنَتِي، يَا خَبِيراً بِفَقْرِي وَفَاقَتِي",
+      "يَا رَبِّ يَا رَبِّ يَا رَبِّ، أَسْأَلُكَ بِحَقِّكَ وَقُدْسِكَ، وَأَعْظَمِ صِفَاتِكَ وَأَسْمَائِكَ، أَنْ تَجْعَلَ أَوْقَاتِي مِنَ اللَّيْلِ وَالنَّهَارِ بِذِكْرِكَ مَعْمُورَةً، وَبِخِدْمَتِكَ مَوْصُولَةً، وَأَعْمَالِي عِنْدَكَ مَقْبُولَةً، حَتَّى تَكُونَ أَعْمَالِي وَأَوْرَادِي كُلُّهَا وِرْداً وَاحِداً، وَحَالِي فِي خِدْمَتِكَ سَرْمَداً",
+      "يَا سَيِّدِي يَا مَنْ عَلَيْهِ مُعَوَّلِي، يَا مَنْ إِلَيْهِ شَكَوْتُ أَحْوَالِي، يَا رَبِّ يَا رَبِّ يَا رَبِّ",
+      "قَوِّ عَلَى خِدْمَتِكَ جَوَارِحِي، وَاشْدُدْ عَلَى الْعَزِيمَةِ جَوَانِحِي، وَهَبْ لِيَ الْجِدَّ فِي خَشْيَتِكَ، وَالدَّوَامَ فِي الِاتِّصَالِ بِخِدْمَتِكَ، حَتَّى أَسْرَحَ إِلَيْكَ فِي مَيَادِينِ السَّابِقِينَ، وَأُسْرِعَ إِلَيْكَ فِي الْبَارِزِينَ، وَأَشْتَاقَ إِلَى قُرْبِكَ فِي الْمُشْتَاقِينَ، وَأَدْنُوَ مِنْكَ دُنُوَّ الْمُخْلِصِينَ، وَأَخَافَكَ مَخَافَةَ الْمُوقِنِينَ، وَأَجْتَمِعَ فِي جِوَارِكَ مَعَ الْمُؤْمِنِينَ",
+      "اللَّهُمَّ وَمَنْ أَرَادَنِي بِسُوءٍ فَأَرِدْهُ، وَمَنْ كَادَنِي فَكِدْهُ، وَاجْعَلْنِي مِنْ أَحْسَنِ عَبِيدِكَ نَصِيباً عِنْدَكَ، وَأَقْرَبِهِمْ مَنْزِلَةً مِنْكَ، وَأَخَصِّهِمْ زُلْفَةً لَدَيْكَ، فَإِنَّهُ لَا يُنَالُ ذَلِكَ إِلَّا بِفَضْلِكَ",
+      "وَجُدْ لِي بِجُودِكَ، وَاعْطِفْ عَلَيَّ بِمَجْدِكَ، وَاحْفَظْنِي بِرَحْمَتِكَ، وَاجْعَلْ لِسَانِي بِذِكْرِكَ لَهِجاً، وَقَلْبِي بِحُبِّكَ مُتَيَّماً، وَمُنَّ عَلَيَّ بِحُسْنِ إِجَابَتِكَ، وَأَقِلْنِي عَثْرَتِي، وَاغْفِرْ زَلَّتِي",
+      "فَإِنَّكَ قَضَيْتَ عَلَى عِبَادِكَ بِعِبَادَتِكَ، وَأَمَرْتَهُمْ بِدُعَائِكَ، وَضَمِنْتَ لَهُمُ الْإِجَابَةَ، فَإِلَيْكَ يَا رَبِّ نَصَبْتُ وَجْهِي، وَإِلَيْكَ يَا رَبِّ مَدَدْتُ يَدِي، فَبِعِزَّتِكَ اسْتَجِبْ لِي دُعَائِي، وَبَلِّغْنِي مُنَايَ، وَلَا تَقْطَعْ مِنْ فَضْلِكَ رَجَائِي، وَاكْفِنِي شَرَّ الْجِنِّ وَالْإِنْسِ مِنْ أَعْدَائِي",
+      "يَا سَرِيعَ الرِّضَا، اغْفِرْ لِمَنْ لَا يَمْلِكُ إِلَّا الدُّعَاءَ، فَإِنَّكَ فَعَّالٌ لِمَا تَشَاءُ",
+      "يَا مَنِ اسْمُهُ دَوَاءٌ، وَذِكْرُهُ شِفَاءٌ، وَطَاعَتُهُ غِنىً، ارْحَمْ مَنْ رَأْسُ مَالِهِ الرَّجَاءُ، وَسِلَاحُهُ الْبُكَاءُ",
+      "يَا سَابِغَ النِّعَمِ، يَا دَافِعَ النِّقَمِ، يَا نُورَ الْمُسْتَوْحِشِينَ فِي الظُّلَمِ، يَا عَالِماً لَا يُعَلَّمُ، صَلِّ عَلَى مُحَمَّدٍ وَآلِ مُحَمَّدٍ، وَافْعَلْ بِي مَا أَنْتَ أَهْلُهُ",
+      "وَصَلَّى اللَّهُ عَلَى رَسُولِهِ وَالْأَئِمَّةِ الْمَيَامِينَ مِنْ آلِهِ، وَسَلَّمَ تَسْلِيماً كَثِيراً"
+    ]
+  },
+  {
+    slug:"tawassul", name:"دعاء التوسل", when:"ليلة الثلاثاء (وفي كل وقت)",
+    desc:"دعاء التوسّل بالنبي وآله الطاهرين عليهم السلام، يُتوسّل به إلى الله في قضاء الحوائج.",
+    audio:"music/توسل.mp3",
+    lines:[
+      "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      "اللَّهُمَّ إِنِّي أَسْأَلُكَ وَأَتَوَجَّهُ إِلَيْكَ بِنَبِيِّكَ نَبِيِّ الرَّحْمَةِ مُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَآلِهِ",
+      "يَا أَبَا الْقَاسِمِ، يَا رَسُولَ اللَّهِ، يَا إِمَامَ الرَّحْمَةِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا الْحَسَنِ، يَا أَمِيرَ الْمُؤْمِنِينَ، يَا عَلِيَّ بْنَ أَبِي طَالِبٍ",
+      "يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ، يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا فَاطِمَةُ الزَّهْرَاءُ، يَا بِنْتَ مُحَمَّدٍ، يَا قُرَّةَ عَيْنِ الرَّسُولِ",
+      "يَا سَيِّدَتَنَا وَمَوْلَاتَنَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكِ إِلَى اللَّهِ، وَقَدَّمْنَاكِ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهَةً عِنْدَ اللَّهِ، اشْفَعِي لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا مُحَمَّدٍ، يَا حَسَنَ بْنَ عَلِيٍّ، أَيُّهَا الْمُجْتَبَى، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا عَبْدِ اللَّهِ، يَا حُسَيْنَ بْنَ عَلِيٍّ، أَيُّهَا الشَّهِيدُ، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا الْحَسَنِ، يَا عَلِيَّ بْنَ الْحُسَيْنِ، يَا زَيْنَ الْعَابِدِينَ، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا جَعْفَرٍ، يَا مُحَمَّدَ بْنَ عَلِيٍّ، أَيُّهَا الْبَاقِرُ، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا عَبْدِ اللَّهِ، يَا جَعْفَرَ بْنَ مُحَمَّدٍ، أَيُّهَا الصَّادِقُ، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا الْحَسَنِ، يَا مُوسَى بْنَ جَعْفَرٍ، أَيُّهَا الْكَاظِمُ، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا الْحَسَنِ، يَا عَلِيَّ بْنَ مُوسَى، أَيُّهَا الرِّضَا، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا جَعْفَرٍ، يَا مُحَمَّدَ بْنَ عَلِيٍّ، أَيُّهَا التَّقِيُّ الْجَوَادُ، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا الْحَسَنِ، يَا عَلِيَّ بْنَ مُحَمَّدٍ، أَيُّهَا الْهَادِي النَّقِيُّ، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا أَبَا مُحَمَّدٍ، يَا حَسَنَ بْنَ عَلِيٍّ، أَيُّهَا الزَّكِيُّ الْعَسْكَرِيُّ، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا وَصِيَّ الْحَسَنِ وَالْخَلَفَ الْحُجَّةَ، أَيُّهَا الْقَائِمُ الْمُنْتَظَرُ الْمَهْدِيُّ، يَا ابْنَ رَسُولِ اللَّهِ، يَا حُجَّةَ اللَّهِ عَلَى خَلْقِهِ",
+      "يَا سَيِّدَنَا وَمَوْلَانَا، إِنَّا تَوَجَّهْنَا وَاسْتَشْفَعْنَا وَتَوَسَّلْنَا بِكَ إِلَى اللَّهِ، وَقَدَّمْنَاكَ بَيْنَ يَدَيْ حَاجَاتِنَا، يَا وَجِيهاً عِنْدَ اللَّهِ، اشْفَعْ لَنَا عِنْدَ اللَّهِ",
+      "يَا سَادَاتِي وَمَوَالِيَّ، إِنِّي تَوَجَّهْتُ بِكُمْ أَئِمَّتِي وَعُدَّتِي لِيَوْمِ فَقْرِي وَحَاجَتِي إِلَى اللَّهِ، وَتَوَسَّلْتُ بِكُمْ إِلَى اللَّهِ، وَاسْتَشْفَعْتُ بِكُمْ إِلَى اللَّهِ، فَاشْفَعُوا لِي عِنْدَ اللَّهِ، وَاسْتَنْقِذُونِي مِنْ ذُنُوبِي عِنْدَ اللَّهِ",
+      "فَإِنَّكُمْ وَسِيلَتِي إِلَى اللَّهِ، وَبِحُبِّكُمْ وَبِقُرْبِكُمْ أَرْجُو نَجَاةً مِنَ اللَّهِ، فَكُونُوا عِنْدَ اللَّهِ رَجَائِي، يَا سَادَاتِي يَا أَوْلِيَاءَ اللَّهِ، صَلَّى اللَّهُ عَلَيْهِمْ أَجْمَعِينَ، وَلَعَنَ اللَّهُ أَعْدَاءَ اللَّهِ ظَالِمِيهِمْ مِنَ الْأَوَّلِينَ وَالْآخِرِينَ، آمِينَ رَبَّ الْعَالَمِينَ",
+      "(ثم تذكر حاجتك وتصلّي على محمد وآل محمد)"
+    ]
+  },
+  {
+    slug:"sabah", name:"دعاء الصباح", when:"بعد صلاة الفجر",
+    desc:"دعاء الصباح المروي عن أمير المؤمنين عليّ بن أبي طالب عليه السلام، يُقرأ في أول النهار.",
+    audio:"music/الصباح.mp3",
+    lines:[
+      "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      "اللَّهُمَّ يَا مَنْ دَلَعَ لِسَانَ الصَّبَاحِ بِنُطْقِ تَبَلُّجِهِ، وَسَرَّحَ قِطَعَ اللَّيْلِ الْمُظْلِمِ بِغَيَاهِبِ تَلَجْلُجِهِ",
+      "وَأَتْقَنَ صُنْعَ الْفَلَكِ الدَّوَّارِ فِي مَقَادِيرِ تَبَرُّجِهِ، وَشَعْشَعَ ضِيَاءَ الشَّمْسِ بِنُورِ تَأَجُّجِهِ",
+      "يَا مَنْ دَلَّ عَلَى ذَاتِهِ بِذَاتِهِ، وَتَنَزَّهَ عَنْ مُجَانَسَةِ مَخْلُوقَاتِهِ، وَجَلَّ عَنْ مُلَاءَمَةِ كَيْفِيَّاتِهِ",
+      "يَا مَنْ قَرُبَ مِنْ خَطَرَاتِ الظُّنُونِ، وَبَعُدَ عَنْ لَحَظَاتِ الْعُيُونِ، وَعَلِمَ بِمَا كَانَ قَبْلَ أَنْ يَكُونَ",
+      "يَا مَنْ أَرْقَدَنِي فِي مِهَادِ أَمْنِهِ وَأَمَانِهِ، وَأَيْقَظَنِي إِلَى مَا مَنَحَنِي بِهِ مِنْ مِنَنِهِ وَإِحْسَانِهِ",
+      "وَكَفَّ أَكُفَّ السُّوءِ عَنِّي بِيَدِهِ وَسُلْطَانِهِ",
+      "صَلِّ اللَّهُمَّ عَلَى الدَّلِيلِ إِلَيْكَ فِي اللَّيْلِ الْأَلْيَلِ، وَالْمَاسِكِ مِنْ أَسْبَابِكَ بِحَبْلِ الشَّرَفِ الْأَطْوَلِ",
+      "وَالنَّاصِعِ الْحَسَبِ فِي ذِرْوَةِ الْكَاهِلِ الْأَعْبَلِ، وَالثَّابِتِ الْقَدَمِ عَلَى زَحَالِيفِهَا فِي الزَّمَنِ الْأَوَّلِ",
+      "وَعَلَى آلِهِ الْأَخْيَارِ الْمُصْطَفَيْنَ الْأَبْرَارِ، وَافْتَحِ اللَّهُمَّ لَنَا مَصَارِيعَ الصَّبَاحِ بِمَفَاتِيحِ الرَّحْمَةِ وَالْفَلَاحِ",
+      "وَأَلْبِسْنِي اللَّهُمَّ مِنْ أَفْضَلِ خِلَعِ الْهِدَايَةِ وَالصَّلَاحِ، وَاغْرِسِ اللَّهُمَّ بِعَظَمَتِكَ فِي شِرْبِ جَنَانِي يَنَابِيعَ الْخُشُوعِ",
+      "وَأَجْرِ اللَّهُمَّ لِهَيْبَتِكَ مِنْ آمَاقِي زَفَرَاتِ الدُّمُوعِ، وَأَدِّبِ اللَّهُمَّ نَزَقَ الْخُرْقِ مِنِّي بِأَزِمَّةِ الْقُنُوعِ",
+      "إِلَهِي، إِنْ لَمْ تَبْتَدِئْنِي الرَّحْمَةُ مِنْكَ بِحُسْنِ التَّوْفِيقِ، فَمَنِ السَّالِكُ بِي إِلَيْكَ فِي وَاضِحِ الطَّرِيقِ",
+      "وَإِنْ أَسْلَمَتْنِي أَنَاتُكَ لِقَائِدِ الْأَمَلِ وَالْمُنَى، فَمَنِ الْمُقِيلُ عَثَرَاتِي مِنْ كَبَوَاتِ الْهَوَى",
+      "وَإِنْ خَذَلَنِي نَصْرُكَ عِنْدَ مُحَارَبَةِ النَّفْسِ وَالشَّيْطَانِ، فَقَدْ وَكَلَنِي خِذْلَانُكَ إِلَى حَيْثُ النَّصَبِ وَالْحِرْمَانِ",
+      "إِلَهِي، أَتَرَانِي مَا أَتَيْتُكَ إِلَّا مِنْ حَيْثُ الْآمَالِ، أَمْ عَلِقْتُ بِأَطْرَافِ حِبَالِكَ إِلَّا حِينَ بَاعَدَتْنِي ذُنُوبِي عَنْ دَارِ الْوِصَالِ",
+      "فَبِئْسَ الْمَطِيَّةُ الَّتِي امْتَطَتْ نَفْسِي مِنْ هَوَاهَا، فَوَاهاً لَهَا لِمَا سَوَّلَتْ لَهَا ظُنُونُهَا وَمُنَاهَا، وَتَبّاً لَهَا لِجُرْأَتِهَا عَلَى سَيِّدِهَا وَمَوْلَاهَا",
+      "إِلَهِي، قَرَعْتُ بَابَ رَحْمَتِكَ بِيَدِ رَجَائِي، وَهَرَبْتُ إِلَيْكَ لَاجِئاً مِنْ فَرْطِ أَهْوَائِي",
+      "وَعَلَّقْتُ بِأَطْرَافِ حِبَالِكَ أَنَامِلَ وَلَائِي، فَاصْفَحِ اللَّهُمَّ عَمَّا كُنْتُ أَجْرَمْتُهُ مِنْ زَلَلِي وَخَطَائِي",
+      "وَأَقِلْنِي مِنْ صَرْعَةِ رِدَائِي، فَإِنَّكَ سَيِّدِي وَمَوْلَايَ وَمُعْتَمَدِي وَرَجَائِي، وَأَنْتَ غَايَةُ مَطْلُوبِي وَمُنَايَ، فِي مُنْقَلَبِي وَمَثْوَايَ",
+      "إِلَهِي، كَيْفَ تَطْرُدُ مِسْكِيناً الْتَجَأَ إِلَيْكَ مِنَ الذُّنُوبِ هَارِباً، أَمْ كَيْفَ تُخَيِّبُ مُسْتَرْشِداً قَصَدَ إِلَى جَنَابِكَ سَاعِياً",
+      "أَمْ كَيْفَ تَرُدُّ ظَمْآناً وَرَدَ إِلَى حِيَاضِكَ شَارِباً، كَلَّا وَحِيَاضُكَ مُتْرَعَةٌ فِي ضَنْكِ الْمُحُولِ، وَبَابُكَ مَفْتُوحٌ لِلطَّلَبِ وَالْوَغُولِ",
+      "وَأَنْتَ غَايَةُ الْمَسْؤُولِ وَنِهَايَةُ الْمَأْمُولِ، إِلَهِي، هَذِهِ أَزِمَّةُ نَفْسِي عَقَلْتُهَا بِعِقَالِ مَشِيَّتِكَ",
+      "وَهَذِهِ أَعْبَاءُ ذُنُوبِي دَرَأْتُهَا بِعَفْوِكَ وَرَحْمَتِكَ، وَهَذِهِ أَهْوَائِيَ الْمُضِلَّةُ وَكَلْتُهَا إِلَى جَنَابِ لُطْفِكَ وَرَأْفَتِكَ",
+      "فَاجْعَلِ اللَّهُمَّ صَبَاحِي هَذَا نَازِلاً عَلَيَّ بِضِيَاءِ الْهُدَى، وَبِالسَّلَامَةِ فِي الدِّينِ وَالدُّنْيَا",
+      "وَمَسَائِي جُنَّةً مِنْ كَيْدِ الْعِدَى، وَوِقَايَةً مِنْ مُرْدِيَاتِ الْهَوَى، إِنَّكَ قَادِرٌ عَلَى مَا تَشَاءُ",
+      "تُؤْتِي الْمُلْكَ مَنْ تَشَاءُ، وَتَنْزِعُ الْمُلْكَ مِمَّنْ تَشَاءُ، وَتُعِزُّ مَنْ تَشَاءُ، وَتُذِلُّ مَنْ تَشَاءُ، بِيَدِكَ الْخَيْرُ، إِنَّكَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+      "تُولِجُ اللَّيْلَ فِي النَّهَارِ، وَتُولِجُ النَّهَارَ فِي اللَّيْلِ، وَتُخْرِجُ الْحَيَّ مِنَ الْمَيِّتِ، وَتُخْرِجُ الْمَيِّتَ مِنَ الْحَيِّ، وَتَرْزُقُ مَنْ تَشَاءُ بِغَيْرِ حِسَابٍ",
+      "لَا إِلَٰهَ إِلَّا أَنْتَ، سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، مَنْ ذَا الَّذِي يَعْرِفُ قَدْرَكَ فَلَا يَخَافُكَ، وَمَنْ ذَا الَّذِي يَعْلَمُ مَا أَنْتَ فَلَا يَهَابُكَ",
+      "أَلَّفْتَ بِقُدْرَتِكَ الْفِرَقَ، وَفَلَقْتَ بِلُطْفِكَ الْفَلَقَ، وَأَنَرْتَ بِكَرَمِكَ دَيَاجِيَ الْغَسَقِ، وَأَنْهَرْتَ الْمِيَاهَ مِنَ الصُّمِّ الصَّيَاخِيدِ عَذْباً وَأُجَاجاً",
+      "وَأَنْزَلْتَ مِنَ الْمُعْصِرَاتِ مَاءً ثَجَّاجاً، وَجَعَلْتَ الشَّمْسَ وَالْقَمَرَ لِلْبَرِيَّةِ سِرَاجاً وَهَّاجاً، مِنْ غَيْرِ أَنْ تُمَارِسَ فِيمَا ابْتَدَأْتَ بِهِ لُغُوباً وَلَا عِلَاجاً",
+      "فَيَا مَنْ تَوَحَّدَ بِالْعِزِّ وَالْبَقَاءِ، وَقَهَرَ عِبَادَهُ بِالْمَوْتِ وَالْفَنَاءِ، صَلِّ عَلَى مُحَمَّدٍ وَأَهْلِ بَيْتِهِ الْأَتْقِيَاءِ",
+      "وَاسْمَعْ نِدَائِي، وَاسْتَجِبْ دُعَائِي، وَحَقِّقْ بِفَضْلِكَ أَمَلِي وَرَجَائِي، يَا خَيْرَ مَنْ دُعِيَ لِكَشْفِ الضُّرِّ، وَالْمَأْمُولِ لِكُلِّ عُسْرٍ وَيُسْرٍ",
+      "بِكَ أَنْزَلْتُ حَاجَتِي فَلَا تَرُدَّنِي مِنْ سَنِيِّ مَوَاهِبِكَ خَائِباً، يَا كَرِيمُ يَا كَرِيمُ يَا كَرِيمُ",
+      "بِرَحْمَتِكَ يَا أَرْحَمَ الرَّاحِمِينَ، وَصَلَّى اللَّهُ عَلَى سَيِّدِنَا مُحَمَّدٍ خَاتَمِ النَّبِيِّينَ، وَعِتْرَتِهِ الطَّاهِرِينَ، وَسَلَّمَ تَسْلِيماً كَثِيراً"
+    ]
+  },
+  {
+    slug:"faraj", name:"دعاء الفرج", when:"عند الشدائد والكرب",
+    desc:"دعاء قصير يُتوسّل به إلى الله بالحجة بن الحسن عجّل الله فرجه الشريف لكشف الكرب.",
+    audio:"music/الفرج.mp3",
+    lines:[
+      "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      "إِلَهِي عَظُمَ الْبَلَاءُ، وَبَرِحَ الْخَفَاءُ، وَانْكَشَفَ الْغِطَاءُ",
+      "وَضَاقَتِ الْأَرْضُ، وَمُنِعَتِ السَّمَاءُ",
+      "وَأَنْتَ الْمُسْتَعَانُ، وَإِلَيْكَ الْمُشْتَكَى، وَعَلَيْكَ الْمُعَوَّلُ فِي الشِّدَّةِ وَالرَّخَاءِ",
+      "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَآلِ مُحَمَّدٍ أُولِي الْأَمْرِ الَّذِينَ فَرَضْتَ عَلَيْنَا طَاعَتَهُمْ",
+      "وَعَرَّفْتَنَا بِذَلِكَ مَنْزِلَتَهُمْ، فَفَرِّجْ عَنَّا بِحَقِّهِمْ فَرَجاً عَاجِلاً قَرِيباً",
+      "كَلَمْحِ الْبَصَرِ أَوْ هُوَ أَقْرَبُ، يَا مُحَمَّدُ يَا عَلِيُّ، يَا عَلِيُّ يَا مُحَمَّدُ",
+      "اكْفِيَانِي فَإِنَّكُمَا كَافِيَايَ، وَانْصُرَانِي فَإِنَّكُمَا نَاصِرَايَ",
+      "يَا مَوْلَانَا يَا صَاحِبَ الزَّمَانِ، الْغَوْثَ الْغَوْثَ الْغَوْثَ",
+      "أَدْرِكْنِي أَدْرِكْنِي أَدْرِكْنِي، السَّاعَةَ السَّاعَةَ السَّاعَةَ",
+      "الْعَجَلَ الْعَجَلَ الْعَجَلَ، يَا أَرْحَمَ الرَّاحِمِينَ، بِحَقِّ مُحَمَّدٍ وَآلِهِ الطَّاهِرِينَ"
+    ]
+  },
+  {
+    slug:"ziyarat_ashura", name:"زيارة عاشوراء", when:"يوم عاشوراء وكلّ يوم",
+    desc:"زيارة عاشوراء المعروفة، يُتقرّب بها إلى الله بمصاب سيّد الشهداء الإمام الحسين عليه السلام.",
+    audio:"music/عاشورا.mp3",
+    lines:[
+      "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      "السَّلَامُ عَلَيْكَ يَا أَبَا عَبْدِ اللَّهِ، السَّلَامُ عَلَيْكَ يَا ابْنَ رَسُولِ اللَّهِ",
+      "السَّلَامُ عَلَيْكَ يَا ابْنَ أَمِيرِ الْمُؤْمِنِينَ وَابْنَ سَيِّدِ الْوَصِيِّينَ",
+      "السَّلَامُ عَلَيْكَ يَا ابْنَ فَاطِمَةَ سَيِّدَةِ نِسَاءِ الْعَالَمِينَ",
+      "السَّلَامُ عَلَيْكَ يَا ثَارَ اللَّهِ وَابْنَ ثَارِهِ، وَالْوِتْرَ الْمَوْتُورَ",
+      "السَّلَامُ عَلَيْكَ وَعَلَى الْأَرْوَاحِ الَّتِي حَلَّتْ بِفِنَائِكَ",
+      "عَلَيْكُمْ مِنِّي جَمِيعاً سَلَامُ اللَّهِ أَبَداً مَا بَقِيتُ وَبَقِيَ اللَّيْلُ وَالنَّهَارُ",
+      "يَا أَبَا عَبْدِ اللَّهِ، لَقَدْ عَظُمَتِ الرَّزِيَّةُ، وَجَلَّتْ وَعَظُمَتِ الْمُصِيبَةُ بِكَ عَلَيْنَا",
+      "وَعَلَى جَمِيعِ أَهْلِ الْإِسْلَامِ، وَجَلَّتْ وَعَظُمَتْ مُصِيبَتُكَ فِي السَّمَاوَاتِ عَلَى جَمِيعِ أَهْلِ السَّمَاوَاتِ",
+      "فَلَعَنَ اللَّهُ أُمَّةً أَسَّسَتْ أَسَاسَ الظُّلْمِ وَالْجَوْرِ عَلَيْكُمْ أَهْلَ الْبَيْتِ",
+      "وَلَعَنَ اللَّهُ أُمَّةً دَفَعَتْكُمْ عَنْ مَقَامِكُمْ وَأَزَالَتْكُمْ عَنْ مَرَاتِبِكُمُ الَّتِي رَتَّبَكُمُ اللَّهُ فِيهَا",
+      "وَلَعَنَ اللَّهُ أُمَّةً قَتَلَتْكُمْ، وَلَعَنَ اللَّهُ الْمُمَهِّدِينَ لَهُمْ بِالتَّمْكِينِ مِنْ قِتَالِكُمْ",
+      "بَرِئْتُ إِلَى اللَّهِ وَإِلَيْكُمْ مِنْهُمْ، وَمِنْ أَشْيَاعِهِمْ وَأَتْبَاعِهِمْ وَأَوْلِيَائِهِمْ",
+      "يَا أَبَا عَبْدِ اللَّهِ، إِنِّي سِلْمٌ لِمَنْ سَالَمَكُمْ، وَحَرْبٌ لِمَنْ حَارَبَكُمْ إِلَى يَوْمِ الْقِيَامَةِ",
+      "وَلَعَنَ اللَّهُ آلَ زِيَادٍ وَآلَ مَرْوَانَ، وَلَعَنَ اللَّهُ بَنِي أُمَيَّةَ قَاطِبَةً",
+      "وَلَعَنَ اللَّهُ ابْنَ مَرْجَانَةَ، وَلَعَنَ اللَّهُ عُمَرَ بْنَ سَعْدٍ، وَلَعَنَ اللَّهُ شِمْراً",
+      "وَلَعَنَ اللَّهُ أُمَّةً أَسْرَجَتْ وَأَلْجَمَتْ وَتَنَقَّبَتْ لِقِتَالِكَ",
+      "بِأَبِي أَنْتَ وَأُمِّي، لَقَدْ عَظُمَ مُصَابِي بِكَ، فَأَسْأَلُ اللَّهَ الَّذِي أَكْرَمَ مَقَامَكَ، وَأَكْرَمَنِي بِكَ",
+      "أَنْ يَرْزُقَنِي طَلَبَ ثَأْرِكَ مَعَ إِمَامٍ مَنْصُورٍ مِنْ أَهْلِ بَيْتِ مُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَآلِهِ",
+      "اللَّهُمَّ اجْعَلْنِي عِنْدَكَ وَجِيهاً بِالْحُسَيْنِ عَلَيْهِ السَّلَامُ فِي الدُّنْيَا وَالْآخِرَةِ",
+      "يَا أَبَا عَبْدِ اللَّهِ، إِنِّي أَتَقَرَّبُ إِلَى اللَّهِ، وَإِلَى رَسُولِهِ، وَإِلَى أَمِيرِ الْمُؤْمِنِينَ",
+      "وَإِلَى فَاطِمَةَ، وَإِلَى الْحَسَنِ، وَإِلَيْكَ بِمُوَالاتِكَ وَبِالْبَرَاءَةِ مِمَّنْ قَاتَلَكَ وَنَصَبَ لَكَ الْحَرْبَ",
+      "وَبِالْبَرَاءَةِ مِمَّنْ أَسَّسَ أَسَاسَ الظُّلْمِ وَالْجَوْرِ عَلَيْكُمْ، وَأَبْرَأُ إِلَى اللَّهِ وَإِلَى رَسُولِهِ مِمَّنْ أَسَّسَ ذَلِكَ",
+      "اللَّهُمَّ الْعَنْ أَوَّلَ ظَالِمٍ ظَلَمَ حَقَّ مُحَمَّدٍ وَآلِ مُحَمَّدٍ، وَآخِرَ تَابِعٍ لَهُ عَلَى ذَلِكَ",
+      "اللَّهُمَّ الْعَنِ الْعِصَابَةَ الَّتِي جَاهَدَتِ الْحُسَيْنَ، وَشَايَعَتْ وَبَايَعَتْ وَتَابَعَتْ عَلَى قَتْلِهِ، اللَّهُمَّ الْعَنْهُمْ جَمِيعاً",
+      "السَّلَامُ عَلَيْكَ يَا أَبَا عَبْدِ اللَّهِ، وَعَلَى الْأَرْوَاحِ الَّتِي حَلَّتْ بِفِنَائِكَ"
+    ]
+  },
+  {
+    slug:"ziyarat_warith", name:"زيارة الإمام الحسين (ع) — زيارة وارث", when:"كلّ وقت، وليالي الجمعة خاصة",
+    desc:"زيارة وارث المروية عن الإمام الصادق عليه السلام لزيارة سيد الشهداء الإمام الحسين عليه السلام.",
+    audio:"music/الحسين.mp3",
+    lines:[
+      "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      "السَّلَامُ عَلَيْكَ يَا وَارِثَ آدَمَ صَفْوَةِ اللَّهِ",
+      "السَّلَامُ عَلَيْكَ يَا وَارِثَ نُوحٍ نَبِيِّ اللَّهِ",
+      "السَّلَامُ عَلَيْكَ يَا وَارِثَ إِبْرَاهِيمَ خَلِيلِ اللَّهِ",
+      "السَّلَامُ عَلَيْكَ يَا وَارِثَ مُوسَى كَلِيمِ اللَّهِ",
+      "السَّلَامُ عَلَيْكَ يَا وَارِثَ عِيسَى رُوحِ اللَّهِ",
+      "السَّلَامُ عَلَيْكَ يَا وَارِثَ مُحَمَّدٍ حَبِيبِ اللَّهِ",
+      "السَّلَامُ عَلَيْكَ يَا وَارِثَ أَمِيرِ الْمُؤْمِنِينَ وَلِيِّ اللَّهِ",
+      "السَّلَامُ عَلَيْكَ يَا ابْنَ مُحَمَّدٍ الْمُصْطَفَى، يَا ابْنَ عَلِيٍّ الْمُرْتَضَى",
+      "يَا ابْنَ فَاطِمَةَ الزَّهْرَاءِ، يَا ابْنَ خَدِيجَةَ الْكُبْرَى",
+      "السَّلَامُ عَلَيْكَ يَا ثَارَ اللَّهِ وَابْنَ ثَارِهِ، وَالْوِتْرَ الْمَوْتُورَ",
+      "أَشْهَدُ أَنَّكَ قَدْ أَقَمْتَ الصَّلَاةَ، وَآتَيْتَ الزَّكَاةَ",
+      "وَأَمَرْتَ بِالْمَعْرُوفِ، وَنَهَيْتَ عَنِ الْمُنْكَرِ",
+      "وَأَطَعْتَ اللَّهَ وَرَسُولَهُ حَتَّى أَتَاكَ الْيَقِينُ",
+      "فَلَعَنَ اللَّهُ أُمَّةً قَتَلَتْكَ، وَلَعَنَ اللَّهُ أُمَّةً ظَلَمَتْكَ، وَلَعَنَ اللَّهُ أُمَّةً سَمِعَتْ بِذَلِكَ فَرَضِيَتْ بِهِ",
+      "يَا مَوْلَايَ يَا أَبَا عَبْدِ اللَّهِ، أَشْهَدُ اللَّهَ وَمَلَائِكَتَهُ وَأَنْبِيَاءَهُ وَرُسُلَهُ",
+      "أَنِّي بِكُمْ مُؤْمِنٌ، وَبِإِيَابِكُمْ مُوقِنٌ، بِشَرَائِعِ دِينِي وَخَوَاتِيمِ عَمَلِي",
+      "وَقَلْبِي لِقَلْبِكُمْ سِلْمٌ، وَأَمْرِي لِأَمْرِكُمْ مُتَّبِعٌ، وَنُصْرَتِي لَكُمْ مُعَدَّةٌ",
+      "حَتَّى يَأْذَنَ اللَّهُ لَكُمْ، فَمَعَكُمْ مَعَكُمْ، لَا مَعَ عَدُوِّكُمْ",
+      "صَلَوَاتُ اللَّهِ عَلَيْكُمْ، وَعَلَى أَرْوَاحِكُمْ وَأَجْسَادِكُمْ، وَشَاهِدِكُمْ وَغَائِبِكُمْ، وَظَاهِرِكُمْ وَبَاطِنِكُمْ، آمِينَ رَبَّ الْعَالَمِينَ"
+    ]
+  }
+];
+
+const ADHAN = {
+  name: "الأذان",
+  audio: "music/اذان.mp3",
+  lines: [
+    "اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ",
+    "اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ",
+    "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ",
+    "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ",
+    "أَشْهَدُ أَنَّ مُحَمَّداً رَسُولُ اللَّهِ",
+    "أَشْهَدُ أَنَّ مُحَمَّداً رَسُولُ اللَّهِ",
+    "أَشْهَدُ أَنَّ عَلِيّاً وَلِيُّ اللَّهِ",
+    "أَشْهَدُ أَنَّ عَلِيّاً وَلِيُّ اللَّهِ",
+    "حَيَّ عَلَى الصَّلَاةِ، حَيَّ عَلَى الصَّلَاةِ",
+    "حَيَّ عَلَى الْفَلَاحِ، حَيَّ عَلَى الْفَلَاحِ",
+    "حَيَّ عَلَى خَيْرِ الْعَمَلِ، حَيَّ عَلَى خَيْرِ الْعَمَلِ",
+    "اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ",
+    "لَا إِلَٰهَ إِلَّا اللَّهُ"
+  ]
+};
+const IQAMA = {
+  name: "الإقامة",
+  audio: "music/اقامة.mp3",
+  lines: [
+    "اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ",
+    "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللَّهُ",
+    "أَشْهَدُ أَنَّ مُحَمَّداً رَسُولُ اللَّهِ",
+    "أَشْهَدُ أَنَّ عَلِيّاً وَلِيُّ اللَّهِ",
+    "حَيَّ عَلَى الصَّلَاةِ",
+    "حَيَّ عَلَى الْفَلَاحِ",
+    "حَيَّ عَلَى خَيْرِ الْعَمَلِ",
+    "قَدْ قَامَتِ الصَّلَاةُ، قَدْ قَامَتِ الصَّلَاةُ",
+    "اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ",
+    "لَا إِلَٰهَ إِلَّا اللَّهُ"
+  ]
+};
+
+let dPlayerEl = null;
+let dTimer    = null;
+
+window.stopDuaAudio = function stopDuaAudio(){
+  if (dPlayerEl){
+    try{ dPlayerEl.pause(); }catch(_){}
+    try{ dPlayerEl.currentTime = 0; }catch(_){}
+  }
+  if (dTimer){ clearInterval(dTimer); dTimer = null; }
+};
+
+/* Wire up the custom professional audio player. The visible <audio>
+   element is hidden (display:none) and we drive it via custom controls.
+   No line tracking — the user reads along visually. */
+window.bindDuaPlayer = function bindDuaPlayer(audioId, lines){
+  const a = document.getElementById(audioId);
+  if (!a) return;
+  dPlayerEl = a;
+
+  const card = a.closest(".audio-card");
+  if (!card) return;
+
+  const playBtn = card.querySelector(".ac-play");
+  const back10  = card.querySelector(".ac-back");
+  const fwd10   = card.querySelector(".ac-fwd");
+  const bar     = card.querySelector(".ac-bar");
+  const fill    = card.querySelector(".ac-fill");
+  const handle  = card.querySelector(".ac-handle");
+  const curEl   = card.querySelector(".ac-cur");
+  const durEl   = card.querySelector(".ac-dur");
+
+  const fmt = (s) => {
+    if (!isFinite(s) || s < 0) return "0:00";
+    const m = Math.floor(s/60), sec = Math.floor(s%60);
+    return m + ":" + (sec<10?"0":"") + sec;
+  };
+
+  const ICON_PLAY  = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
+
+  const refresh = ()=>{
+    const dur = a.duration || 0;
+    const cur = a.currentTime || 0;
+    const pct = dur > 0 ? (cur/dur)*100 : 0;
+    if (fill)   fill.style.width = pct + "%";
+    if (handle) handle.style.left = pct + "%";
+    if (curEl)  curEl.textContent = fmt(cur);
+    if (durEl)  durEl.textContent = fmt(dur);
+  };
+
+  if (playBtn) playBtn.addEventListener("click", ()=>{
+    if (a.paused) a.play().catch(()=>toast("تعذّر التشغيل، تأكّد من وجود الملف داخل مجلد music","error"));
+    else a.pause();
+  });
+  if (back10) back10.addEventListener("click", ()=>{ try{ a.currentTime = Math.max(0, a.currentTime - 10); }catch(_){} });
+  if (fwd10)  fwd10.addEventListener("click",  ()=>{ try{ a.currentTime = Math.min((a.duration||0), a.currentTime + 10); }catch(_){} });
+
+  /* Click / drag on the progress bar to seek */
+  let dragging = false;
+  const seekFromEvent = (ev)=>{
+    if (!bar) return;
+    const rect = bar.getBoundingClientRect();
+    const x = (ev.touches ? ev.touches[0].clientX : ev.clientX) - rect.left;
+    const ratio = Math.max(0, Math.min(1, x / rect.width));
+    if (a.duration) { try{ a.currentTime = ratio * a.duration; }catch(_){} refresh(); }
+  };
+  if (bar){
+    bar.addEventListener("mousedown",  (e)=>{ dragging=true; seekFromEvent(e); });
+    bar.addEventListener("touchstart", (e)=>{ dragging=true; seekFromEvent(e); }, {passive:true});
+    document.addEventListener("mousemove",  (e)=>{ if(dragging) seekFromEvent(e); });
+    document.addEventListener("touchmove",  (e)=>{ if(dragging) seekFromEvent(e); }, {passive:true});
+    document.addEventListener("mouseup",    ()=>{ dragging=false; });
+    document.addEventListener("touchend",   ()=>{ dragging=false; });
+  }
+
+  a.addEventListener("loadedmetadata", refresh);
+  a.addEventListener("timeupdate",     refresh);
+  a.addEventListener("durationchange", refresh);
+  a.addEventListener("play",  ()=>{ card.classList.add("is-playing");    if(playBtn){ playBtn.innerHTML = ICON_PAUSE; playBtn.classList.add("is-playing"); } });
+  a.addEventListener("pause", ()=>{ card.classList.remove("is-playing"); if(playBtn){ playBtn.innerHTML = ICON_PLAY;  playBtn.classList.remove("is-playing"); } });
+  a.addEventListener("ended", ()=>{ card.classList.remove("is-playing"); if(playBtn){ playBtn.innerHTML = ICON_PLAY;  playBtn.classList.remove("is-playing"); } refresh(); });
+  a.addEventListener("error", ()=>{ toast("تعذّر تحميل الصوت — تأكّد من اسم الملف داخل مجلد music","error"); });
+
+  refresh();
+};
+
+/* Backwards-compat shims so any leftover inline onclick="..." handlers
+   that were generated before the rebuild still work. */
+window.playDua       = function(audioUrl){ const a=dPlayerEl; if (a){ try{ a.play(); }catch(_){} } };
+window.toggleDuaPlay = function(audioUrl){ const a=dPlayerEl; if (!a) return; if (a.paused) a.play(); else a.pause(); };
+
+/* Convenience aliases */
+const stopDuaAudio   = window.stopDuaAudio;
+const playDua        = window.playDua;
+const toggleDuaPlay  = window.toggleDuaPlay;
+
+/* ---- Du'as UI ---- */
+window.openDuasList = function(){
+  stopDuaAudio();
+  $("duasTitle").textContent = "أدعية";
+  $("duasBody").innerHTML = `
+    <div class="dua-note">مجموعة من أجلّ الأدعية المروية عن أهل البيت عليهم السلام</div>
+    <div class="dua-list">
+      ${DUAS.map(d=>`
+        <div class="dua-card" onclick="openDua('${d.slug}')">
+          <div class="nm">${escapeHtml(d.name)}</div>
+          <div class="when">${escapeHtml(d.when)}</div>
+          <div class="desc">${escapeHtml(d.desc)}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+};
+window.openDua = function(slug){
+  const d = DUAS.find(x=>x.slug===slug); if (!d) return;
+  stopDuaAudio();
+  $("duasTitle").textContent = d.name;
+  $("duasBody").innerHTML = `
+    <div class="qr-toolbar">
+      <button class="ic" onclick="openDuasList()" title="رجوع">→</button>
+      <div class="grow" style="font-family:'Amiri',serif;font-weight:800;color:var(--maroon-deep);padding:0 8px">${escapeHtml(d.name)}</div>
+    </div>
+    <div class="dua-note">${escapeHtml(d.when)} — ${escapeHtml(d.desc)}</div>
+    <div class="audio-card">
+      <div class="ac-head">
+        <div class="ac-cover"><span class="ac-glyph">♪</span></div>
+        <div class="ac-meta">
+          <div class="ac-title">${escapeHtml(d.name)}</div>
+          <div class="ac-sub">${escapeHtml(d.when)}</div>
+        </div>
+      </div>
+      <div class="ac-progress">
+        <div class="ac-bar"><div class="ac-fill"></div><div class="ac-handle"></div></div>
+        <div class="ac-times"><span class="ac-cur">0:00</span><span class="ac-dur">0:00</span></div>
+      </div>
+      <div class="ac-controls">
+        <button class="ac-btn ac-back" type="button" title="إرجاع 10 ثوانٍ" aria-label="إرجاع 10 ثوانٍ">
+          <svg viewBox="0 0 24 24"><path d="M11.99 5V1L7 6l4.99 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8.01-8zM10.89 16h-.85v-3.26l-1.01.31v-.69l1.77-.63h.09V16zm4.4-1.4q0 .76-.32 1.16-.32.4-.94.4-.61 0-.93-.39-.32-.39-.34-1.15v-.97q0-.77.32-1.16.33-.39.94-.39.61 0 .93.38.32.38.34 1.15v.97zm-.84-1.1q0-.45-.12-.66-.12-.21-.31-.21-.21 0-.31.19-.1.19-.11.59v1.32q0 .45.12.66.12.21.31.21.19 0 .31-.2.12-.2.12-.64v-1.26z"/></svg>
+        </button>
+        <button class="ac-play" type="button" title="تشغيل / إيقاف" aria-label="تشغيل / إيقاف">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="ac-btn ac-fwd" type="button" title="تقديم 10 ثوانٍ" aria-label="تقديم 10 ثوانٍ">
+          <svg viewBox="0 0 24 24"><path d="M4 13c0 4.4 3.6 8 8 8s8-3.6 8-8h-2c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6v4l5-5-5-5v4c-4.4 0-8 3.6-8 8zm6.91 3H10v-3.29l-1.01.3v-.69l1.79-.64h.13V16zm4.32-1.43q0 .77-.32 1.16-.32.39-.93.39-.61 0-.93-.39-.32-.39-.34-1.14v-.97q0-.77.32-1.16.32-.39.93-.39.61 0 .93.38.32.38.34 1.15v.97zm-.86-1.11q0-.46-.12-.66-.12-.21-.32-.21-.2 0-.31.19-.11.19-.11.59v1.31q0 .45.12.66.12.21.32.21.19 0 .31-.2.12-.2.12-.64v-1.26z"/></svg>
+        </button>
+      </div>
+      <audio id="dPlayer" class="ac-native" preload="metadata" src="${d.audio}"></audio>
+      <div class="ac-fallback">
+        <a href="${d.audio}" target="_blank" rel="noopener">↗ فتح في تبويب جديد</a>
+        <a href="${d.audio}" download>⬇ تنزيل</a>
+      </div>
+    </div>
+    <div class="dua-text">
+      ${d.lines.map((l,i)=>`<span class="dua-line" data-line="${i}">${escapeHtml(l)}</span>`).join("")}
+    </div>
+  `;
+  window.currentDuaLines = d.lines;
+  bindDuaPlayer("dPlayer", d.lines);
+};
+
+/* ---- Adhan / Iqama UI ---- */
+let adhanMode = "adhan";
+window.openAdhanIqama = function(){
+  stopDuaAudio();
+  renderAdhanTab();
+};
+function renderAdhanTab(){
+  const item = adhanMode === "adhan" ? ADHAN : IQAMA;
+  const showPlayer = adhanMode === "adhan";
+  const playerHtml = showPlayer ? `
+    <div class="audio-card">
+      <div class="ac-head">
+        <div class="ac-cover"><span class="ac-glyph">🕌</span></div>
+        <div class="ac-meta">
+          <div class="ac-title">${escapeHtml(item.name)}</div>
+          <div class="ac-sub">الأذان</div>
+        </div>
+      </div>
+      <div class="ac-progress">
+        <div class="ac-bar"><div class="ac-fill"></div><div class="ac-handle"></div></div>
+        <div class="ac-times"><span class="ac-cur">0:00</span><span class="ac-dur">0:00</span></div>
+      </div>
+      <div class="ac-controls">
+        <button class="ac-btn ac-back" type="button" title="إرجاع 10 ثوانٍ" aria-label="إرجاع 10 ثوانٍ">
+          <svg viewBox="0 0 24 24"><path d="M11.99 5V1L7 6l4.99 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8.01-8zM10.89 16h-.85v-3.26l-1.01.31v-.69l1.77-.63h.09V16zm4.4-1.4q0 .76-.32 1.16-.32.4-.94.4-.61 0-.93-.39-.32-.39-.34-1.15v-.97q0-.77.32-1.16.33-.39.94-.39.61 0 .93.38.32.38.34 1.15v.97zm-.84-1.1q0-.45-.12-.66-.12-.21-.31-.21-.21 0-.31.19-.1.19-.11.59v1.32q0 .45.12.66.12.21.31.21.19 0 .31-.2.12-.2.12-.64v-1.26z"/></svg>
+        </button>
+        <button class="ac-play" type="button" title="تشغيل / إيقاف" aria-label="تشغيل / إيقاف">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="ac-btn ac-fwd" type="button" title="تقديم 10 ثوانٍ" aria-label="تقديم 10 ثوانٍ">
+          <svg viewBox="0 0 24 24"><path d="M4 13c0 4.4 3.6 8 8 8s8-3.6 8-8h-2c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6v4l5-5-5-5v4c-4.4 0-8 3.6-8 8zm6.91 3H10v-3.29l-1.01.3v-.69l1.79-.64h.13V16zm4.32-1.43q0 .77-.32 1.16-.32.39-.93.39-.61 0-.93-.39-.32-.39-.34-1.14v-.97q0-.77.32-1.16.32-.39.93-.39.61 0 .93.38.32.38.34 1.15v.97zm-.86-1.11q0-.46-.12-.66-.12-.21-.32-.21-.2 0-.31.19-.11.19-.11.59v1.31q0 .45.12.66.12.21.32.21.19 0 .31-.2.12-.2.12-.64v-1.26z"/></svg>
+        </button>
+      </div>
+      <audio id="dPlayer" class="ac-native" preload="metadata" src="${item.audio}"></audio>
+      <div class="ac-fallback">
+        <a href="${item.audio}" target="_blank" rel="noopener">↗ فتح في تبويب جديد</a>
+        <a href="${item.audio}" download>⬇ تنزيل</a>
+      </div>
+    </div>` : '';
+  $("adhanBody").innerHTML = `
+    <div class="dua-tabs">
+      <button class="${adhanMode==='adhan'?'active':''}" onclick="switchAdhan('adhan')">الأذان</button>
+      <button class="${adhanMode==='iqama'?'active':''}" onclick="switchAdhan('iqama')">الإقامة</button>
+    </div>
+    <div class="qr-toolbar">
+      <div class="grow" style="font-family:'Amiri',serif;font-weight:800;color:var(--maroon-deep);padding:0 8px">${escapeHtml(item.name)}</div>
+    </div>
+    ${playerHtml}
+    <div class="dua-text">
+      ${item.lines.map((l,i)=>`<span class="dua-line" data-line="${i}">${escapeHtml(l)}</span>`).join("")}
+    </div>
+  `;
+  window.currentDuaLines = item.lines;
+  if (showPlayer) bindDuaPlayer("dPlayer", item.lines);
+}
+window.switchAdhan = function(mode){ adhanMode = mode; stopDuaAudio(); renderAdhanTab(); };
+
+/* ---- Hook openDrawer to initialise sections ---- */
+const _origOpenDrawer = window.openDrawer;
+window.openDrawer = function(name, keepOverlay=false){
+  _origOpenDrawer(name, keepOverlay);
+  if (name === "quranSection") renderQuranJuzList();
+  else if (name === "duas") openDuasList();
+  else if (name === "adhan") openAdhanIqama();
+};
+const _origCloseAll = window.closeAllDrawers;
+window.closeAllDrawers = function(){
+  stopQuranAudio();
+  stopDuaAudio();
+  _origCloseAll();
+};
+
+/* ---- Support form → Firestore ---- */
+window.submitSupport = async function(){
+  const name = $("spName").value.trim();
+  const contact = $("spContact").value.trim();
+  const category = $("spCategory").value;
+  const message = $("spMessage").value.trim();
+  if (!name || !message){ toast("الرجاء إدخال الاسم والرسالة","error"); return; }
+  const btn = $("spSubmit"); btn.disabled = true; btn.textContent = "جاري الإرسال...";
+  try{
+    await addDoc(collection(db,"supportMessages"), {
+      name, contact, category, message,
+      status: "new",
+      createdAt: serverTimestamp()
+    });
+    toast("تم استلام رسالتك. شكراً لك");
+    $("spName").value = ""; $("spContact").value = ""; $("spMessage").value = ""; $("spCategory").value = "problem";
+    setTimeout(closeAllDrawers, 700);
+  }catch(e){
+    toast(e.message || "فشل الإرسال","error");
+  }finally{
+    btn.disabled = false; btn.textContent = "إرسال الرسالة";
+  }
+};
 </script>
 </body>
 </html>
