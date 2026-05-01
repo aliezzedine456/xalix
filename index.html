@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -911,11 +912,12 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
       <div class="side-link" onclick="openDrawer('quranSection')"><span class="ico" style="background:linear-gradient(180deg,#2a7a4b,var(--green));color:#f0fff4">۩</span>القرآن الكريم · ٣٠ جزء</div>
       <div class="side-link" onclick="openDrawer('duas')"><span class="ico" style="background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)">☾</span>أدعية</div>
       <div class="side-link" onclick="openDrawer('adhan')"><span class="ico" style="background:linear-gradient(180deg,var(--maroon),var(--maroon-deep));color:var(--gold-soft)">🕌</span>الأذان والإقامة</div>
-      <div class="side-link" onclick="openDrawer('support')"><span class="ico">✉</span>الدعم والتواصل</div>
+   
       <div style="margin-top:18px;margin-bottom:8px;font-weight:700;font-size:13px;color:var(--muted)">المنصة</div>
       <div class="side-link" onclick="openDrawer('request')"><span class="ico">＋</span>طلب إضافة شهيد جديد</div>
       <div class="side-link" onclick="openDrawer('photoRequest')"><span class="ico" style="background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:var(--ink)">📸</span>اطلب ألبوم ٦ صور · مجاناً</div>
       <div class="side-link" onclick="openDrawer('login')"><span class="ico">🛡</span>لوحة مشرف الشهيد</div>
+         <div class="side-link" onclick="openDrawer('support')"><span class="ico">✉</span>الدعم والتواصل</div>
         <div class="side-link donate" onclick="openDrawer('donate')"><span class="ico">W</span>تبرّع لدعم المنصة · Whish Money</div>
       <div style="margin-top:24px;margin-bottom:8px;font-weight:700;font-size:13px;color:var(--muted)">تابعنا</div>
       <a class="side-link" href="https://www.instagram.com/xa.l.yx" target="_blank" rel="noreferrer"><span class="ico" style="color:#E1306C">◉</span>إنستغرام</a>
@@ -965,7 +967,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
     <div class="drawer-body">
       <div class="field"><label>اسم الشهيد</label><input id="reqName" placeholder="الاسم الكريم" /></div>
       <div class="field">
-        <label>صورة الشهيد (اختياري)</label>
+        <label>صورة الشهيد <span style="color:var(--maroon)">*</span></label>
         <div class="upload" onclick="document.getElementById('reqFile').click()">
           <div class="ico">⬆</div>
           <div>اضغط لاختيار صورة من جهازك</div>
@@ -1006,10 +1008,6 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
           <input id="prFile" type="file" accept="image/*" style="display:none" onchange="onPickPhotoReq(event)" />
           <div class="upload-preview" id="prPreview"></div>
         </div>
-      </div>
-      <div class="field">
-        <label>تفاصيل إضافية (اختياري)</label>
-        <textarea id="prNotes" rows="3" placeholder="مثال: نص يُكتب على الصور، مكان الشهادة، تاريخها..."></textarea>
       </div>
       <div class="field">
         <label>رقم الهاتف <span style="color:var(--maroon)">*</span></label>
@@ -1171,7 +1169,7 @@ body{font-family:"Tajawal",system-ui,sans-serif;background:var(--bg);color:var(-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import {
   getFirestore, collection, query, orderBy, getDocs, doc, getDoc, updateDoc, setDoc,
-  addDoc, serverTimestamp, increment, where, runTransaction
+  addDoc, serverTimestamp, increment, where, runTransaction, deleteField
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -1443,8 +1441,13 @@ async function loadFeed(){
     buildFeatured();
 
     render();
-    const urlId = new URLSearchParams(location.search).get("martyr");
-    if (urlId) openDetail(urlId);
+    const _params = new URLSearchParams(location.search);
+    const urlId = _params.get("martyr");
+    const urlKhatma = _params.get("khatma");
+    if (urlId){
+      await openDetail(urlId);
+      if (urlKhatma === "1") setTimeout(()=>{ try{ openQuran(urlId); }catch(_){} }, 400);
+    }
   }catch(e){
     console.error(e);
     toast("تعذر تحميل البيانات","error");
@@ -1732,6 +1735,7 @@ window.submitRequest = async function(){
   const name = $("reqName").value.trim();
   const phone = $("reqPhone").value.trim();
   if (!name || !phone) return toast("الرجاء إدخال الاسم ورقم الهاتف","error");
+  if (!pendingFile) return toast("الرجاء إرفاق صورة الشهيد — الصورة مطلوبة","error");
   const btn = $("reqSubmit"); btn.disabled = true; btn.textContent = "جاري الإرسال...";
   try{
     let photoUrl = "";
@@ -1858,7 +1862,14 @@ window.openMartyrQR = function(){
   if (!currentMartyrId) return;
   const url = `${location.origin}${location.pathname}?martyr=${currentMartyrId}`;
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=10&data=${encodeURIComponent(url)}`;
-  $("mqrBox").innerHTML = `<img src="${qrSrc}" alt="QR" crossorigin="anonymous"/>`;
+  /* Reset any styles applied by showKhatmaQR */
+  const boxEl = $("mqrBox");
+  boxEl.removeAttribute("style");
+  boxEl.innerHTML = `<img src="${qrSrc}" alt="QR" crossorigin="anonymous"/>`;
+  const titleSpan = document.querySelector("#mqrTitle span");
+  if (titleSpan) titleSpan.textContent = "رمز QR لصفحة الشهيد";
+  const subEl = document.querySelector(".mqr-sub");
+  if (subEl) subEl.textContent = "امسح الرمز بكاميرا الهاتف لفتح صفحة الشهيد العامة مباشرة";
   $("mqrLink").href = url;
   $("mqrLink").textContent = url;
   $("mqrModal").classList.add("open");
@@ -2121,70 +2132,147 @@ window.openQuran = async function(id){
   await renderQuran();
 };
 /* ====== Quran helpers — per-browser lock so only the user who took a part may finish it ====== */
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 function quranLockKey(martyrId, n){ return `quran_${martyrId}_${n}`; }
 function setQuranLock(martyrId, n){
-  try { localStorage.setItem(quranLockKey(martyrId, n), "1"); } catch(_) {}
+  try { localStorage.setItem(quranLockKey(martyrId, n), String(Date.now())); } catch(_) {}
 }
 function clearQuranLock(martyrId, n){
   try { localStorage.removeItem(quranLockKey(martyrId, n)); } catch(_) {}
 }
 function hasQuranLock(martyrId, n){
-  try { return !!localStorage.getItem(quranLockKey(martyrId, n)); } catch(_) { return false; }
+  try {
+    const v = localStorage.getItem(quranLockKey(martyrId, n));
+    if (!v) return false;
+    const t = parseInt(v, 10);
+    if (isNaN(t)) return true; /* old format "1" — treat as valid */
+    if (Date.now() - t > SEVEN_DAYS_MS){ clearQuranLock(martyrId, n); return false; }
+    return true;
+  } catch(_) { return false; }
 }
+function getLockTime(martyrId, n){
+  try {
+    const v = localStorage.getItem(quranLockKey(martyrId, n));
+    if (!v) return null;
+    const t = parseInt(v, 10);
+    return isNaN(t) ? Date.now() : t;
+  } catch(_) { return null; }
+}
+/* Returns part number (1-30) already held by this browser for this martyr, or null */
+function getUserTakenPartForMartyr(martyrId){
+  for (let i = 1; i <= 30; i++){
+    if (hasQuranLock(martyrId, i)) return i;
+  }
+  return null;
+}
+/* Helpers to interpret Firestore part values.
+   value === true  → done
+   typeof value === "number" → taken (timestamp stored as epoch ms)
+   value === "taken" → taken (legacy string, treat same)
+   anything else → available */
+function isPartDone(val){ return val === true; }
+function isPartTaken(val){ return val === "taken" || (typeof val === "number" && val > 0); }
+function getPartTakenTime(val){ return typeof val === "number" ? val : null; }
 /* Per-page-load guard so spamming the button never queues multiple writes */
 const _quranBusy = new Set();
 
 async function renderQuran(){
   const snap = await getDoc(doc(db,"martyrs",currentMartyrId));
   const parts = (snap.data()?.quranParts) || {};
+
+  /* Auto-release parts that have been taken for more than 7 days */
+  const expiredNums = [];
+  for (let n = 1; n <= 30; n++){
+    const val = parts[n];
+    if (isPartTaken(val)){
+      const takenTime = getPartTakenTime(val);
+      if (takenTime && Date.now() - takenTime > SEVEN_DAYS_MS){
+        expiredNums.push(n);
+        if (hasQuranLock(currentMartyrId, n)) clearQuranLock(currentMartyrId, n);
+      }
+    }
+  }
+  if (expiredNums.length > 0){
+    try {
+      const updates = {};
+      expiredNums.forEach(n => { updates[`quranParts.${n}`] = deleteField(); parts[n] = undefined; });
+      await updateDoc(doc(db,"martyrs",currentMartyrId), updates);
+    } catch(_){}
+  }
+
   const cells = Array.from({length:30},(_,i)=>i+1).map(n=>{
-    const status = parts[n] === true ? "done" : parts[n] === "taken" ? "taken" : "available";
-    let action = "";
+    const val = parts[n];
+    const status = isPartDone(val) ? "done" : isPartTaken(val) ? "taken" : "available";
+    const takenTime = isPartTaken(val) ? getPartTakenTime(val) : null;
+    let action = "", extraInfo = "";
+
     if (status === "available") {
-      /* The cell itself is also clickable (opens reader); stopPropagation
-         keeps "اختر" from triggering the cell handler twice. */
       action = `<button class="mini" onclick="event.stopPropagation();takePart(${n})">📖 اختر</button>`;
     } else if (status === "taken") {
-      /* Only the same browser/person who took the part can mark it complete */
+      if (takenTime){
+        const msLeft = SEVEN_DAYS_MS - (Date.now() - takenTime);
+        const daysLeft = Math.max(1, Math.ceil(msLeft / (24*60*60*1000)));
+        extraInfo = `<span class="mini" style="font-size:9px;opacity:.65;display:block;margin-top:2px">${arabicNum(daysLeft)} يوم</span>`;
+      }
       if (hasQuranLock(currentMartyrId, n)) {
-        action = `<button class="mini" id="qbtn-${n}" onclick="event.stopPropagation();finishPart(${n})">✓ أنهيت</button>`;
+        action = `<button class="mini" id="qbtn-${n}" onclick="event.stopPropagation();finishPart(${n})">✓ أنهيت</button><button class="mini" style="margin-top:3px;background:rgba(185,28,28,.15);color:#7f1d1d" onclick="event.stopPropagation();releasePart(${n})">↩ إلغاء</button>`;
       } else {
         action = `<span class="mini" title="هذا الجزء أخذه شخص آخر — في انتظار إكماله">⏳ قيد الإنجاز</span>`;
       }
     } else {
       action = `<span class="mini">✓ مكتمل</span>`;
     }
-    /* Whole cell opens the reader so the volunteer can read & listen
-       to the juz they have selected. */
-    return `<div class="qpart ${status}" onclick="openMartyrJuzReader(${n})" title="اضغط لفتح قارئ الجزء"><div class="num">جزء ${arabicNum(n)}</div>${action}</div>`;
+    return `<div class="qpart ${status}" onclick="openMartyrJuzReader(${n})" title="اضغط لفتح قارئ الجزء"><div class="num">جزء ${arabicNum(n)}</div>${action}${extraInfo}</div>`;
   }).join("");
+
+  /* Build khatmah share URL */
+  const khatmaUrl = `${location.origin}${location.pathname}?martyr=${currentMartyrId}&khatma=1`;
+  const khatmaQrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=350x350&margin=10&data=${encodeURIComponent(khatmaUrl)}`;
+
   $("quranBody").innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <button onclick="shareKhatma()" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 10px;background:var(--maroon-deep);color:#fff8e1;border:none;border-radius:13px;font-family:'Amiri',serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(94,23,7,.32);letter-spacing:.3px">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        نشر الختمية
+      </button>
+      <button onclick="showKhatmaQR()" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 10px;background:linear-gradient(135deg,#92400e,#b45309);color:#fff8e1;border:none;border-radius:13px;font-family:'Amiri',serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(146,64,14,.32);letter-spacing:.3px">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M3 11V3h8v8H3zm2-6v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm10 4h2v2h-2zm0-4h2v2h-2zm2 2h2v2h-2zm2 0h2v2h-2zm0-2h2v-2h-2zm-4 0v-2h2v2h-2z"/></svg>
+        رمز QR الختمية
+      </button>
+    </div>
     <div class="note">
       <span class="legend"><span class="dot" style="background:#fff7df;border:1px solid var(--gold-soft)"></span> متاح</span>
-      <span class="legend"><span class="dot" style="background:var(--gold)"></span> تم أخذه</span>
+      <span class="legend"><span class="dot" style="background:var(--gold)"></span> مأخوذ (٧ أيام)</span>
       <span class="legend"><span class="dot" style="background:var(--green)"></span> مكتمل</span>
     </div>
-    <div class="dua-note" style="margin-bottom:8px">اضغط على الجزء لفتح صفحة القراءة مع الصوت والنص</div>
+    <div class="dua-note" style="margin-bottom:8px">جزء واحد لكل متطوع حتى يكمله · مدة الأخذ ٧ أيام · اضغط على الجزء لفتح القارئ</div>
     <div class="quran-grid">${cells}</div>`;
 }
 
 window.takePart = async function(n){
   if (_quranBusy.has(n)) return;
+  /* Enforce: one part at a time per browser per martyr */
+  const existing = getUserTakenPartForMartyr(currentMartyrId);
+  if (existing !== null){
+    toast(`لديك بالفعل الجزء ${arabicNum(existing)} — أكمله أولاً أو اضغط «↩ إلغاء» لتركه`, "error");
+    return;
+  }
   _quranBusy.add(n);
   const martyrId = currentMartyrId;
+  const now = Date.now();
   try{
-    /* Transactional take: only flip available -> taken */
+    /* Transactional take: only flip available -> taken (store epoch ms as value) */
     await runTransaction(db, async (tx) => {
       const ref = doc(db,"martyrs",martyrId);
       const snap = await tx.get(ref);
       const cur = (snap.data()?.quranParts || {})[n];
-      if (cur === true)    throw new Error("هذا الجزء مكتمل مسبقاً");
-      if (cur === "taken") throw new Error("هذا الجزء مأخوذ مسبقاً من قِبل شخص آخر");
-      tx.update(ref, { [`quranParts.${n}`]: "taken" });
+      if (isPartDone(cur))  throw new Error("هذا الجزء مكتمل مسبقاً");
+      if (isPartTaken(cur)) throw new Error("هذا الجزء مأخوذ مسبقاً من قِبل شخص آخر");
+      tx.update(ref, { [`quranParts.${n}`]: now });
     });
-    /* Save the lock in this browser only — only this device can mark it complete */
+    /* Save the lock (with timestamp) in this browser only */
     setQuranLock(martyrId, n);
-    toast(`تم أخذ الجزء ${arabicNum(n)} — أكمله ثم اضغط «✓ أنهيت»`);
+    toast(`تم أخذ الجزء ${arabicNum(n)} — أكمله خلال ٧ أيام ثم اضغط «✓ أنهيت»`);
     await renderQuran();
   } catch(e){ toast(e.message || "خطأ", "error"); await renderQuran(); }
   finally { _quranBusy.delete(n); }
@@ -2201,15 +2289,15 @@ window.finishPart = async function(n){
     /* Verify the lock — only the browser that took the part may finish it */
     if (!hasQuranLock(martyrId, n)) throw new Error("لا يمكنك إكمال جزء أخذه شخص آخر");
 
-    /* Atomic transition: only flip "taken" -> true and increment quran by 1.
+    /* Atomic transition: only flip taken -> true and increment quran by 1.
        Pressing the button N times can never increment more than once. */
     let didFinish = false;
     await runTransaction(db, async (tx) => {
       const ref = doc(db,"martyrs",martyrId);
       const snap = await tx.get(ref);
       const cur = (snap.data()?.quranParts || {})[n];
-      if (cur === true) { didFinish = false; return; }     /* already completed elsewhere */
-      if (cur !== "taken") throw new Error("هذا الجزء لم يعد في حالة «مأخوذ»");
+      if (isPartDone(cur)) { didFinish = false; return; }     /* already completed elsewhere */
+      if (!isPartTaken(cur)) throw new Error("هذا الجزء لم يعد في حالة «مأخوذ»");
       tx.update(ref, { [`quranParts.${n}`]: true, quran: increment(1) });
       didFinish = true;
     });
@@ -2220,6 +2308,101 @@ window.finishPart = async function(n){
     toast(e.message || "خطأ", "error");
     await renderQuran();
   } finally { _quranBusy.delete(n); }
+};
+
+/* ====== Release a taken Quran part back to available ====== */
+window.releasePart = async function(n){
+  if (!hasQuranLock(currentMartyrId, n)){
+    toast("لا يمكنك إلغاء جزء لم تأخذه أنت", "error");
+    return;
+  }
+  if (_quranBusy.has(n)) return;
+  _quranBusy.add(n);
+  const martyrId = currentMartyrId;
+  try {
+    await runTransaction(db, async (tx) => {
+      const ref = doc(db, "martyrs", martyrId);
+      const snap = await tx.get(ref);
+      const cur = (snap.data()?.quranParts || {})[n];
+      if (isPartDone(cur)) throw new Error("هذا الجزء مكتمل ولا يمكن إعادته");
+      tx.update(ref, { [`quranParts.${n}`]: deleteField() });
+    });
+    clearQuranLock(martyrId, n);
+    toast(`تم إلغاء الجزء ${arabicNum(n)} — أصبح متاحاً للجميع مجدداً`);
+    await renderQuran();
+  } catch(e) {
+    toast(e.message || "خطأ", "error");
+    await renderQuran();
+  } finally { _quranBusy.delete(n); }
+};
+
+/* ====== Khatmah share link & QR ====== */
+window.shareKhatma = async function(){
+  if (!currentMartyrId) return;
+  const url = `${location.origin}${location.pathname}?martyr=${currentMartyrId}&khatma=1`;
+  const martyrName = document.querySelector(".detail-name")?.textContent?.trim() || "";
+  const title = martyrName ? `ختمية قرآن للشهيد ${martyrName}` : "ختمية قرآن كريم";
+  const text = martyrName
+    ? `🕌 شارك في ختمية القرآن الكريم إهداءً لروح الشهيد ${martyrName} — اختر جزءاً وأهدِ ثوابه لروحه الطاهرة`
+    : `🕌 شارك في ختمية القرآن الكريم — اختر جزءاً وأهدِ ثوابه لروح الشهيد`;
+  if (navigator.share){
+    try { await navigator.share({ title, text, url }); return; } catch(_){}
+  }
+  try { await navigator.clipboard.writeText(url); toast("✅ تم نسخ رابط الختمية"); }
+  catch(_){ toast("تعذر النسخ","error"); }
+};
+
+window.showKhatmaQR = function(){
+  if (!currentMartyrId) return;
+  const url = `${location.origin}${location.pathname}?martyr=${currentMartyrId}&khatma=1`;
+  /* ecc=H for high error-correction; dark maroon ink on ivory background */
+  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=14&ecc=H&color=4a1500&bgcolor=fffaf4&data=${encodeURIComponent(url)}`;
+  const martyrName = document.querySelector(".detail-name")?.textContent?.trim() || "";
+
+  /* Update modal title (span only — keep the SVG QR icon) */
+  const titleSpan = document.querySelector("#mqrTitle span");
+  if (titleSpan) titleSpan.textContent = "ختمية القرآن الكريم";
+
+  /* Update the subtitle beneath the title */
+  const subEl = document.querySelector(".mqr-sub");
+  if (subEl) subEl.textContent = "أرسل هذا الرمز للمشاركين ليختار كلٌّ جزءه ويُهدي الثواب";
+
+  /* Completely replace the box with a clean stacked design — NO overlapping elements */
+  const boxEl = document.getElementById("mqrBox");
+  if (boxEl){
+    boxEl.style.cssText = "width:auto;height:auto;background:transparent;border:none;box-shadow:none;padding:0;margin:0 auto 14px";
+    boxEl.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;background:linear-gradient(160deg,#fff8f0,#fef3e2);border:1.5px solid #d9b87a;border-radius:20px;padding:20px 22px;box-shadow:0 6px 28px rgba(74,21,0,.15);min-width:240px">
+        <!-- Icon badge at top -->
+        <div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(145deg,#7c2d12,#b45309);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(124,45,18,.38);margin-bottom:12px">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff8e1" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            <line x1="9" y1="7" x2="15" y2="7"/>
+            <line x1="9" y1="11" x2="15" y2="11"/>
+          </svg>
+        </div>
+        <!-- Title text -->
+        <div style="font-family:'Amiri',serif;font-size:18px;font-weight:800;color:#4a1500;text-align:center;line-height:1.45;margin-bottom:4px">ختمية القرآن الكريم</div>
+        ${martyrName ? `<div style="font-family:'Amiri',serif;font-size:14px;color:#92400e;text-align:center;margin-bottom:14px">إهداءً لروح الشهيد · ${martyrName}</div>` : `<div style="margin-bottom:14px"></div>`}
+        <!-- QR code in clean white card -->
+        <div style="background:#ffffff;border-radius:14px;padding:10px;box-shadow:0 2px 10px rgba(0,0,0,.10);border:1.5px solid #e8d5aa">
+          <img src="${qrSrc}" alt="QR الختمية" style="width:195px;height:195px;display:block;border-radius:6px"/>
+        </div>
+        <!-- Scan instruction -->
+        <div style="margin-top:14px;font-size:12.5px;color:#92400e;text-align:center;line-height:1.6;opacity:.9">
+          امسح الرمز بكاميرا هاتفك<br/>لاختيار جزءك وإهداء الثواب
+        </div>
+        <!-- Decorative divider -->
+        <div style="width:80%;height:1px;background:linear-gradient(90deg,transparent,#d9b87a,transparent);margin-top:14px"></div>
+        <div style="margin-top:10px;font-size:11px;color:#b45309;opacity:.7;letter-spacing:.5px">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+      </div>`;
+  }
+
+  const linkEl = document.getElementById("mqrLink");
+  if (linkEl){ linkEl.href = url; linkEl.textContent = url; }
+  const modal = document.getElementById("mqrModal");
+  if (modal){ modal.classList.add("open"); document.body.style.overflow = "hidden"; }
 };
 
 /* ====== Photo Album Requests ====== */
@@ -2239,7 +2422,6 @@ window.onPickPhotoReq = function(e){
 window.submitPhotoRequest = async function(){
   const name = $("prName").value.trim();
   const phone = $("prPhone").value.trim();
-  const notes = $("prNotes").value.trim();
   if (!name) return toast("الرجاء إدخال اسم الشهيد","error");
   if (!pendingPhotoReqFile) return toast("الرجاء إرفاق صورة أوّلية للشهيد","error");
   if (!phone) return toast("الرجاء إدخال رقم الهاتف","error");
@@ -2247,7 +2429,7 @@ window.submitPhotoRequest = async function(){
   try{
     const refUrl = await uploadImage(pendingPhotoReqFile, "photoRequests");
     await addDoc(collection(db,"photoRequests"), {
-      name, phone, notes,
+      name, phone,
       referencePhoto: refUrl,
       photo: refUrl,
       finalPhotos: [],
@@ -2255,7 +2437,7 @@ window.submitPhotoRequest = async function(){
       createdAt: serverTimestamp()
     });
     toast("شكراً لك، سيتم تصميم الألبوم ونشره قريباً. تقبل الله منك");
-    $("prName").value = ""; $("prPhone").value = ""; $("prNotes").value = ""; $("prFile").value = "";
+    $("prName").value = ""; $("prPhone").value = ""; $("prFile").value = "";
     $("prPreview").innerHTML = ""; pendingPhotoReqFile = null;
     setTimeout(closeAllDrawers, 900);
   }catch(e){
@@ -2646,11 +2828,11 @@ window.openMartyrJuzReader = async function(n){
   try{
     const snap = await getDoc(doc(db,"martyrs",currentMartyrId));
     const cur  = (snap.data()?.quranParts || {})[n];
-    if (cur === true){
+    if (isPartDone(cur)){
       statusLabel = "✓ مكتمل";
       finBtn.disabled = true;
       finBtn.textContent = "✓ مكتمل";
-    } else if (cur === "taken"){
+    } else if (isPartTaken(cur)){
       if (hasQuranLock(currentMartyrId, n)){
         canFinish = true;
         finBtn.disabled = false;
@@ -2765,11 +2947,11 @@ window.mjuzFinishWork = async function(){
   try{
     const snap = await getDoc(doc(db,"martyrs",currentMartyrId));
     const cur  = (snap.data()?.quranParts || {})[n];
-    if (cur === true){
+    if (isPartDone(cur)){
       toast("هذا الجزء مكتمل مسبقاً","");
       return;
     }
-    if (cur === "taken"){
+    if (isPartTaken(cur)){
       if (!hasQuranLock(currentMartyrId, n)){
         toast("لا يمكنك إكمال جزء أخذه شخص آخر","error");
         return;
